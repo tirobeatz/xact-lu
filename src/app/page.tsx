@@ -14,6 +14,11 @@ const stagger = {
   visible: { transition: { staggerChildren: 0.1 } }
 }
 
+// Format number consistently to avoid hydration mismatch
+const formatNumber = (num: number) => {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+}
+
 // Luxembourg banks for mortgage
 const banks = [
   { name: "Select a bank", rate: 3.5 },
@@ -407,7 +412,7 @@ export default function HomePage() {
                     <div>
                       <div className="flex justify-between mb-3">
                         <label className="text-white/70 text-sm">Property Price</label>
-                        <span className="text-white font-semibold">€{propertyPrice.toLocaleString()}</span>
+                        <span className="text-white font-semibold">€{formatNumber(propertyPrice)}</span>
                       </div>
                       <input
                         type="range"
@@ -428,7 +433,7 @@ export default function HomePage() {
                     <div>
                       <div className="flex justify-between mb-3">
                         <label className="text-white/70 text-sm">Down Payment</label>
-                        <span className="text-white font-semibold">{downPayment}% (€{(propertyPrice * downPayment / 100).toLocaleString()})</span>
+                        <span className="text-white font-semibold">{downPayment}% (€{formatNumber(Math.round(propertyPrice * downPayment / 100))})</span>
                       </div>
                       <input
                         type="range"
@@ -501,14 +506,14 @@ export default function HomePage() {
                     <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
                       <p className="text-white/50 text-sm mb-2">Your Monthly Payment</p>
                       <p className="text-5xl md:text-6xl font-bold text-white mb-2">
-                        €{Math.round(monthlyPayment).toLocaleString()}
+                        €{formatNumber(Math.round(monthlyPayment))}
                       </p>
                       <p className="text-white/40 text-sm">per month</p>
 
                       <div className="mt-8 pt-6 border-t border-white/10 space-y-3">
                         <div className="flex justify-between text-sm">
                           <span className="text-white/50">Loan Amount</span>
-                          <span className="text-white">€{Math.round(loanAmount).toLocaleString()}</span>
+                          <span className="text-white">€{formatNumber(Math.round(loanAmount))}</span>
                         </div>
                         <div className="flex justify-between text-sm">
                           <span className="text-white/50">Interest Rate</span>
@@ -516,11 +521,11 @@ export default function HomePage() {
                         </div>
                         <div className="flex justify-between text-sm">
                           <span className="text-white/50">Total Interest</span>
-                          <span className="text-white">€{Math.round(monthlyPayment * numPayments - loanAmount).toLocaleString()}</span>
+                          <span className="text-white">€{formatNumber(Math.round(monthlyPayment * numPayments - loanAmount))}</span>
                         </div>
                         <div className="flex justify-between text-sm pt-3 border-t border-white/10">
                           <span className="text-white/50">Total Payment</span>
-                          <span className="text-white font-semibold">€{Math.round(monthlyPayment * numPayments).toLocaleString()}</span>
+                          <span className="text-white font-semibold">€{formatNumber(Math.round(monthlyPayment * numPayments))}</span>
                         </div>
                       </div>
 

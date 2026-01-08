@@ -16,6 +16,12 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [currentLang, setCurrentLang] = useState(languages[0])
   const [langMenuOpen, setLangMenuOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  // Fix hydration by only rendering dynamic content after mount
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,6 +39,27 @@ export function Header() {
       return () => document.removeEventListener("click", handleClick)
     }
   }, [langMenuOpen])
+
+  // Prevent hydration mismatch
+  if (!mounted) {
+    return (
+      <header className="fixed top-0 left-0 right-0 z-50 bg-transparent">
+        <div className="container mx-auto px-4">
+          <div className="flex h-16 items-center justify-between">
+            <Link href="/" className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center">
+                <span className="text-lg font-bold text-white">X</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-lg font-semibold leading-none tracking-tight text-white">Xact</span>
+                <span className="text-[9px] tracking-[0.15em] uppercase font-medium text-white/70">Luxembourg</span>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </header>
+    )
+  }
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -247,7 +274,6 @@ export function Header() {
       {mobileMenuOpen && (
         <div className="lg:hidden border-t border-[#E8E6E3] bg-white/95 backdrop-blur-xl">
           <div className="container mx-auto px-4 py-6">
-            {/* Main Navigation */}
             <nav className="space-y-1">
               <p className="px-3 py-2 text-xs font-medium text-[#6B6B6B] uppercase tracking-wider">Browse</p>
               <Link href="/properties?type=SALE" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-3 py-2.5 text-[#1A1A1A] hover:bg-[#F5F3EF] rounded-xl transition-colors">
@@ -276,7 +302,6 @@ export function Header() {
               </Link>
             </nav>
 
-            {/* Services */}
             <div className="mt-6 pt-6 border-t border-[#E8E6E3]">
               <p className="px-3 py-2 text-xs font-medium text-[#6B6B6B] uppercase tracking-wider">Services</p>
               <Link href="/estimate" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-3 py-2.5 text-[#1A1A1A] hover:bg-[#F5F3EF] rounded-xl transition-colors">
@@ -293,7 +318,6 @@ export function Header() {
               </Link>
             </div>
 
-            {/* Actions */}
             <div className="mt-6 pt-6 border-t border-[#E8E6E3] space-y-3">
               <Button variant="outline" className="w-full h-11 justify-center rounded-xl border-[#E8E6E3]" asChild>
                 <Link href="/login">Sign In</Link>
@@ -308,7 +332,6 @@ export function Header() {
               </Button>
             </div>
 
-            {/* Contact */}
             <div className="mt-6 pt-6 border-t border-[#E8E6E3]">
               <p className="px-3 text-xs text-[#6B6B6B]">
                 Need help? <a href="mailto:info@xact.lu" className="text-[#B8926A] hover:underline">info@xact.lu</a>
