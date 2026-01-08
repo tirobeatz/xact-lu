@@ -46,6 +46,7 @@ model VerificationToken {
 model User {
   id              String    @id @default(cuid())
   email           String    @unique
+  password        String?
   emailVerified   DateTime?
   name            String?
   phone           String?
