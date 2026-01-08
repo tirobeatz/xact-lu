@@ -4,9 +4,18 @@ import Link from "next/link"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 
+const languages = [
+  { code: "en", label: "EN", name: "English" },
+  { code: "fr", label: "FR", name: "Français" },
+  { code: "de", label: "DE", name: "Deutsch" },
+  { code: "lu", label: "LU", name: "Lëtzebuergesch" },
+]
+
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [currentLang, setCurrentLang] = useState(languages[0])
+  const [langMenuOpen, setLangMenuOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,6 +24,15 @@ export function Header() {
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+
+  // Close lang menu when clicking outside
+  useEffect(() => {
+    const handleClick = () => setLangMenuOpen(false)
+    if (langMenuOpen) {
+      document.addEventListener("click", handleClick)
+      return () => document.removeEventListener("click", handleClick)
+    }
+  }, [langMenuOpen])
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -102,6 +120,50 @@ export function Header() {
 
           {/* Desktop Actions */}
           <div className="hidden lg:flex items-center gap-2">
+            {/* Language Selector */}
+            <div className="relative">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setLangMenuOpen(!langMenuOpen)
+                }}
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition-colors ${
+                  scrolled 
+                    ? "text-[#6B6B6B] hover:text-[#1A1A1A] hover:bg-[#F5F3EF]" 
+                    : "text-white/70 hover:text-white hover:bg-white/10"
+                }`}
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                </svg>
+                {currentLang.label}
+                <svg className={`w-3 h-3 transition-transform ${langMenuOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {/* Language Dropdown */}
+              {langMenuOpen && (
+                <div className="absolute top-full right-0 mt-2 w-40 bg-white rounded-xl shadow-xl border border-[#E8E6E3] overflow-hidden">
+                  {languages.map((lang) => (
+                    <button
+                      key={lang.code}
+                      onClick={() => {
+                        setCurrentLang(lang)
+                        setLangMenuOpen(false)
+                      }}
+                      className={`w-full px-4 py-2.5 text-left text-sm flex items-center justify-between hover:bg-[#F5F3EF] transition-colors ${
+                        currentLang.code === lang.code ? "bg-[#F5F3EF]" : ""
+                      }`}
+                    >
+                      <span className="text-[#1A1A1A]">{lang.name}</span>
+                      <span className="text-[#6B6B6B] text-xs">{lang.label}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <Link href="/login" className={`px-4 py-2 rounded-lg text-sm transition-colors ${
               scrolled 
                 ? "text-[#6B6B6B] hover:text-[#1A1A1A]" 
@@ -124,24 +186,62 @@ export function Header() {
           </div>
 
           {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className={`lg:hidden p-2 rounded-lg transition-colors ${
-              scrolled 
-                ? "text-[#1A1A1A] hover:bg-[#F5F3EF]" 
-                : "text-white hover:bg-white/10"
-            }`}
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              {mobileMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
+          <div className="flex lg:hidden items-center gap-2">
+            {/* Mobile Language Button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                setLangMenuOpen(!langMenuOpen)
+              }}
+              className={`p-2 rounded-lg transition-colors ${
+                scrolled 
+                  ? "text-[#1A1A1A] hover:bg-[#F5F3EF]" 
+                  : "text-white hover:bg-white/10"
+              }`}
+            >
+              <span className="text-sm font-medium">{currentLang.label}</span>
+            </button>
+
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className={`p-2 rounded-lg transition-colors ${
+                scrolled 
+                  ? "text-[#1A1A1A] hover:bg-[#F5F3EF]" 
+                  : "text-white hover:bg-white/10"
+              }`}
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {mobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
+
+      {/* Mobile Language Dropdown */}
+      {langMenuOpen && (
+        <div className="lg:hidden absolute top-16 right-4 w-40 bg-white rounded-xl shadow-xl border border-[#E8E6E3] overflow-hidden z-50">
+          {languages.map((lang) => (
+            <button
+              key={lang.code}
+              onClick={() => {
+                setCurrentLang(lang)
+                setLangMenuOpen(false)
+              }}
+              className={`w-full px-4 py-2.5 text-left text-sm flex items-center justify-between hover:bg-[#F5F3EF] transition-colors ${
+                currentLang.code === lang.code ? "bg-[#F5F3EF]" : ""
+              }`}
+            >
+              <span className="text-[#1A1A1A]">{lang.name}</span>
+              <span className="text-[#6B6B6B] text-xs">{lang.label}</span>
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
