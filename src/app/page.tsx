@@ -51,7 +51,7 @@ export default function HomePage() {
         <div className="absolute inset-0">
           <div 
             className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2075&auto=format&fit=crop')` }}
+            style={{ backgroundImage: `url('https://images.unsplash.com/photo-1592595896616-c37162298647?q=80&w=2070&auto=format&fit=crop')` }}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#1A1A1A]/80 via-[#1A1A1A]/60 to-[#1A1A1A]/90" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#1A1A1A]/70 to-transparent" />
@@ -190,12 +190,12 @@ export default function HomePage() {
             </motion.div>
 
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-              {[
-                { title: "Apartments", count: "1,240", image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=2070&auto=format&fit=crop" },
-                { title: "Houses", count: "856", image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=2070&auto=format&fit=crop" },
-                { title: "Land", count: "198", image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2032&auto=format&fit=crop" },
-                { title: "Commercial", count: "324", image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" },
-              ].map((item) => (
+            {[
+              { title: "Apartments", count: "1,240", image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=2080&auto=format&fit=crop" },
+              { title: "Houses", count: "856", image: "https://images.unsplash.com/photo-1628624747186-a941c476b7ef?q=80&w=2070&auto=format&fit=crop" },
+              { title: "Land", count: "198", image: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?q=80&w=2065&auto=format&fit=crop" },
+              { title: "Commercial", count: "324", image: "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop" },
+            ].map((item) => (
                 <motion.div key={item.title} variants={fadeUp}>
                   <Link
                     href={`/properties?type=${item.title.toUpperCase()}`}
@@ -244,36 +244,37 @@ export default function HomePage() {
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[
-                { 
-                  title: "Modern Villa with Pool", 
-                  location: "Kirchberg",
-                  price: "€2,850,000", 
-                  beds: 5, 
-                  baths: 4, 
-                  area: "420",
-                  image: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=2071&auto=format&fit=crop",
-                  tag: "Featured"
-                },
-                { 
-                  title: "Penthouse with Skyline View", 
-                  location: "Belair",
-                  price: "€1,950,000", 
-                  beds: 3, 
-                  baths: 2, 
-                  area: "185",
-                  image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070&auto=format&fit=crop",
-                  tag: "New"
-                },
-                { 
-                  title: "Charming Family Home", 
-                  location: "Limpertsberg",
-                  price: "€1,450,000", 
-                  beds: 4, 
-                  baths: 3, 
-                  area: "280",
-                  image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop",
-                  tag: "Exclusive"
-                },
+              { 
+                title: "Cozy Family Home", 
+                location: "Strassen",
+                price: "€685,000", 
+                beds: 3, 
+                baths: 2, 
+                area: "145",
+                image: "https://images.unsplash.com/photo-1449844908441-8829872d2607?q=80&w=2070&auto=format&fit=crop",
+                tag: "Popular"
+              },
+              { 
+                title: "Bright City Apartment", 
+                location: "Bonnevoie",
+                price: "€425,000", 
+                beds: 2, 
+                baths: 1, 
+                area: "78",
+                image: "https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=2070&auto=format&fit=crop",
+                tag: "New"
+              },
+              { 
+                title: "Modern Townhouse", 
+                location: "Esch-sur-Alzette",
+                price: "€520,000", 
+                beds: 4, 
+                baths: 2, 
+                area: "165",
+                image: "https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?q=80&w=2070&auto=format&fit=crop",
+                tag: "Great Value"
+              },
+
               ].map((property, i) => (
                 <motion.div key={i} variants={fadeUp}>
                   <Link href={`/properties/${i}`} className="group block">
