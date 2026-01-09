@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { motion } from "framer-motion"
@@ -148,7 +148,7 @@ const fadeUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
 }
 
-export default function PropertiesPage() {
+function PropertiesContent() {
   const searchParams = useSearchParams()
   
   // Get URL params
@@ -194,11 +194,11 @@ export default function PropertiesPage() {
   // Filter properties
   const filteredProperties = mockProperties.filter((property) => {
     if (listingType !== "ALL" && property.listingType !== listingType) return false
-    if (propertyType !== "All" && property.type !== propertyType.toUpperCase()) return false
+    if (propertyType !== "All" && property.type.toLowerCase() !== propertyType.toLowerCase()) return false
     if (location !== "All" && property.location !== location) return false
     if (property.price > maxPrice) return false
-    if (property.beds < minBeds) return false
-    if (property.area < minArea) return false
+    if (minBeds > 0 && property.beds < minBeds) return false
+    if (minArea > 0 && property.area < minArea) return false
     return true
   })
 
@@ -583,5 +583,23 @@ export default function PropertiesPage() {
         </div>
       </section>
     </>
+  )
+}
+
+// Loading fallback
+function PropertiesLoading() {
+  return (
+    <div className="min-h-screen bg-[#FAFAF8] flex items-center justify-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#B8926A]"></div>
+    </div>
+  )
+}
+
+// Main export with Suspense wrapper
+export default function PropertiesPage() {
+  return (
+    <Suspense fallback={<PropertiesLoading />}>
+      <PropertiesContent />
+    </Suspense>
   )
 }
