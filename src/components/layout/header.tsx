@@ -18,7 +18,6 @@ export function Header() {
   const [langMenuOpen, setLangMenuOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
 
-  // Fix hydration by only rendering dynamic content after mount
   useEffect(() => {
     setMounted(true)
   }, [])
@@ -31,7 +30,6 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  // Close lang menu when clicking outside
   useEffect(() => {
     const handleClick = () => setLangMenuOpen(false)
     if (langMenuOpen) {
@@ -40,7 +38,6 @@ export function Header() {
     }
   }, [langMenuOpen])
 
-  // Prevent hydration mismatch
   if (!mounted) {
     return (
       <header className="fixed top-0 left-0 right-0 z-50 bg-transparent">
@@ -97,26 +94,12 @@ export function Header() {
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center">
             <div className="flex items-center gap-1 mr-4">
-              <Link href="/properties?type=SALE" className={`px-3.5 py-2 rounded-lg text-sm transition-colors ${
-                scrolled 
-                  ? "text-[#1A1A1A] hover:bg-[#F5F3EF]" 
-                  : "text-white/90 hover:bg-white/10"
-              }`}>
-                Buy
-              </Link>
-              <Link href="/properties?type=RENT" className={`px-3.5 py-2 rounded-lg text-sm transition-colors ${
-                scrolled 
-                  ? "text-[#1A1A1A] hover:bg-[#F5F3EF]" 
-                  : "text-white/90 hover:bg-white/10"
-              }`}>
-                Rent
-              </Link>
               <Link href="/properties" className={`px-3.5 py-2 rounded-lg text-sm transition-colors ${
                 scrolled 
                   ? "text-[#1A1A1A] hover:bg-[#F5F3EF]" 
                   : "text-white/90 hover:bg-white/10"
               }`}>
-                Search
+                Properties
               </Link>
               <Link href="/agencies" className={`px-3.5 py-2 rounded-lg text-sm transition-colors ${
                 scrolled 
@@ -124,6 +107,13 @@ export function Header() {
                   : "text-white/90 hover:bg-white/10"
               }`}>
                 Agencies
+              </Link>
+              <Link href="/pricing" className={`px-3.5 py-2 rounded-lg text-sm transition-colors ${
+                scrolled 
+                  ? "text-[#1A1A1A] hover:bg-[#F5F3EF]" 
+                  : "text-white/90 hover:bg-white/10"
+              }`}>
+                Pricing
               </Link>
             </div>
 
@@ -214,7 +204,6 @@ export function Header() {
 
           {/* Mobile Menu Button */}
           <div className="flex lg:hidden items-center gap-2">
-            {/* Mobile Language Button */}
             <button
               onClick={(e) => {
                 e.stopPropagation()
@@ -276,29 +265,23 @@ export function Header() {
           <div className="container mx-auto px-4 py-6">
             <nav className="space-y-1">
               <p className="px-3 py-2 text-xs font-medium text-[#6B6B6B] uppercase tracking-wider">Browse</p>
-              <Link href="/properties?type=SALE" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-3 py-2.5 text-[#1A1A1A] hover:bg-[#F5F3EF] rounded-xl transition-colors">
-                <svg className="w-5 h-5 text-[#B8926A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                </svg>
-                Buy Property
-              </Link>
-              <Link href="/properties?type=RENT" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-3 py-2.5 text-[#1A1A1A] hover:bg-[#F5F3EF] rounded-xl transition-colors">
-                <svg className="w-5 h-5 text-[#B8926A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
-                </svg>
-                Rent Property
-              </Link>
               <Link href="/properties" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-3 py-2.5 text-[#1A1A1A] hover:bg-[#F5F3EF] rounded-xl transition-colors">
                 <svg className="w-5 h-5 text-[#B8926A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-                Search All
+                All Properties
               </Link>
               <Link href="/agencies" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-3 py-2.5 text-[#1A1A1A] hover:bg-[#F5F3EF] rounded-xl transition-colors">
                 <svg className="w-5 h-5 text-[#B8926A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
-                Find Agencies
+                Agencies
+              </Link>
+              <Link href="/pricing" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-3 py-2.5 text-[#1A1A1A] hover:bg-[#F5F3EF] rounded-xl transition-colors">
+                <svg className="w-5 h-5 text-[#B8926A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Pricing
               </Link>
             </nav>
 
@@ -309,12 +292,6 @@ export function Header() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                 </svg>
                 Free Property Estimate
-              </Link>
-              <Link href="/pricing" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-3 py-2.5 text-[#1A1A1A] hover:bg-[#F5F3EF] rounded-xl transition-colors">
-                <svg className="w-5 h-5 text-[#B8926A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                Pricing Plans
               </Link>
             </div>
 

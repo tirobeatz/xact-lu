@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
+import { locations } from "@/lib/locations"
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -87,27 +88,87 @@ export default function HomePage() {
             </motion.p>
 
             {/* Search Bar */}
-            <motion.div variants={fadeUp} className="mt-10 bg-white/95 backdrop-blur-sm rounded-2xl p-3 shadow-2xl max-w-2xl">
-              <div className="flex flex-col sm:flex-row gap-3">
-                <div className="flex-1 flex items-center gap-3 px-4 bg-[#F5F3EF] rounded-xl">
-                  <svg className="w-5 h-5 text-[#6B6B6B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                  <input
-                    type="text"
-                    placeholder="Where do you want to live?"
-                    className="flex-1 py-3.5 bg-transparent outline-none text-[#1A1A1A] placeholder:text-[#6B6B6B]/60"
-                  />
+            <motion.div variants={fadeUp} className="mt-10 bg-white/95 backdrop-blur-sm rounded-2xl p-3 shadow-2xl max-w-3xl">
+              <form 
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  const formData = new FormData(e.currentTarget)
+                  const params = new URLSearchParams()
+                  
+                  const location = formData.get("location") as string
+                  const type = formData.get("type") as string
+                  const minBeds = formData.get("minBeds") as string
+                  const maxPrice = formData.get("maxPrice") as string
+                  const propertyType = formData.get("propertyType") as string
+                  const minArea = formData.get("minArea") as string
+                  
+                  if (location && location !== "All") params.set("location", location)
+                  if (type) params.set("type", type)
+                  if (minBeds) params.set("minBeds", minBeds)
+                  if (maxPrice) params.set("maxPrice", maxPrice)
+                  if (propertyType) params.set("propertyType", propertyType)
+                  if (minArea) params.set("minArea", minArea)
+                  
+                  window.location.href = `/properties${params.toString() ? `?${params.toString()}` : ""}`
+                }}
+                className="space-y-3"
+              >
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <select name="location" className="flex-1 px-4 py-3.5 rounded-xl bg-[#F5F3EF] text-[#1A1A1A] text-sm outline-none cursor-pointer">
+                    {locations.map((loc) => (
+                      <option key={loc} value={loc}>
+                        {loc === "All" ? "All Locations" : loc}
+                      </option>
+                    ))}
+                  </select>
+                  <select name="type" className="px-4 py-3.5 rounded-xl bg-[#F5F3EF] text-[#1A1A1A] text-sm outline-none cursor-pointer">
+                    <option value="">Buy / Rent</option>
+                    <option value="SALE">Buy</option>
+                    <option value="RENT">Rent</option>
+                  </select>
+                  <Button type="submit" className="h-12 px-8 bg-[#1A1A1A] hover:bg-[#333] text-white rounded-xl text-base">
+                    Search
+                  </Button>
                 </div>
-                <select className="px-4 py-3.5 rounded-xl bg-[#F5F3EF] text-[#1A1A1A] text-sm outline-none cursor-pointer">
-                  <option value="">Buy / Rent</option>
-                  <option value="buy">Buy</option>
-                  <option value="rent">Rent</option>
-                </select>
-                <Button className="h-12 px-8 bg-[#1A1A1A] hover:bg-[#333] text-white rounded-xl text-base">
-                  Search
-                </Button>
-              </div>
+                <div className="flex flex-wrap gap-3">
+                  <select name="minBeds" className="px-4 py-2.5 rounded-xl bg-[#F5F3EF] text-[#1A1A1A] text-sm outline-none cursor-pointer">
+                    <option value="">Bedrooms</option>
+                    <option value="1">1+ bed</option>
+                    <option value="2">2+ beds</option>
+                    <option value="3">3+ beds</option>
+                    <option value="4">4+ beds</option>
+                    <option value="5">5+ beds</option>
+                  </select>
+                  <select name="maxPrice" className="px-4 py-2.5 rounded-xl bg-[#F5F3EF] text-[#1A1A1A] text-sm outline-none cursor-pointer">
+                    <option value="">Max Price</option>
+                    <option value="300000">€300,000</option>
+                    <option value="500000">€500,000</option>
+                    <option value="750000">€750,000</option>
+                    <option value="1000000">€1,000,000</option>
+                    <option value="1500000">€1,500,000</option>
+                    <option value="2000000">€2,000,000</option>
+                    <option value="3000000">€3,000,000</option>
+                  </select>
+                  <select name="propertyType" className="px-4 py-2.5 rounded-xl bg-[#F5F3EF] text-[#1A1A1A] text-sm outline-none cursor-pointer">
+                    <option value="">Property Type</option>
+                    <option value="Apartment">Apartment</option>
+                    <option value="House">House</option>
+                    <option value="Villa">Villa</option>
+                    <option value="Penthouse">Penthouse</option>
+                    <option value="Studio">Studio</option>
+                    <option value="Duplex">Duplex</option>
+                  </select>
+                  <select name="minArea" className="px-4 py-2.5 rounded-xl bg-[#F5F3EF] text-[#1A1A1A] text-sm outline-none cursor-pointer">
+                    <option value="">Min. Area</option>
+                    <option value="50">50+ m²</option>
+                    <option value="75">75+ m²</option>
+                    <option value="100">100+ m²</option>
+                    <option value="150">150+ m²</option>
+                    <option value="200">200+ m²</option>
+                    <option value="300">300+ m²</option>
+                  </select>
+                </div>
+              </form>
             </motion.div>
 
             {/* Stats */}

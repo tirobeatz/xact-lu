@@ -1,9 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
+import { locations } from "@/lib/locations"
 
 // Temporary mock data
 const mockProperties = [
@@ -137,40 +139,6 @@ const mockProperties = [
 
 const propertyTypes = ["All", "Apartment", "House", "Villa", "Penthouse", "Studio", "Duplex", "Office"]
 
-const locations = [...new Set([
-  "All",
-  // Luxembourg City Districts
-  "Beggen", "Belair", "Bonnevoie-Nord", "Bonnevoie-Sud", "Cents", "Cessange", "Clausen", "Dommeldange", "Eich", "Gare", "Gasperich", "Grund", "Hamm", "Hollerich", "Kirchberg", "Limpertsberg", "Merl", "Mühlenbach", "Neudorf", "Pfaffenthal", "Pulvermühl", "Rollingergrund", "Ville Haute", "Weimerskirch", "Weimershof",
-  // Canton Capellen
-  "Capellen", "Clemency", "Dippach", "Garnich", "Hobscheid", "Kehlen", "Koerich", "Kopstal", "Mamer", "Septfontaines", "Steinfort", "Bascharage", "Fingig", "Goeblange", "Grass", "Greisch", "Hivange", "Holzem", "Kahler", "Keispelt", "Kleinbettingen", "Linger", "Meispelt", "Nospelt", "Olm", "Roodt", "Schouweiler", "Simmern",
-  // Canton Esch-sur-Alzette
-  "Belvaux", "Bergem", "Bettembourg", "Differdange", "Dudelange", "Esch-sur-Alzette", "Frisange", "Kayl", "Leudelange", "Mondercange", "Pétange", "Reckange-sur-Mess", "Roeser", "Rumelange", "Sanem", "Schifflange", "Abweiler", "Aspelt", "Bivange", "Burange", "Crauthem", "Fennange", "Foetz", "Hellange", "Huncherange", "Kockelscheuer", "Lamadelaine", "Livange", "Mondorf-les-Bains", "Niederkorn", "Noertzange", "Oberkorn", "Peppange", "Pontpierre", "Rodange", "Soleuvre", "Tétange", "Wickrange",
-  // Canton Grevenmacher
-  "Betzdorf", "Biwer", "Flaxweiler", "Grevenmacher", "Junglinster", "Manternach", "Mertert", "Wormeldange", "Ahn", "Berg", "Berbourg", "Boudler", "Boudlerbach", "Bourglinster", "Breinert", "Brouch", "Canach", "Ehnen", "Eisenborn", "Eschweiler", "Gonderange", "Godbrange", "Gostingen", "Hagelsdorf", "Imbringen", "Lellig", "Machtum", "Mensdorf", "Munschecker", "Niederdonven", "Oberdonven", "Oetrange", "Potaschberg", "Rodenbourg", "Roodt-sur-Syre", "Wasserbillig", "Wecker", "Weydig",
-  // Canton Luxembourg
-  "Bertrange", "Contern", "Hesperange", "Luxembourg", "Niederanven", "Sandweiler", "Schuttrange", "Steinsel", "Strassen", "Walferdange", "Weiler-la-Tour", "Alzingen", "Bereldange", "Ernster", "Fentange", "Findel", "Hostert", "Howald", "Itzig", "Moutfort", "Müllendorf", "Munsbach", "Neuhäusgen", "Oberanven", "Rameldange", "Schrassig", "Senningen", "Senningerberg", "Syren", "Uebersyren", "Waldhof",
-  // Canton Mersch
-  "Bissen", "Boevange-sur-Attert", "Colmar-Berg", "Fischbach", "Heffingen", "Larochette", "Lintgen", "Lorentzweiler", "Mersch", "Nommern", "Tuntange", "Angelsberg", "Blaschette", "Bofferdange", "Buschdorf", "Essingen", "Gosseldange", "Grevenknapp", "Hunsdorf", "Marienthal", "Moesdorf", "Pettingen", "Prettingen", "Reckange", "Reuland", "Rollingen", "Schoenfels", "Schrondweiler", "Stegen",
-  // Canton Clervaux
-  "Clervaux", "Consthum", "Heinerscheid", "Hosingen", "Kiischpelt", "Munshausen", "Parc Hosingen", "Troisvierges", "Weiswampach", "Wincrange", "Antoniushaff", "Asselborn", "Binsfeld", "Boevange", "Brachtenbach", "Breidfeld", "Bockholtz", "Boxhorn", "Cinqfontaines", "Derenbach", "Dorscheid", "Drinklange", "Eisenbach", "Grindhausen", "Hachiville", "Hamiville", "Hautbellain", "Huldange", "Kalborn", "Leithum", "Lieler", "Marnach", "Mecher", "Neidhausen", "Reuler", "Roder", "Rodershausen", "Rumlange", "Sassel", "Siebenaler", "Stockem", "Stolzembourg", "Urspelt", "Wahlhausen", "Weicherdange", "Weiler", "Wemperhardt", "Wilwerdange",
-  // Canton Diekirch
-  "Bettendorf", "Bourscheid", "Diekirch", "Ermsdorf", "Erpeldange-sur-Sûre", "Ettelbruck", "Feulen", "Mertzig", "Reisdorf", "Schieren", "Vallée de l'Ernz", "Bastendorf", "Beaufort", "Bigelbach", "Brandenburg", "Burden", "Eppeldorf", "Gilsdorf", "Gralingen", "Haller", "Hoesdorf", "Ingeldorf", "Landscheid", "Lipperscheid", "Longsdorf", "Medernach", "Michelau", "Moestroff", "Niederfeulen", "Oberfeulen", "Warken",
-  // Canton Echternach
-  "Bech", "Berdorf", "Consdorf", "Echternach", "Mompach", "Rosport-Mompach", "Waldbillig", "Altrier", "Bollendorf-Pont", "Born", "Breidweiler", "Christnach", "Dickweiler", "Dillingen", "Geyershof", "Givenich", "Girst", "Grundhof", "Halsdorf", "Herborn", "Hinkel", "Moersdorf", "Mullerthal", "Osweiler", "Rippig", "Rosport", "Scheidgen", "Steinheim", "Weilerbach", "Zittig",
-  // Canton Redange
-  "Beckerich", "Ell", "Grosbous", "Préizerdaul", "Rambrouch", "Redange-sur-Attert", "Saeul", "Useldange", "Vichten", "Wahl", "Arsdorf", "Bigonville", "Boulaide", "Buschrodt", "Colpach-Bas", "Colpach-Haut", "Ehner", "Elvange", "Everlange", "Folschette", "Grummelscheid", "Holtz", "Hovelange", "Huttange", "Kapweiler", "Koetschette", "Levelange", "Martelange", "Nagem", "Niederpallen", "Noerdange", "Oberpallen", "Ospern", "Perle", "Petit-Nobressart", "Platen", "Perlé", "Pratz", "Reimberg", "Rippweiler", "Schandel", "Schwebach", "Wolwelange",
-  // Canton Remich
-  "Bous", "Burmerange", "Dalheim", "Lenningen", "Remich", "Schengen", "Stadtbredimus", "Waldbredimus", "Wellenstein", "Assel", "Bech-Kleinmacher", "Ellange", "Emerange", "Filsdorf", "Greiveldange", "Remerschen", "Rolling", "Schwebsange", "Trintange", "Wintrange",
-  // Canton Vianden
-  "Vianden", "Putscheid", "Tandel", "Bivels", "Fouhren", "Nachtmanderscheid", "Walsdorf",
-  // Canton Wiltz
-  "Esch-sur-Sûre", "Goesdorf", "Lac de la Haute-Sûre", "Wiltz", "Winseler", "Alscheid", "Bavigne", "Berlé", "Bonnal", "Buderscheid", "Dahl", "Doncols", "Enscherange", "Eschdorf", "Harlange", "Heiderscheid", "Kaundorf", "Kautenbach", "Liefrange", "Lultzhausen", "Merkholtz", "Nothum", "Nocher", "Pommerloch", "Roullingen", "Schleif", "Selscheid", "Surré", "Tarchamps", "Watrange"
-])].sort((a, b) => {
-  if (a === "All") return -1
-  if (b === "All") return 1
-  return a.localeCompare(b)
-})
-
 const formatNumber = (num: number) => {
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 }
@@ -181,19 +149,56 @@ const fadeUp = {
 }
 
 export default function PropertiesPage() {
+  const searchParams = useSearchParams()
+  
+  // Get URL params
+  const typeParam = searchParams.get("type")
+  const locationParam = searchParams.get("location")
+  const minBedsParam = searchParams.get("minBeds")
+  const maxPriceParam = searchParams.get("maxPrice")
+  const propertyTypeParam = searchParams.get("propertyType")
+  const minAreaParam = searchParams.get("minArea")
+
+  // Filter states
   const [listingType, setListingType] = useState<"ALL" | "SALE" | "RENT">("ALL")
   const [propertyType, setPropertyType] = useState("All")
   const [location, setLocation] = useState("All")
-  const [priceRange, setPriceRange] = useState(2000000)
+  const [maxPrice, setMaxPrice] = useState(5000000)
+  const [minBeds, setMinBeds] = useState(0)
+  const [minArea, setMinArea] = useState(0)
   const [sortBy, setSortBy] = useState("newest")
   const [showFilters, setShowFilters] = useState(false)
+
+  // Apply URL params on load
+  useEffect(() => {
+    if (typeParam === "SALE" || typeParam === "RENT") {
+      setListingType(typeParam)
+    }
+    if (locationParam) {
+      setLocation(locationParam)
+    }
+    if (minBedsParam) {
+      setMinBeds(Number(minBedsParam))
+    }
+    if (maxPriceParam) {
+      setMaxPrice(Number(maxPriceParam))
+    }
+    if (propertyTypeParam) {
+      setPropertyType(propertyTypeParam)
+    }
+    if (minAreaParam) {
+      setMinArea(Number(minAreaParam))
+    }
+  }, [typeParam, locationParam, minBedsParam, maxPriceParam, propertyTypeParam, minAreaParam])
 
   // Filter properties
   const filteredProperties = mockProperties.filter((property) => {
     if (listingType !== "ALL" && property.listingType !== listingType) return false
     if (propertyType !== "All" && property.type !== propertyType.toUpperCase()) return false
     if (location !== "All" && property.location !== location) return false
-    if (property.price > priceRange) return false
+    if (property.price > maxPrice) return false
+    if (property.beds < minBeds) return false
+    if (property.area < minArea) return false
     return true
   })
 
@@ -204,10 +209,35 @@ export default function PropertiesPage() {
         return a.price - b.price
       case "price-high":
         return b.price - a.price
+      case "area-high":
+        return b.area - a.area
+      case "beds-high":
+        return b.beds - a.beds
       default:
         return 0
     }
   })
+
+  // Reset all filters
+  const resetFilters = () => {
+    setListingType("ALL")
+    setPropertyType("All")
+    setLocation("All")
+    setMaxPrice(5000000)
+    setMinBeds(0)
+    setMinArea(0)
+    setSortBy("newest")
+  }
+
+  // Count active filters
+  const activeFilters = [
+    listingType !== "ALL",
+    propertyType !== "All",
+    location !== "All",
+    maxPrice < 5000000,
+    minBeds > 0,
+    minArea > 0,
+  ].filter(Boolean).length
 
   return (
     <>
@@ -237,9 +267,10 @@ export default function PropertiesPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="mt-8 bg-white rounded-2xl p-2 shadow-2xl"
+            className="mt-8 bg-white rounded-2xl p-4 shadow-2xl"
           >
-            <div className="flex flex-wrap gap-2">
+            {/* Main Filters Row */}
+            <div className="flex flex-wrap gap-3">
               {/* Listing Type Tabs */}
               <div className="flex bg-[#F5F3EF] rounded-xl p-1">
                 {[
@@ -249,7 +280,7 @@ export default function PropertiesPage() {
                 ].map((type) => (
                   <button
                     key={type.key}
-                    onClick={() => setListingType(type.key as any)}
+                    onClick={() => setListingType(type.key as "ALL" | "SALE" | "RENT")}
                     className={`px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${
                       listingType === type.key
                         ? "bg-[#1A1A1A] text-white shadow-md"
@@ -261,11 +292,24 @@ export default function PropertiesPage() {
                 ))}
               </div>
 
+              {/* Location */}
+              <select
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                className="flex-1 min-w-[180px] h-11 px-4 rounded-xl bg-[#F5F3EF] text-[#1A1A1A] text-sm outline-none cursor-pointer"
+              >
+                {locations.map((loc) => (
+                  <option key={loc} value={loc}>
+                    {loc === "All" ? "All Locations" : loc}
+                  </option>
+                ))}
+              </select>
+
               {/* Property Type */}
               <select
                 value={propertyType}
                 onChange={(e) => setPropertyType(e.target.value)}
-                className="flex-1 min-w-[150px] h-11 px-4 rounded-xl bg-[#F5F3EF] text-[#1A1A1A] text-sm outline-none cursor-pointer"
+                className="h-11 px-4 rounded-xl bg-[#F5F3EF] text-[#1A1A1A] text-sm outline-none cursor-pointer"
               >
                 <option value="All">All Types</option>
                 {propertyTypes.slice(1).map((type) => (
@@ -273,33 +317,25 @@ export default function PropertiesPage() {
                 ))}
               </select>
 
-              {/* Location */}
-              <select
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                className="flex-1 min-w-[150px] h-11 px-4 rounded-xl bg-[#F5F3EF] text-[#1A1A1A] text-sm outline-none cursor-pointer"
-              >
-                <option value="All">All Locations</option>
-                {locations.slice(1).map((loc) => (
-                  <option key={loc} value={loc}>{loc}</option>
-                ))}
-              </select>
-
               {/* More Filters Button */}
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className="h-11 px-5 rounded-xl bg-[#F5F3EF] text-[#1A1A1A] text-sm font-medium flex items-center gap-2 hover:bg-[#E8E6E3] transition-colors"
+                className={`h-11 px-5 rounded-xl text-sm font-medium flex items-center gap-2 transition-colors ${
+                  showFilters || activeFilters > 0
+                    ? "bg-[#1A1A1A] text-white"
+                    : "bg-[#F5F3EF] text-[#1A1A1A] hover:bg-[#E8E6E3]"
+                }`}
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
                 </svg>
                 Filters
+                {activeFilters > 0 && (
+                  <span className="w-5 h-5 rounded-full bg-[#B8926A] text-white text-xs flex items-center justify-center">
+                    {activeFilters}
+                  </span>
+                )}
               </button>
-
-              {/* Search Button */}
-              <Button className="h-11 px-8 bg-[#B8926A] hover:bg-[#A6825C] text-white rounded-xl">
-                Search
-              </Button>
             </div>
 
             {/* Expanded Filters */}
@@ -309,21 +345,63 @@ export default function PropertiesPage() {
                 animate={{ height: "auto", opacity: 1 }}
                 className="mt-4 pt-4 border-t border-[#E8E6E3]"
               >
-                <div className="grid md:grid-cols-3 gap-4">
+                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {/* Min Bedrooms */}
                   <div>
                     <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                      Max Price: €{formatNumber(priceRange)}
+                      Bedrooms
+                    </label>
+                    <select
+                      value={minBeds}
+                      onChange={(e) => setMinBeds(Number(e.target.value))}
+                      className="w-full h-11 px-4 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] text-sm outline-none"
+                    >
+                      <option value={0}>Any</option>
+                      <option value={1}>1+ beds</option>
+                      <option value={2}>2+ beds</option>
+                      <option value={3}>3+ beds</option>
+                      <option value={4}>4+ beds</option>
+                      <option value={5}>5+ beds</option>
+                    </select>
+                  </div>
+
+                  {/* Min Area */}
+                  <div>
+                    <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
+                      Min. Area (m²)
+                    </label>
+                    <select
+                      value={minArea}
+                      onChange={(e) => setMinArea(Number(e.target.value))}
+                      className="w-full h-11 px-4 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] text-sm outline-none"
+                    >
+                      <option value={0}>Any</option>
+                      <option value={50}>50+ m²</option>
+                      <option value={75}>75+ m²</option>
+                      <option value={100}>100+ m²</option>
+                      <option value={150}>150+ m²</option>
+                      <option value={200}>200+ m²</option>
+                      <option value={300}>300+ m²</option>
+                    </select>
+                  </div>
+
+                  {/* Max Price */}
+                  <div>
+                    <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
+                      Max Price: €{formatNumber(maxPrice)}
                     </label>
                     <input
                       type="range"
                       min="100000"
-                      max="3000000"
+                      max="5000000"
                       step="50000"
-                      value={priceRange}
-                      onChange={(e) => setPriceRange(Number(e.target.value))}
-                      className="w-full h-2 bg-[#E8E6E3] rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-[#B8926A] [&::-webkit-slider-thumb]:rounded-full"
+                      value={maxPrice}
+                      onChange={(e) => setMaxPrice(Number(e.target.value))}
+                      className="w-full h-2 bg-[#E8E6E3] rounded-full appearance-none cursor-pointer mt-4 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-[#B8926A] [&::-webkit-slider-thumb]:rounded-full"
                     />
                   </div>
+
+                  {/* Sort By */}
                   <div>
                     <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
                       Sort By
@@ -336,23 +414,21 @@ export default function PropertiesPage() {
                       <option value="newest">Newest First</option>
                       <option value="price-low">Price: Low to High</option>
                       <option value="price-high">Price: High to Low</option>
+                      <option value="area-high">Largest First</option>
+                      <option value="beds-high">Most Bedrooms</option>
                     </select>
                   </div>
-                  <div className="flex items-end">
-                    <Button
-                      variant="outline"
-                      className="w-full h-11 rounded-xl border-[#E8E6E3]"
-                      onClick={() => {
-                        setListingType("ALL")
-                        setPropertyType("All")
-                        setLocation("All")
-                        setPriceRange(2000000)
-                        setSortBy("newest")
-                      }}
-                    >
-                      Reset All
-                    </Button>
-                  </div>
+                </div>
+
+                {/* Reset Button */}
+                <div className="mt-4 flex justify-end">
+                  <Button
+                    variant="outline"
+                    className="h-10 px-6 rounded-xl border-[#E8E6E3]"
+                    onClick={resetFilters}
+                  >
+                    Reset All Filters
+                  </Button>
                 </div>
               </motion.div>
             )}
@@ -390,12 +466,7 @@ export default function PropertiesPage() {
               <h3 className="text-xl font-semibold text-[#1A1A1A] mb-2">No properties found</h3>
               <p className="text-[#6B6B6B] mb-6">Try adjusting your filters to see more results.</p>
               <Button
-                onClick={() => {
-                  setListingType("ALL")
-                  setPropertyType("All")
-                  setLocation("All")
-                  setPriceRange(2000000)
-                }}
+                onClick={resetFilters}
                 className="rounded-xl bg-[#1A1A1A]"
               >
                 Clear All Filters
