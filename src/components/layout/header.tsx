@@ -101,12 +101,12 @@ export function Header() {
               }`}>
                 Properties
               </Link>
-              <Link href="/agencies" className={`px-3.5 py-2 rounded-lg text-sm transition-colors ${
+              <Link href="/about" className={`px-3.5 py-2 rounded-lg text-sm transition-colors ${
                 scrolled 
                   ? "text-[#1A1A1A] hover:bg-[#F5F3EF]" 
                   : "text-white/90 hover:bg-white/10"
               }`}>
-                Agencies
+                About
               </Link>
               <Link href="/pricing" className={`px-3.5 py-2 rounded-lg text-sm transition-colors ${
                 scrolled 
@@ -271,11 +271,11 @@ export function Header() {
                 </svg>
                 All Properties
               </Link>
-              <Link href="/agencies" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-3 py-2.5 text-[#1A1A1A] hover:bg-[#F5F3EF] rounded-xl transition-colors">
+              <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-3 py-2.5 text-[#1A1A1A] hover:bg-[#F5F3EF] rounded-xl transition-colors">
                 <svg className="w-5 h-5 text-[#B8926A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
-                Agencies
+                About Us
               </Link>
               <Link href="/pricing" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-3 py-2.5 text-[#1A1A1A] hover:bg-[#F5F3EF] rounded-xl transition-colors">
                 <svg className="w-5 h-5 text-[#B8926A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
