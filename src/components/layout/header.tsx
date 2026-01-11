@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { useState, useEffect } from "react"
+import { useSession, signOut } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 
 const languages = [
@@ -12,10 +13,12 @@ const languages = [
 ]
 
 export function Header() {
+  const { data: session, status } = useSession()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [currentLang, setCurrentLang] = useState(languages[0])
   const [langMenuOpen, setLangMenuOpen] = useState(false)
+  const [userMenuOpen, setUserMenuOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -31,12 +34,15 @@ export function Header() {
   }, [])
 
   useEffect(() => {
-    const handleClick = () => setLangMenuOpen(false)
-    if (langMenuOpen) {
+    const handleClick = () => {
+      setLangMenuOpen(false)
+      setUserMenuOpen(false)
+    }
+    if (langMenuOpen || userMenuOpen) {
       document.addEventListener("click", handleClick)
       return () => document.removeEventListener("click", handleClick)
     }
-  }, [langMenuOpen])
+  }, [langMenuOpen, userMenuOpen])
 
   if (!mounted) {
     return (
@@ -57,6 +63,8 @@ export function Header() {
       </header>
     )
   }
+
+  const userInitial = session?.user?.name?.charAt(0) || session?.user?.email?.charAt(0) || "U"
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -143,6 +151,7 @@ export function Header() {
                 onClick={(e) => {
                   e.stopPropagation()
                   setLangMenuOpen(!langMenuOpen)
+                  setUserMenuOpen(false)
                 }}
                 className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition-colors ${
                   scrolled 
@@ -181,13 +190,100 @@ export function Header() {
               )}
             </div>
 
-            <Link href="/login" className={`px-4 py-2 rounded-lg text-sm transition-colors ${
-              scrolled 
-                ? "text-[#6B6B6B] hover:text-[#1A1A1A]" 
-                : "text-white/70 hover:text-white"
-            }`}>
-              Sign In
-            </Link>
+            {/* Auth Section */}
+            {status === "loading" ? (
+              <div className="w-9 h-9 rounded-full bg-[#E8E6E3] animate-pulse" />
+            ) : session ? (
+              /* Logged In - User Menu */
+              <div className="relative">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setUserMenuOpen(!userMenuOpen)
+                    setLangMenuOpen(false)
+                  }}
+                  className="flex items-center gap-2"
+                >
+                  <div className={`w-9 h-9 rounded-full flex items-center justify-center font-medium text-sm transition-colors ${
+                    scrolled 
+                      ? "bg-[#B8926A] text-white" 
+                      : "bg-white/20 text-white"
+                  }`}>
+                    {userInitial.toUpperCase()}
+                  </div>
+                </button>
+
+                {/* User Dropdown */}
+                {userMenuOpen && (
+                  <div className="absolute top-full right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-[#E8E6E3] overflow-hidden">
+                    <div className="px-4 py-3 border-b border-[#E8E6E3]">
+                      <p className="text-sm font-medium text-[#1A1A1A]">{session.user?.name || "User"}</p>
+                      <p className="text-xs text-[#6B6B6B] truncate">{session.user?.email}</p>
+                    </div>
+                    <div className="py-1">
+                      <Link
+                        href="/dashboard"
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#1A1A1A] hover:bg-[#F5F3EF] transition-colors"
+                      >
+                        <svg className="w-4 h-4 text-[#6B6B6B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                        </svg>
+                        Dashboard
+                      </Link>
+                      <Link
+                        href="/dashboard/listings"
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#1A1A1A] hover:bg-[#F5F3EF] transition-colors"
+                      >
+                        <svg className="w-4 h-4 text-[#6B6B6B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+                        My Listings
+                      </Link>
+                      <Link
+                        href="/dashboard/favorites"
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#1A1A1A] hover:bg-[#F5F3EF] transition-colors"
+                      >
+                        <svg className="w-4 h-4 text-[#6B6B6B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                        Favorites
+                      </Link>
+                      <Link
+                        href="/dashboard/settings"
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#1A1A1A] hover:bg-[#F5F3EF] transition-colors"
+                      >
+                        <svg className="w-4 h-4 text-[#6B6B6B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        Settings
+                      </Link>
+                    </div>
+                    <div className="border-t border-[#E8E6E3] py-1">
+                      <button
+                        onClick={() => signOut({ callbackUrl: "/" })}
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors w-full"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                        Sign Out
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              /* Not Logged In */
+              <Link href="/login" className={`px-4 py-2 rounded-lg text-sm transition-colors ${
+                scrolled 
+                  ? "text-[#6B6B6B] hover:text-[#1A1A1A]" 
+                  : "text-white/70 hover:text-white"
+              }`}>
+                Sign In
+              </Link>
+            )}
+
             <Button className={`h-9 px-5 text-sm rounded-xl shadow-md hover:shadow-lg transition-all ${
               scrolled 
                 ? "bg-gradient-to-r from-[#1A1A1A] to-[#333] hover:from-[#333] hover:to-[#1A1A1A] text-white" 
@@ -263,6 +359,19 @@ export function Header() {
       {mobileMenuOpen && (
         <div className="lg:hidden border-t border-[#E8E6E3] bg-white/95 backdrop-blur-xl">
           <div className="container mx-auto px-4 py-6">
+            {/* User Info (if logged in) */}
+            {session && (
+              <div className="flex items-center gap-3 px-3 py-3 mb-4 bg-[#F5F3EF] rounded-xl">
+                <div className="w-10 h-10 rounded-full bg-[#B8926A] flex items-center justify-center text-white font-medium">
+                  {userInitial.toUpperCase()}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-[#1A1A1A] truncate">{session.user?.name || "User"}</p>
+                  <p className="text-xs text-[#6B6B6B] truncate">{session.user?.email}</p>
+                </div>
+              </div>
+            )}
+
             <nav className="space-y-1">
               <p className="px-3 py-2 text-xs font-medium text-[#6B6B6B] uppercase tracking-wider">Browse</p>
               <Link href="/properties" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-3 py-2.5 text-[#1A1A1A] hover:bg-[#F5F3EF] rounded-xl transition-colors">
@@ -285,6 +394,31 @@ export function Header() {
               </Link>
             </nav>
 
+            {/* Dashboard Links (if logged in) */}
+            {session && (
+              <div className="mt-6 pt-6 border-t border-[#E8E6E3]">
+                <p className="px-3 py-2 text-xs font-medium text-[#6B6B6B] uppercase tracking-wider">Dashboard</p>
+                <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-3 py-2.5 text-[#1A1A1A] hover:bg-[#F5F3EF] rounded-xl transition-colors">
+                  <svg className="w-5 h-5 text-[#B8926A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                  </svg>
+                  Overview
+                </Link>
+                <Link href="/dashboard/listings" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-3 py-2.5 text-[#1A1A1A] hover:bg-[#F5F3EF] rounded-xl transition-colors">
+                  <svg className="w-5 h-5 text-[#B8926A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                  </svg>
+                  My Listings
+                </Link>
+                <Link href="/dashboard/favorites" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-3 py-2.5 text-[#1A1A1A] hover:bg-[#F5F3EF] rounded-xl transition-colors">
+                  <svg className="w-5 h-5 text-[#B8926A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                  </svg>
+                  Favorites
+                </Link>
+              </div>
+            )}
+
             <div className="mt-6 pt-6 border-t border-[#E8E6E3]">
               <p className="px-3 py-2 text-xs font-medium text-[#6B6B6B] uppercase tracking-wider">Services</p>
               <Link href="/estimate" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-3 py-2.5 text-[#1A1A1A] hover:bg-[#F5F3EF] rounded-xl transition-colors">
@@ -296,17 +430,42 @@ export function Header() {
             </div>
 
             <div className="mt-6 pt-6 border-t border-[#E8E6E3] space-y-3">
-              <Button variant="outline" className="w-full h-11 justify-center rounded-xl border-[#E8E6E3]" asChild>
-                <Link href="/login">Sign In</Link>
-              </Button>
-              <Button className="w-full h-11 justify-center rounded-xl bg-gradient-to-r from-[#1A1A1A] to-[#333] shadow-md" asChild>
-                <Link href="/dashboard/listings/new" className="flex items-center gap-2">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                  </svg>
-                  Submit Your Property
-                </Link>
-              </Button>
+              {session ? (
+                <>
+                  <Button className="w-full h-11 justify-center rounded-xl bg-gradient-to-r from-[#1A1A1A] to-[#333] shadow-md" asChild>
+                    <Link href="/dashboard/listings/new" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                      </svg>
+                      Submit Your Property
+                    </Link>
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="w-full h-11 justify-center rounded-xl border-red-200 text-red-600 hover:bg-red-50"
+                    onClick={() => {
+                      setMobileMenuOpen(false)
+                      signOut({ callbackUrl: "/" })
+                    }}
+                  >
+                    Sign Out
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button variant="outline" className="w-full h-11 justify-center rounded-xl border-[#E8E6E3]" asChild>
+                    <Link href="/login" onClick={() => setMobileMenuOpen(false)}>Sign In</Link>
+                  </Button>
+                  <Button className="w-full h-11 justify-center rounded-xl bg-gradient-to-r from-[#1A1A1A] to-[#333] shadow-md" asChild>
+                    <Link href="/dashboard/listings/new" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                      </svg>
+                      Submit Your Property
+                    </Link>
+                  </Button>
+                </>
+              )}
             </div>
 
             <div className="mt-6 pt-6 border-t border-[#E8E6E3]">
