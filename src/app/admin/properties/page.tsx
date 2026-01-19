@@ -4,7 +4,7 @@ import { PropertyStatus } from "@prisma/client"
 import { PropertyActions } from "@/components/admin/property-actions"
 
 interface Props {
-  searchParams: { status?: string; page?: string }
+  searchParams: Promise<{ status?: string; page?: string }>
 }
 
 async function getProperties(status?: string, page = 1) {
@@ -51,8 +51,9 @@ const statusFilters: { label: string; value: string | undefined }[] = [
 ]
 
 export default async function AdminPropertiesPage({ searchParams }: Props) {
-  const status = searchParams.status
-  const page = parseInt(searchParams.page || "1")
+  const resolvedParams = await searchParams
+  const status = resolvedParams.status
+  const page = parseInt(resolvedParams.page || "1")
   const { properties, total, pageSize } = await getProperties(status, page)
   const totalPages = Math.ceil(total / pageSize)
 
