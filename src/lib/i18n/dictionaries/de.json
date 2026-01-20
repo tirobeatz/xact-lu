@@ -491,6 +491,21 @@
       "lastUpdated": "Zuletzt aktualisiert"
     }
   },
+  "cookies": {
+    "title": "Wir verwenden Cookies",
+    "description": "Wir verwenden Cookies, um Ihre Erfahrung zu verbessern, den Website-Verkehr zu analysieren und Inhalte zu personalisieren. Durch Klicken auf \"Alle akzeptieren\" stimmen Sie unserer Verwendung von Cookies zu.",
+    "learnMore": "Mehr erfahren",
+    "acceptAll": "Alle akzeptieren",
+    "essentialOnly": "Nur essenzielle",
+    "customize": "Anpassen",
+    "savePreferences": "Einstellungen speichern",
+    "essential": "Essenzielle",
+    "essentialDesc": "Erforderlich für die ordnungsgemäße Funktion der Website",
+    "functional": "Funktionale",
+    "functionalDesc": "Ermöglichen personalisierte Funktionen und Einstellungen",
+    "analytics": "Analytische",
+    "analyticsDesc": "Helfen uns zu verstehen, wie Besucher unsere Website nutzen"
+  },
   "dashboard": {
     "welcome": "Willkommen,",
     "manageProperties": "Verwalten Sie Ihre Immobilien und Kontoeinstellungen.",
