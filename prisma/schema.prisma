@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Account {
@@ -48,20 +49,24 @@ model User {
   name          String?
   phone         String?
   image         String?
+  bio           String?
+  company       String?
   role          UserRole      @default(USER)
   isVerified    Boolean       @default(false)
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
   agencyId      String?
   password      String?
+  emailNotifications Boolean  @default(true)
+  smsNotifications   Boolean  @default(false)
+  marketingEmails    Boolean  @default(false)
   accounts      Account[]
   agency        Agency?       @relation("AgencyOwner")
   favorites     Favorite[]
-  invoices      Invoice[]
+  messages      Message[]
   properties    Property[]
   savedSearches SavedSearch[]
   sessions      Session[]
-  subscription  Subscription?
   agencyMember  Agency?       @relation("AgencyMembers", fields: [agencyId], references: [id])
 }
 
@@ -86,6 +91,19 @@ model Agency {
   owner       User       @relation("AgencyOwner", fields: [ownerId], references: [id])
   properties  Property[]
   members     User[]     @relation("AgencyMembers")
+}
+
+model Agent {
+  id          String     @id @default(cuid())
+  name        String
+  email       String
+  phone       String?
+  image       String?
+  bio         String?
+  isActive    Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  properties  Property[]
 }
 
 model Property {
@@ -126,9 +144,12 @@ model Property {
   updatedAt       DateTime           @updatedAt
   ownerId         String
   agencyId        String?
+  agentId         String?
   favorites       Favorite[]
+  messages        Message[]
   agency          Agency?            @relation(fields: [agencyId], references: [id])
   owner           User               @relation(fields: [ownerId], references: [id])
+  agent           Agent?             @relation(fields: [agentId], references: [id])
   documents       PropertyDocument[]
   images          PropertyImage[]
 
@@ -156,52 +177,6 @@ model PropertyDocument {
   property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
 }
 
-model Plan {
-  id            String          @id @default(cuid())
-  name          String
-  slug          String          @unique
-  description   String?
-  price         Decimal         @db.Decimal(10, 2)
-  interval      BillingInterval
-  listingsLimit Int
-  featuredLimit Int             @default(0)
-  features      String[]
-  isActive      Boolean         @default(true)
-  stripePriceId String?
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  subscriptions Subscription[]
-}
-
-model Subscription {
-  id                   String             @id @default(cuid())
-  status               SubscriptionStatus @default(ACTIVE)
-  currentPeriodStart   DateTime
-  currentPeriodEnd     DateTime
-  cancelAtPeriodEnd    Boolean            @default(false)
-  stripeSubscriptionId String?            @unique
-  stripeCustomerId     String?
-  userId               String             @unique
-  planId               String
-  createdAt            DateTime           @default(now())
-  updatedAt            DateTime           @updatedAt
-  plan                 Plan               @relation(fields: [planId], references: [id])
-  user                 User               @relation(fields: [userId], references: [id])
-}
-
-model Invoice {
-  id              String        @id @default(cuid())
-  amount          Decimal       @db.Decimal(10, 2)
-  currency        String        @default("EUR")
-  status          InvoiceStatus @default(PENDING)
-  stripeInvoiceId String?       @unique
-  pdfUrl          String?
-  userId          String
-  createdAt       DateTime      @default(now())
-  paidAt          DateTime?
-  user            User          @relation(fields: [userId], references: [id])
-}
-
 model SavedSearch {
   id           String   @id @default(cuid())
   name         String
@@ -221,6 +196,32 @@ model Favorite {
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, propertyId])
+}
+
+model Message {
+  id         String   @id @default(cuid())
+  content    String
+  fromName   String
+  fromEmail  String
+  fromPhone  String?
+  isRead     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  propertyId String
+  toUserId   String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  toUser     User     @relation(fields: [toUserId], references: [id], onDelete: Cascade)
+}
+
+model SiteSettings {
+  id              String   @id @default("default")
+  siteName        String   @default("Xact Real Estate")
+  siteDescription String?
+  logo            String?
+  email           String   @default("info@xact.lu")
+  phone           String   @default("+352 621 000 000")
+  address         String?
+  updatedAt       DateTime @updatedAt
 }
 
 enum UserRole {
@@ -282,23 +283,4 @@ enum EnergyClass {
   F
   G
   NOT_APPLICABLE
-}
-
-enum BillingInterval {
-  MONTHLY
-  YEARLY
-}
-
-enum SubscriptionStatus {
-  ACTIVE
-  PAST_DUE
-  CANCELLED
-  PAUSED
-}
-
-enum InvoiceStatus {
-  PENDING
-  PAID
-  FAILED
-  REFUNDED
 }

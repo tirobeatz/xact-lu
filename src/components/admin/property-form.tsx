@@ -133,15 +133,24 @@ interface PropertyFormData {
   features: string[]
   isFeatured: boolean
   images: PropertyImage[]
+  agentId: string
+}
+
+interface Agent {
+  id: string
+  name: string
+  email: string
+  image: string | null
 }
 
 interface PropertyFormProps {
   initialData?: Partial<PropertyFormData>
   propertyId?: string
   mode?: "create" | "edit"
+  agents?: Agent[]
 }
 
-export function PropertyForm({ initialData, propertyId, mode = "create" }: PropertyFormProps) {
+export function PropertyForm({ initialData, propertyId, mode = "create", agents = [] }: PropertyFormProps) {
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -176,6 +185,7 @@ export function PropertyForm({ initialData, propertyId, mode = "create" }: Prope
     features: initialData?.features || [],
     isFeatured: initialData?.isFeatured || false,
     images: initialData?.images || [],
+    agentId: initialData?.agentId || "",
   })
 
   // Generate slug from title
@@ -390,6 +400,7 @@ export function PropertyForm({ initialData, propertyId, mode = "create" }: Prope
         features: formData.features,
         isFeatured: formData.isFeatured,
         images: uploadedImages,
+        agentId: formData.agentId || null,
       }
 
       const url = mode === "edit"
@@ -1084,6 +1095,31 @@ export function PropertyForm({ initialData, propertyId, mode = "create" }: Prope
               <div className="w-11 h-6 bg-[#E8E6E3] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#B8926A]"></div>
             </label>
           </div>
+
+          {/* Assigned Agent */}
+          {agents.length > 0 && (
+            <div>
+              <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
+                Assigned Agent
+              </label>
+              <select
+                name="agentId"
+                value={formData.agentId}
+                onChange={handleChange}
+                className="w-full h-11 px-4 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] outline-none focus:border-[#B8926A] transition-colors"
+              >
+                <option value="">Xact Real Estate (Default)</option>
+                {agents.map((agent) => (
+                  <option key={agent.id} value={agent.id}>
+                    {agent.name} ({agent.email})
+                  </option>
+                ))}
+              </select>
+              <p className="text-xs text-[#6B6B6B] mt-1">
+                Select an agent to display as the contact for this property.
+              </p>
+            </div>
+          )}
         </div>
       )}
 

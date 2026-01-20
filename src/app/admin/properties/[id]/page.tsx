@@ -6,12 +6,31 @@ interface EditPropertyPageProps {
   params: Promise<{ id: string }>
 }
 
+async function getAgents() {
+  return prisma.agent.findMany({
+    where: { isActive: true },
+    orderBy: { name: "asc" },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      image: true,
+    },
+  })
+}
+
 async function getProperty(id: string) {
   const property = await prisma.property.findUnique({
     where: { id },
     include: {
       images: {
         orderBy: { order: "asc" },
+      },
+      agent: {
+        select: {
+          id: true,
+          name: true,
+        },
       },
     },
   })
@@ -43,7 +62,10 @@ async function getProperty(id: string) {
 
 export default async function EditPropertyPage({ params }: EditPropertyPageProps) {
   const { id } = await params
-  const property = await getProperty(id)
+  const [property, agents] = await Promise.all([
+    getProperty(id),
+    getAgents(),
+  ])
 
   if (!property) {
     notFound()
@@ -86,9 +108,11 @@ export default async function EditPropertyPage({ params }: EditPropertyPageProps
           features: property.features,
           isFeatured: property.isFeatured,
           images: property.images,
+          agentId: property.agentId || "",
         }}
         propertyId={property.id}
         mode="edit"
+        agents={agents}
       />
     </div>
   )

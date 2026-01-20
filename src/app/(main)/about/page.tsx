@@ -4,70 +4,50 @@ import Link from "next/link"
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { useMemo, useRef } from "react"
+import { useI18n } from "@/lib/i18n"
 
-const team = [
+const teamData = [
   {
     name: "Sophie Weber",
-    role: "Founder & CEO",
+    roleKey: "founderCeo" as const,
     image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=800&auto=format&fit=crop",
     email: "sophie@xact.lu",
   },
   {
     name: "Marc Schmit",
-    role: "Senior Agent",
+    roleKey: "seniorAgent" as const,
     image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=800&auto=format&fit=crop",
     email: "marc@xact.lu",
   },
   {
     name: "Julie Hoffmann",
-    role: "Property Consultant",
+    roleKey: "propertyConsultant" as const,
     image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=800&auto=format&fit=crop",
     email: "julie@xact.lu",
   },
   {
     name: "Thomas Muller",
-    role: "Sales Manager",
+    roleKey: "salesManager" as const,
     image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=800&auto=format&fit=crop",
     email: "thomas@xact.lu",
   },
 ]
 
-const stats = [
-  { value: "10+", label: "Years Experience" },
-  { value: "500+", label: "Properties Sold" },
-  { value: "€250M+", label: "Total Sales Volume" },
-  { value: "98%", label: "Client Satisfaction" },
+const statsData = [
+  { value: "10+", labelKey: "yearsExperience" as const },
+  { value: "500+", labelKey: "propertiesSold" as const },
+  { value: "€250M+", labelKey: "totalSalesVolume" as const },
+  { value: "98%", labelKey: "clientSatisfaction" as const },
 ]
 
-const values = [
-  {
-    icon: "🤝",
-    title: "Trust & Transparency",
-    description: "Clear communication and honest advice — always.",
-  },
-  {
-    icon: "🎯",
-    title: "Client-Focused",
-    description: "We listen first, then build a plan that fits your goals.",
-  },
-  {
-    icon: "💎",
-    title: "Quality Over Quantity",
-    description: "Curated listings and serious buyers — no noise, just results.",
-  },
-  {
-    icon: "🏆",
-    title: "Local Expertise",
-    description: "Luxembourg knowledge you can rely on, from pricing to paperwork.",
-  },
+const valuesData = [
+  { icon: "🤝", key: "trustTransparency" as const },
+  { icon: "🎯", key: "clientFocused" as const },
+  { icon: "💎", key: "qualityOverQuantity" as const },
+  { icon: "🏆", key: "localExpertise" as const },
 ]
 
-const timeline = [
-  { year: "2014", title: "Xact is founded", text: "A boutique agency with a modern, client-first approach." },
-  { year: "2017", title: "First €50M milestone", text: "A track record built on referrals and trust." },
-  { year: "2020", title: "Digital-first expansion", text: "Better photography, tours, and marketing performance." },
-  { year: "2024", title: "Premium service model", text: "Sharper positioning and an elevated buying/selling experience." },
-]
+const timelineYears = ["2014", "2017", "2020", "2024"] as const
 
 function cx(...classes: Array<string | false | undefined | null>) {
   return classes.filter(Boolean).join(" ")
@@ -97,6 +77,7 @@ function Reveal({
 }
 
 export default function AboutPage() {
+  const { t } = useI18n()
   const reduce = useReducedMotion()
 
   // Scroll progress bar
@@ -111,8 +92,8 @@ export default function AboutPage() {
   const heroOpacity = useTransform(heroProgress, [0, 1], [1, 0.7])
 
   const heroWords = useMemo(
-    () => ["trusted", "modern", "sharp", "personal", "Luxembourg"],
-    []
+    () => t.about.heroWords,
+    [t.about.heroWords]
   )
 
   const staggerContainer = {
@@ -176,17 +157,16 @@ export default function AboutPage() {
             >
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white/80 text-xs border border-white/10">
                 <span className="w-2 h-2 rounded-full bg-[#B8926A]" />
-                ABOUT XACT
+                {t.about.badge}
               </div>
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white mt-5 leading-tight">
-                We make real estate feel{" "}
-                <span className="text-[#B8926A]">premium</span>, not painful.
+                {t.about.heroTitle}{" "}
+                <span className="text-[#B8926A]">{t.about.heroPremium}</span>{t.about.heroNotPainful}
               </h1>
 
               <p className="text-white/65 mt-6 text-lg leading-relaxed max-w-xl">
-                Xact is a boutique Luxembourg agency built for people who want clarity, speed, and confidence —
-                whether you&apos;re buying, selling, or investing.
+                {t.about.heroSubtitle}
               </p>
 
               {/* Rotating “word chips” */}
@@ -212,7 +192,7 @@ export default function AboutPage() {
               <div className="flex flex-wrap gap-3 mt-8">
                 <Link href="/properties">
                   <Button className="h-12 px-6 rounded-xl bg-[#B8926A] hover:bg-[#A6825C] text-white">
-                    Explore Listings
+                    {t.about.exploreListings}
                   </Button>
                 </Link>
                 <Link href="/contact">
@@ -220,7 +200,7 @@ export default function AboutPage() {
                     variant="outline"
                     className="h-12 px-6 rounded-xl border-white/20 bg-white/5 text-white hover:bg-white/10"
                   >
-                    Talk to our team
+                    {t.about.talkToTeam}
                   </Button>
                 </Link>
               </div>
@@ -241,7 +221,7 @@ export default function AboutPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v14m0 0l6-6m-6 6l-6-6" />
                   </svg>
                 </motion.div>
-                Scroll to discover our story
+                {t.about.scrollToDiscover}
               </motion.div>
             </motion.div>
 
@@ -265,19 +245,19 @@ export default function AboutPage() {
                 <div className="relative p-6">
                   <div className="flex items-center justify-between">
                     <div className="text-white">
-                      <p className="text-xs text-white/60">Agency Snapshot</p>
-                      <p className="text-lg font-semibold mt-1">Luxembourg • Boutique • Premium</p>
+                      <p className="text-xs text-white/60">{t.about.agencySnapshot}</p>
+                      <p className="text-lg font-semibold mt-1">{t.about.boutiqueTag}</p>
                     </div>
                     <div className="px-3 py-1 rounded-full bg-white/10 border border-white/10 text-white/70 text-xs">
-                      Since 2014
+                      {t.about.since}
                     </div>
                   </div>
 
                   <div className="mt-6 grid grid-cols-2 gap-3">
-                    {stats.slice(0, 4).map((s) => (
-                      <div key={s.label} className="rounded-2xl bg-white/10 border border-white/10 p-4">
+                    {statsData.slice(0, 4).map((s) => (
+                      <div key={s.labelKey} className="rounded-2xl bg-white/10 border border-white/10 p-4">
                         <p className="text-white text-2xl font-bold">{s.value}</p>
-                        <p className="text-white/60 text-xs mt-1">{s.label}</p>
+                        <p className="text-white/60 text-xs mt-1">{t.about.stats[s.labelKey]}</p>
                       </div>
                     ))}
                   </div>
@@ -291,7 +271,7 @@ export default function AboutPage() {
                         transition={{ duration: 1.1, ease: "easeOut", delay: 0.3 }}
                       />
                     </div>
-                    <p className="text-white/60 text-xs">Market momentum</p>
+                    <p className="text-white/60 text-xs">{t.about.marketMomentum}</p>
                   </div>
                 </div>
               </div>
@@ -308,8 +288,8 @@ export default function AboutPage() {
                   animate={reduce ? undefined : { y: [0, -8, 0] }}
                   transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut" }}
                 >
-                  <p className="text-xs text-white/60">Our promise</p>
-                  <p className="mt-1 text-sm">Fast feedback, sharp pricing, and zero surprises.</p>
+                  <p className="text-xs text-white/60">{t.about.ourPromise}</p>
+                  <p className="mt-1 text-sm">{t.about.promiseText}</p>
                 </motion.div>
               </motion.div>
             </motion.div>
@@ -321,10 +301,10 @@ export default function AboutPage() {
       <section className="py-16 bg-white border-b border-[#E8E6E3]">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, i) => (
-              <Reveal key={stat.label} delay={i * 0.05} className="text-center">
+            {statsData.map((stat, i) => (
+              <Reveal key={stat.labelKey} delay={i * 0.05} className="text-center">
                 <p className="text-4xl md:text-5xl font-bold text-[#1A1A1A]">{stat.value}</p>
-                <p className="text-[#6B6B6B] mt-2">{stat.label}</p>
+                <p className="text-[#6B6B6B] mt-2">{t.about.stats[stat.labelKey]}</p>
               </Reveal>
             ))}
           </div>
@@ -337,26 +317,25 @@ export default function AboutPage() {
           <div className="grid lg:grid-cols-12 gap-12 items-start">
             <div className="lg:col-span-5">
               <Reveal>
-                <span className="text-[#B8926A] font-medium text-sm tracking-wide">OUR STORY</span>
+                <span className="text-[#B8926A] font-medium text-sm tracking-wide">{t.about.story.label}</span>
                 <h2 className="text-3xl md:text-4xl font-semibold text-[#1A1A1A] mt-3">
-                  Built on craft, not hype
+                  {t.about.story.title}
                 </h2>
                 <p className="text-[#6B6B6B] mt-5 leading-relaxed">
-                  Buying or selling property should feel confident and clear. We combine local expertise with modern
-                  marketing to deliver an experience that feels premium from first call to final signature.
+                  {t.about.story.description}
                 </p>
               </Reveal>
 
               <div className="mt-10 space-y-4">
-                {["Pricing that makes sense", "Marketing that performs", "Negotiation that protects you"].map((t, i) => (
-                  <Reveal key={t} delay={0.1 + i * 0.05}>
+                {t.about.story.points.map((point, i) => (
+                  <Reveal key={point} delay={0.1 + i * 0.05}>
                     <div className="flex items-center gap-3 rounded-2xl bg-white p-4 border border-[#E8E6E3]">
                       <span className="w-10 h-10 rounded-xl bg-[#B8926A]/10 flex items-center justify-center">
                         <svg className="w-5 h-5 text-[#B8926A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
                       </span>
-                      <p className="text-[#1A1A1A] font-medium">{t}</p>
+                      <p className="text-[#1A1A1A] font-medium">{point}</p>
                     </div>
                   </Reveal>
                 ))}
@@ -367,25 +346,25 @@ export default function AboutPage() {
               <div className="rounded-3xl bg-white border border-[#E8E6E3] overflow-hidden shadow-sm">
                 <div className="p-6 md:p-8 border-b border-[#E8E6E3]">
                   <Reveal>
-                    <p className="text-sm text-[#6B6B6B]">Timeline</p>
-                    <h3 className="text-2xl font-semibold text-[#1A1A1A] mt-1">How we got here</h3>
+                    <p className="text-sm text-[#6B6B6B]">{t.about.timeline.title}</p>
+                    <h3 className="text-2xl font-semibold text-[#1A1A1A] mt-1">{t.about.timeline.subtitle}</h3>
                   </Reveal>
                 </div>
 
                 <div className="p-6 md:p-8 space-y-6">
-                  {timeline.map((t, i) => (
-                    <Reveal key={t.year} delay={i * 0.06}>
+                  {timelineYears.map((year, i) => (
+                    <Reveal key={year} delay={i * 0.06}>
                       <div className="flex gap-4">
                         <div className="flex flex-col items-center">
                           <div className="w-10 h-10 rounded-2xl bg-[#B8926A] text-white flex items-center justify-center font-semibold">
-                            {t.year.slice(2)}
+                            {year.slice(2)}
                           </div>
-                          {i !== timeline.length - 1 && <div className="w-[2px] flex-1 bg-[#E8E6E3] mt-2" />}
+                          {i !== timelineYears.length - 1 && <div className="w-[2px] flex-1 bg-[#E8E6E3] mt-2" />}
                         </div>
                         <div className="pt-1">
-                          <p className="text-xs text-[#B8926A] font-semibold tracking-wide">{t.year}</p>
-                          <p className="text-[#1A1A1A] font-semibold mt-1">{t.title}</p>
-                          <p className="text-[#6B6B6B] mt-1">{t.text}</p>
+                          <p className="text-xs text-[#B8926A] font-semibold tracking-wide">{year}</p>
+                          <p className="text-[#1A1A1A] font-semibold mt-1">{t.about.timeline[year].title}</p>
+                          <p className="text-[#6B6B6B] mt-1">{t.about.timeline[year].text}</p>
                         </div>
                       </div>
                     </Reveal>
@@ -401,17 +380,17 @@ export default function AboutPage() {
       <section className="py-24 bg-white">
         <div className="container mx-auto px-4">
           <Reveal className="text-center mb-14">
-            <span className="text-[#B8926A] font-medium text-sm tracking-wide">OUR VALUES</span>
-            <h2 className="text-3xl md:text-4xl font-semibold text-[#1A1A1A] mt-3">What sets us apart</h2>
+            <span className="text-[#B8926A] font-medium text-sm tracking-wide">{t.about.values.label}</span>
+            <h2 className="text-3xl md:text-4xl font-semibold text-[#1A1A1A] mt-3">{t.about.values.title}</h2>
             <p className="text-[#6B6B6B] mt-4 max-w-2xl mx-auto">
-              We’re boutique on purpose — fewer clients, better attention, stronger outcomes.
+              {t.about.values.subtitle}
             </p>
           </Reveal>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {values.map((v, i) => (
+            {valuesData.map((v, i) => (
               <motion.div
-                key={v.title}
+                key={v.key}
                 initial={reduce ? { opacity: 1 } : { opacity: 0, y: 18 }}
                 whileInView={reduce ? { opacity: 1 } : { opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -422,8 +401,8 @@ export default function AboutPage() {
                 <div className="absolute -top-20 -right-20 w-48 h-48 rounded-full bg-[#B8926A]/10 blur-2xl" />
                 <div className="relative">
                   <span className="text-4xl">{v.icon}</span>
-                  <h3 className="text-lg font-semibold text-[#1A1A1A] mt-4">{v.title}</h3>
-                  <p className="text-[#6B6B6B] text-sm mt-2 leading-relaxed">{v.description}</p>
+                  <h3 className="text-lg font-semibold text-[#1A1A1A] mt-4">{t.about.values[v.key].title}</h3>
+                  <p className="text-[#6B6B6B] text-sm mt-2 leading-relaxed">{t.about.values[v.key].desc}</p>
                 </div>
               </motion.div>
             ))}
@@ -435,15 +414,15 @@ export default function AboutPage() {
       <section className="py-24 bg-[#0F0F10]">
         <div className="container mx-auto px-4">
           <Reveal className="text-center mb-14">
-            <span className="text-[#B8926A] font-medium text-sm tracking-wide">OUR TEAM</span>
-            <h2 className="text-3xl md:text-4xl font-semibold text-white mt-3">Meet the experts</h2>
+            <span className="text-[#B8926A] font-medium text-sm tracking-wide">{t.about.team.label}</span>
+            <h2 className="text-3xl md:text-4xl font-semibold text-white mt-3">{t.about.team.title}</h2>
             <p className="text-white/60 mt-4 max-w-xl mx-auto">
-              Real humans, real experience — with a premium approach.
+              {t.about.team.subtitle}
             </p>
           </Reveal>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {team.map((m, i) => (
+            {teamData.map((m, i) => (
               <motion.div
                 key={m.email}
                 initial={reduce ? { opacity: 1 } : { opacity: 0, y: 18 }}
@@ -475,14 +454,14 @@ export default function AboutPage() {
                             d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                           />
                         </svg>
-                        Contact
+                        {t.about.team.contact}
                       </a>
                     </div>
                   </div>
 
                   <div className="p-5">
                     <p className="text-white font-semibold">{m.name}</p>
-                    <p className="text-white/60 text-sm mt-1">{m.role}</p>
+                    <p className="text-white/60 text-sm mt-1">{t.about.roles[m.roleKey]}</p>
                   </div>
                 </div>
               </motion.div>
@@ -492,7 +471,7 @@ export default function AboutPage() {
           <Reveal className="mt-12 text-center">
             <Link href="/contact">
               <Button className="h-12 px-6 rounded-xl bg-[#B8926A] hover:bg-[#A6825C] text-white">
-                Book a consultation
+                {t.about.team.bookConsultation}
               </Button>
             </Link>
           </Reveal>
@@ -506,24 +485,24 @@ export default function AboutPage() {
             <div className="grid lg:grid-cols-2">
               <div className="p-8 md:p-12">
                 <Reveal>
-                  <span className="text-[#B8926A] font-medium text-sm tracking-wide">READY?</span>
+                  <span className="text-[#B8926A] font-medium text-sm tracking-wide">{t.about.cta.label}</span>
                   <h2 className="text-3xl md:text-4xl font-semibold text-[#1A1A1A] mt-3">
-                    Let&apos;s make your next move feel easy.
+                    {t.about.cta.title}
                   </h2>
                   <p className="text-[#6B6B6B] mt-4 leading-relaxed">
-                    Tell us what you’re trying to achieve — we’ll give you a clear plan and the next best step.
+                    {t.about.cta.description}
                   </p>
                 </Reveal>
 
                 <Reveal delay={0.1} className="mt-8 flex flex-wrap gap-3">
                   <Link href="/properties">
                     <Button className="h-12 px-6 rounded-xl bg-[#1A1A1A] hover:bg-[#333] text-white">
-                      Browse properties
+                      {t.about.cta.browseProperties}
                     </Button>
                   </Link>
                   <Link href="/contact">
                     <Button variant="outline" className="h-12 px-6 rounded-xl border-[#E8E6E3] bg-white">
-                      Contact us
+                      {t.about.cta.contactUs}
                     </Button>
                   </Link>
                 </Reveal>
@@ -545,7 +524,7 @@ export default function AboutPage() {
           <Reveal className="mt-10 text-center">
             <Link href="/">
               <Button variant="outline" className="h-12 px-6 rounded-xl border-[#E8E6E3] bg-white">
-                Back to home
+                {t.about.cta.backToHome}
               </Button>
             </Link>
           </Reveal>

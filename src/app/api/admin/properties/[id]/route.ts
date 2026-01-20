@@ -63,6 +63,7 @@ export async function PUT(
       neighborhood: data.neighborhood,
       features: data.features,
       isFeatured: data.isFeatured,
+      agentId: data.agentId || null,
       publishedAt: data.status === "PUBLISHED" ? new Date() : null,
       images: {
         create: data.images.map((img: any, index: number) => ({

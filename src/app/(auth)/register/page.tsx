@@ -4,8 +4,10 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { useI18n } from "@/lib/i18n"
 
 export default function RegisterPage() {
+  const { t } = useI18n()
   const router = useRouter()
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
@@ -20,13 +22,13 @@ export default function RegisterPage() {
     setError("")
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match")
+      setError(t.auth.passwordsNotMatch)
       setLoading(false)
       return
     }
 
     if (password.length < 8) {
-      setError("Password must be at least 8 characters")
+      setError(t.auth.passwordTooShort)
       setLoading(false)
       return
     }
@@ -41,12 +43,12 @@ export default function RegisterPage() {
       const data = await res.json()
 
       if (!res.ok) {
-        setError(data.error || "Something went wrong")
+        setError(data.error || t.auth.somethingWentWrong)
       } else {
         router.push("/login?registered=true")
       }
     } catch (err) {
-      setError("Something went wrong")
+      setError(t.auth.somethingWentWrong)
     } finally {
       setLoading(false)
     }
@@ -67,8 +69,8 @@ export default function RegisterPage() {
 
         {/* Card */}
         <div className="bg-white rounded-2xl shadow-xl border border-[#E8E6E3] p-8">
-          <h1 className="text-2xl font-semibold text-[#1A1A1A] mb-2">Create an account</h1>
-          <p className="text-[#6B6B6B] mb-8">Start your property journey today</p>
+          <h1 className="text-2xl font-semibold text-[#1A1A1A] mb-2">{t.auth.createAccount}</h1>
+          <p className="text-[#6B6B6B] mb-8">{t.auth.startJourney}</p>
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -80,7 +82,7 @@ export default function RegisterPage() {
 
             <div>
               <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                Full Name
+                {t.auth.fullName}
               </label>
               <input
                 type="text"
@@ -94,7 +96,7 @@ export default function RegisterPage() {
 
             <div>
               <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                Email
+                {t.auth.email}
               </label>
               <input
                 type="email"
@@ -108,7 +110,7 @@ export default function RegisterPage() {
 
             <div>
               <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                Password
+                {t.auth.password}
               </label>
               <input
                 type="password"
@@ -118,12 +120,12 @@ export default function RegisterPage() {
                 placeholder="••••••••"
                 required
               />
-              <p className="mt-1 text-xs text-[#6B6B6B]">At least 8 characters</p>
+              <p className="mt-1 text-xs text-[#6B6B6B]">{t.auth.atLeast8Chars}</p>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                Confirm Password
+                {t.auth.confirmPassword}
               </label>
               <input
                 type="password"
@@ -138,13 +140,13 @@ export default function RegisterPage() {
             <div className="flex items-start gap-2">
               <input type="checkbox" className="w-4 h-4 mt-1 rounded border-[#E8E6E3]" required />
               <span className="text-sm text-[#6B6B6B]">
-                I agree to the{" "}
+                {t.auth.agreeToTerms}{" "}
                 <Link href="/terms" className="text-[#B8926A] hover:underline">
-                  Terms of Service
+                  {t.auth.termsOfService}
                 </Link>{" "}
-                and{" "}
+                {t.auth.and}{" "}
                 <Link href="/privacy" className="text-[#B8926A] hover:underline">
-                  Privacy Policy
+                  {t.auth.privacyPolicy}
                 </Link>
               </span>
             </div>
@@ -154,16 +156,16 @@ export default function RegisterPage() {
               disabled={loading}
               className="w-full h-12 rounded-xl bg-[#1A1A1A] hover:bg-[#333] text-white font-medium"
             >
-              {loading ? "Creating account..." : "Create Account"}
+              {loading ? t.auth.creatingAccount : t.auth.createAccount}
             </Button>
           </form>
         </div>
 
         {/* Login Link */}
         <p className="text-center mt-6 text-[#6B6B6B]">
-          Already have an account?{" "}
+          {t.auth.alreadyHaveAccount}{" "}
           <Link href="/login" className="text-[#B8926A] hover:underline font-medium">
-            Sign in
+            {t.auth.signInLink}
           </Link>
         </p>
       </div>

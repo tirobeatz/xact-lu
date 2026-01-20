@@ -1,39 +1,51 @@
 "use client"
 
 import { useState, useRef } from "react"
+import { useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { locations } from "@/lib/locations"
+import { useI18n } from "@/lib/i18n"
 import Link from "next/link"
 
-const propertyTypes = ["Apartment", "House", "Villa", "Penthouse", "Studio", "Duplex", "Land", "Commercial"]
+const propertyTypeKeys = ["apartment", "house", "villa", "penthouse", "studio", "duplex", "land", "commercial"] as const
 const listingTypes = ["SALE", "RENT"]
 
-const features = [
-  "Balcony",
-  "Terrace",
-  "Garden",
-  "Garage",
-  "Parking",
-  "Elevator",
-  "Cellar",
-  "Attic",
-  "Fireplace",
-  "Air Conditioning",
-  "Alarm System",
-  "Swimming Pool",
-  "Sauna",
-  "Home Office",
-  "Furnished",
-  "Recently Renovated",
-]
+const featureKeys = [
+  "balcony",
+  "terrace",
+  "garden",
+  "garage",
+  "parking",
+  "elevator",
+  "cellar",
+  "storage",
+  "fireplace",
+  "airConditioning",
+  "pool",
+  "furnished",
+] as const
 
 export default function NewListingPage() {
+  const { t } = useI18n()
+  const { data: session, status } = useSession()
+  const router = useRouter()
   const [step, setStep] = useState(1)
   const [photos, setPhotos] = useState<File[]>([])
   const [dragActive, setDragActive] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const stepLabels = [
+    t.dashboard.newListing.steps.basicInfo,
+    t.dashboard.newListing.steps.location,
+    t.dashboard.newListing.steps.details,
+    t.dashboard.newListing.steps.photos,
+    t.dashboard.newListing.steps.description,
+  ]
 
   const [formData, setFormData] = useState({
     // Basic Info
@@ -125,10 +137,83 @@ export default function NewListingPage() {
     setPhotos(newPhotos)
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log({ ...formData, photos })
-    setSubmitted(true)
+    setSubmitting(true)
+    setError(null)
+
+    try {
+      // Map property type to database enum
+      const propertyTypeMap: Record<string, string> = {
+        apartment: "APARTMENT",
+        house: "HOUSE",
+        villa: "VILLA",
+        penthouse: "PENTHOUSE",
+        studio: "STUDIO",
+        duplex: "DUPLEX",
+        land: "LAND",
+        commercial: "OFFICE",
+      }
+
+      // Upload images first if any
+      let imageUrls: string[] = []
+      if (photos.length > 0) {
+        const uploadFormData = new FormData()
+        photos.forEach((photo) => {
+          uploadFormData.append("files", photo)
+        })
+
+        const uploadResponse = await fetch("/api/upload", {
+          method: "POST",
+          body: uploadFormData,
+        })
+
+        if (!uploadResponse.ok) {
+          const uploadError = await uploadResponse.json()
+          throw new Error(uploadError.error || "Failed to upload images")
+        }
+
+        const uploadResult = await uploadResponse.json()
+        imageUrls = uploadResult.urls
+      }
+
+      // Create the property with uploaded image URLs
+      const response = await fetch("/api/user/listings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: formData.title,
+          description: formData.description,
+          type: propertyTypeMap[formData.propertyType] || "APARTMENT",
+          category: formData.propertyType === "commercial" ? "COMMERCIAL" : "RESIDENTIAL",
+          listingType: formData.listingType,
+          price: parseFloat(formData.price),
+          bedrooms: formData.bedrooms,
+          bathrooms: formData.bathrooms,
+          livingArea: formData.size,
+          floor: formData.floor,
+          totalFloors: formData.totalFloors,
+          yearBuilt: formData.yearBuilt,
+          energyClass: formData.energyClass,
+          address: formData.address,
+          city: formData.location,
+          postalCode: formData.zipCode,
+          features: formData.selectedFeatures,
+          images: imageUrls,
+        }),
+      })
+
+      if (!response.ok) {
+        const data = await response.json()
+        throw new Error(data.error || "Failed to create listing")
+      }
+
+      setSubmitted(true)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred")
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   const nextStep = () => setStep(prev => Math.min(prev + 1, 5))
@@ -143,7 +228,7 @@ export default function NewListingPage() {
       case 3:
         return formData.size && formData.bedrooms
       case 4:
-        return photos.length >= 3
+        return true // Photos optional for now until image upload is implemented
       case 5:
         return formData.description && formData.contactName && formData.contactEmail && formData.contactPhone
       default:
@@ -166,15 +251,15 @@ export default function NewListingPage() {
               </svg>
             </div>
             <h1 className="text-3xl font-semibold text-[#1A1A1A] mt-6">
-              Listing Submitted!
+              {t.dashboard.newListing.success.title}
             </h1>
             <p className="text-[#6B6B6B] mt-4">
-              Your property has been submitted for review. We&apos;ll contact you within 24 hours to confirm the details and discuss next steps.
+              {t.dashboard.newListing.success.message}
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
-              <Link href="/properties">
+              <Link href="/dashboard/listings">
                 <Button variant="outline" className="h-11 px-6 rounded-xl border-[#E8E6E3]">
-                  View Properties
+                  {t.dashboard.newListing.success.viewListings}
                 </Button>
               </Link>
               <Button
@@ -206,7 +291,7 @@ export default function NewListingPage() {
                 }}
                 className="h-11 px-6 rounded-xl bg-[#B8926A] hover:bg-[#A6825C] text-white"
               >
-                Submit Another
+                {t.dashboard.newListing.success.addAnother}
               </Button>
             </div>
           </motion.div>
@@ -222,15 +307,15 @@ export default function NewListingPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
             <h1 className="text-3xl md:text-4xl font-semibold text-white">
-              List Your Property
+              {t.dashboard.newListing.title}
             </h1>
             <p className="text-white/60 mt-2">
-              Complete the form below to submit your property for listing.
+              {t.dashboard.newListing.subtitle}
             </p>
 
             {/* Progress Steps */}
             <div className="mt-8 flex items-center justify-between">
-              {["Basic Info", "Location", "Details", "Photos", "Description"].map((label, i) => (
+              {stepLabels.map((label, i) => (
                 <div key={label} className="flex items-center">
                   <div className="flex flex-col items-center">
                     <div
@@ -280,13 +365,13 @@ export default function NewListingPage() {
                 exit={{ opacity: 0, x: -20 }}
                 className="bg-white rounded-2xl border border-[#E8E6E3] p-6 md:p-8"
               >
-                <h2 className="text-xl font-semibold text-[#1A1A1A] mb-6">Basic Information</h2>
+                <h2 className="text-xl font-semibold text-[#1A1A1A] mb-6">{t.dashboard.newListing.step1.title}</h2>
 
                 <div className="space-y-5">
                   {/* Listing Type Toggle */}
                   <div>
                     <label className="block text-sm font-medium text-[#1A1A1A] mb-3">
-                      Listing Type *
+                      {t.dashboard.newListing.step1.listingType} *
                     </label>
                     <div className="flex gap-3">
                       {listingTypes.map((type) => (
@@ -300,7 +385,7 @@ export default function NewListingPage() {
                               : "bg-[#F5F3EF] text-[#6B6B6B] hover:bg-[#E8E6E3]"
                           }`}
                         >
-                          {type === "SALE" ? "For Sale" : "For Rent"}
+                          {type === "SALE" ? t.dashboard.newListing.step1.forSale : t.dashboard.newListing.step1.forRent}
                         </button>
                       ))}
                     </div>
@@ -309,14 +394,14 @@ export default function NewListingPage() {
                   {/* Title */}
                   <div>
                     <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                      Property Title *
+                      {t.dashboard.newListing.step1.propertyTitle} *
                     </label>
                     <input
                       type="text"
                       name="title"
                       value={formData.title}
                       onChange={handleChange}
-                      placeholder="e.g. Modern 3-Bedroom Apartment with Terrace"
+                      placeholder={t.dashboard.newListing.step1.propertyTitlePlaceholder}
                       className="w-full h-12 px-4 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] outline-none focus:border-[#B8926A] transition-colors placeholder:text-[#999]"
                     />
                   </div>
@@ -324,21 +409,21 @@ export default function NewListingPage() {
                   {/* Property Type */}
                   <div>
                     <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                      Property Type *
+                      {t.dashboard.newListing.step1.propertyType} *
                     </label>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                      {propertyTypes.map((type) => (
+                      {propertyTypeKeys.map((key) => (
                         <button
-                          key={type}
+                          key={key}
                           type="button"
-                          onClick={() => setFormData({ ...formData, propertyType: type })}
+                          onClick={() => setFormData({ ...formData, propertyType: key })}
                           className={`h-11 px-4 rounded-xl text-sm font-medium transition-all ${
-                            formData.propertyType === type
+                            formData.propertyType === key
                               ? "bg-[#B8926A] text-white"
                               : "bg-[#F5F3EF] text-[#6B6B6B] hover:bg-[#E8E6E3]"
                           }`}
                         >
-                          {type}
+                          {t.dashboard.newListing.propertyTypes[key]}
                         </button>
                       ))}
                     </div>
@@ -347,7 +432,7 @@ export default function NewListingPage() {
                   {/* Price */}
                   <div>
                     <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                      {formData.listingType === "SALE" ? "Sale Price" : "Monthly Rent"} (€) *
+                      {formData.listingType === "SALE" ? t.dashboard.newListing.step1.price : t.dashboard.newListing.step1.pricePerMonth} *
                     </label>
                     <div className="relative">
                       <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6B6B6B]">€</span>
@@ -373,13 +458,13 @@ export default function NewListingPage() {
                 exit={{ opacity: 0, x: -20 }}
                 className="bg-white rounded-2xl border border-[#E8E6E3] p-6 md:p-8"
               >
-                <h2 className="text-xl font-semibold text-[#1A1A1A] mb-6">Location</h2>
+                <h2 className="text-xl font-semibold text-[#1A1A1A] mb-6">{t.dashboard.newListing.step2.title}</h2>
 
                 <div className="space-y-5">
                   {/* Location */}
                   <div>
                     <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                      City / Area *
+                      {t.dashboard.newListing.step2.cityArea} *
                     </label>
                     <select
                       name="location"
@@ -387,7 +472,7 @@ export default function NewListingPage() {
                       onChange={handleChange}
                       className="w-full h-12 px-4 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] outline-none focus:border-[#B8926A] transition-colors"
                     >
-                      <option value="">Select location</option>
+                      <option value="">{t.dashboard.newListing.step2.selectCityArea}</option>
                       {locations.map((loc) => (
                         <option key={loc} value={loc}>{loc}</option>
                       ))}
@@ -397,32 +482,29 @@ export default function NewListingPage() {
                   {/* Address */}
                   <div>
                     <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                      Street Address *
+                      {t.dashboard.newListing.step2.streetAddress} *
                     </label>
                     <input
                       type="text"
                       name="address"
                       value={formData.address}
                       onChange={handleChange}
-                      placeholder="e.g. 12 Rue de la Gare"
+                      placeholder={t.dashboard.newListing.step2.streetAddressPlaceholder}
                       className="w-full h-12 px-4 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] outline-none focus:border-[#B8926A] transition-colors placeholder:text-[#999]"
                     />
-                    <p className="text-xs text-[#6B6B6B] mt-1">
-                      The exact address won&apos;t be shown publicly until you approve.
-                    </p>
                   </div>
 
                   {/* ZIP Code */}
                   <div>
                     <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                      ZIP Code
+                      {t.dashboard.newListing.step2.zipCode}
                     </label>
                     <input
                       type="text"
                       name="zipCode"
                       value={formData.zipCode}
                       onChange={handleChange}
-                      placeholder="e.g. L-1234"
+                      placeholder={t.dashboard.newListing.step2.zipCodePlaceholder}
                       className="w-full h-12 px-4 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] outline-none focus:border-[#B8926A] transition-colors placeholder:text-[#999]"
                     />
                   </div>
@@ -438,14 +520,14 @@ export default function NewListingPage() {
                 exit={{ opacity: 0, x: -20 }}
                 className="bg-white rounded-2xl border border-[#E8E6E3] p-6 md:p-8"
               >
-                <h2 className="text-xl font-semibold text-[#1A1A1A] mb-6">Property Details</h2>
+                <h2 className="text-xl font-semibold text-[#1A1A1A] mb-6">{t.dashboard.newListing.step3.title}</h2>
 
                 <div className="space-y-5">
                   {/* Size & Rooms */}
                   <div className="grid sm:grid-cols-3 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                        Size (m²) *
+                        {t.dashboard.newListing.step3.livingArea} *
                       </label>
                       <input
                         type="number"
@@ -458,7 +540,7 @@ export default function NewListingPage() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                        Bedrooms *
+                        {t.dashboard.newListing.step3.bedrooms} *
                       </label>
                       <select
                         name="bedrooms"
@@ -466,7 +548,7 @@ export default function NewListingPage() {
                         onChange={handleChange}
                         className="w-full h-12 px-4 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] outline-none focus:border-[#B8926A] transition-colors"
                       >
-                        <option value="">Select</option>
+                        <option value="">{t.dashboard.newListing.step3.selectEnergyClass}</option>
                         {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "10+"].map((n) => (
                           <option key={n} value={n}>{n}</option>
                         ))}
@@ -474,7 +556,7 @@ export default function NewListingPage() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                        Bathrooms
+                        {t.dashboard.newListing.step3.bathrooms}
                       </label>
                       <select
                         name="bathrooms"
@@ -482,7 +564,7 @@ export default function NewListingPage() {
                         onChange={handleChange}
                         className="w-full h-12 px-4 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] outline-none focus:border-[#B8926A] transition-colors"
                       >
-                        <option value="">Select</option>
+                        <option value="">{t.dashboard.newListing.step3.selectEnergyClass}</option>
                         {[1, 2, 3, 4, 5, "6+"].map((n) => (
                           <option key={n} value={n}>{n}</option>
                         ))}
@@ -494,7 +576,7 @@ export default function NewListingPage() {
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                        Floor
+                        {t.dashboard.newListing.step3.floors}
                       </label>
                       <input
                         type="text"
@@ -507,24 +589,7 @@ export default function NewListingPage() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                        Total Floors in Building
-                      </label>
-                      <input
-                        type="text"
-                        name="totalFloors"
-                        value={formData.totalFloors}
-                        onChange={handleChange}
-                        placeholder="e.g. 5"
-                        className="w-full h-12 px-4 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] outline-none focus:border-[#B8926A] transition-colors placeholder:text-[#999]"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Year Built & Energy Class */}
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                        Year Built
+                        {t.dashboard.newListing.step3.yearBuilt}
                       </label>
                       <input
                         type="text"
@@ -535,42 +600,44 @@ export default function NewListingPage() {
                         className="w-full h-12 px-4 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] outline-none focus:border-[#B8926A] transition-colors placeholder:text-[#999]"
                       />
                     </div>
-                    <div>
-                      <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                        Energy Class
-                      </label>
-                      <select
-                        name="energyClass"
-                        value={formData.energyClass}
-                        onChange={handleChange}
-                        className="w-full h-12 px-4 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] outline-none focus:border-[#B8926A] transition-colors"
-                      >
-                        <option value="">Select</option>
-                        {["A", "B", "C", "D", "E", "F", "G", "I", "Not Available"].map((c) => (
-                          <option key={c} value={c}>{c}</option>
-                        ))}
-                      </select>
-                    </div>
+                  </div>
+
+                  {/* Energy Class */}
+                  <div>
+                    <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
+                      {t.dashboard.newListing.step3.energyClass}
+                    </label>
+                    <select
+                      name="energyClass"
+                      value={formData.energyClass}
+                      onChange={handleChange}
+                      className="w-full h-12 px-4 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] outline-none focus:border-[#B8926A] transition-colors"
+                    >
+                      <option value="">{t.dashboard.newListing.step3.selectEnergyClass}</option>
+                      {["A", "B", "C", "D", "E", "F", "G", "I"].map((c) => (
+                        <option key={c} value={c}>{c}</option>
+                      ))}
+                    </select>
                   </div>
 
                   {/* Features */}
                   <div>
                     <label className="block text-sm font-medium text-[#1A1A1A] mb-3">
-                      Features & Amenities
+                      {t.dashboard.newListing.step3.features}
                     </label>
                     <div className="flex flex-wrap gap-2">
-                      {features.map((feature) => (
+                      {featureKeys.map((key) => (
                         <button
-                          key={feature}
+                          key={key}
                           type="button"
-                          onClick={() => toggleFeature(feature)}
+                          onClick={() => toggleFeature(key)}
                           className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                            formData.selectedFeatures.includes(feature)
+                            formData.selectedFeatures.includes(key)
                               ? "bg-[#B8926A] text-white"
                               : "bg-[#F5F3EF] text-[#6B6B6B] hover:bg-[#E8E6E3]"
                           }`}
                         >
-                          {feature}
+                          {t.dashboard.newListing.features[key]}
                         </button>
                       ))}
                     </div>
@@ -587,9 +654,9 @@ export default function NewListingPage() {
                 exit={{ opacity: 0, x: -20 }}
                 className="bg-white rounded-2xl border border-[#E8E6E3] p-6 md:p-8"
               >
-                <h2 className="text-xl font-semibold text-[#1A1A1A] mb-2">Photos</h2>
+                <h2 className="text-xl font-semibold text-[#1A1A1A] mb-2">{t.dashboard.newListing.step4.title}</h2>
                 <p className="text-[#6B6B6B] text-sm mb-6">
-                  Upload at least 3 photos. The first photo will be the cover image.
+                  {t.dashboard.newListing.step4.uploadSubtitle}
                 </p>
 
                 {/* Upload Area */}
@@ -619,13 +686,13 @@ export default function NewListingPage() {
                     </svg>
                   </div>
                   <p className="text-[#1A1A1A] font-medium mt-4">
-                    Drag & drop photos here
+                    {t.dashboard.newListing.step4.dragDrop}
                   </p>
                   <p className="text-[#6B6B6B] text-sm mt-1">
-                    or <span className="text-[#B8926A]">browse</span> to upload
+                    <span className="text-[#B8926A]">{t.dashboard.newListing.step4.browse}</span>
                   </p>
                   <p className="text-[#999] text-xs mt-2">
-                    JPG, PNG up to 10MB each · Min 3, max 20 photos
+                    {t.dashboard.newListing.step4.minPhotos}
                   </p>
                 </div>
 
@@ -634,7 +701,7 @@ export default function NewListingPage() {
                   <div className="mt-6">
                     <div className="flex items-center justify-between mb-3">
                       <p className="text-sm font-medium text-[#1A1A1A]">
-                        {photos.length} photo{photos.length !== 1 ? "s" : ""} uploaded
+                        {photos.length} {t.dashboard.newListing.step4.photoCount}
                       </p>
                       {photos.length < 3 && (
                         <p className="text-sm text-amber-600">
@@ -721,34 +788,31 @@ export default function NewListingPage() {
               >
                 {/* Description */}
                 <div className="bg-white rounded-2xl border border-[#E8E6E3] p-6 md:p-8">
-                  <h2 className="text-xl font-semibold text-[#1A1A1A] mb-6">Description</h2>
+                  <h2 className="text-xl font-semibold text-[#1A1A1A] mb-6">{t.dashboard.newListing.step5.title}</h2>
 
                   <div>
                     <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                      Property Description *
+                      {t.dashboard.newListing.step5.description} *
                     </label>
                     <textarea
                       name="description"
                       value={formData.description}
                       onChange={handleChange}
                       rows={6}
-                      placeholder="Describe your property in detail. Highlight key features, recent renovations, neighborhood benefits, etc."
+                      placeholder={t.dashboard.newListing.step5.descriptionPlaceholder}
                       className="w-full px-4 py-3 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] outline-none focus:border-[#B8926A] transition-colors resize-none placeholder:text-[#999]"
                     />
-                    <p className="text-xs text-[#6B6B6B] mt-1">
-                      Minimum 100 characters. Be specific and highlight what makes your property unique.
-                    </p>
                   </div>
                 </div>
 
                 {/* Contact Info */}
                 <div className="bg-white rounded-2xl border border-[#E8E6E3] p-6 md:p-8">
-                  <h2 className="text-xl font-semibold text-[#1A1A1A] mb-6">Contact Information</h2>
+                  <h2 className="text-xl font-semibold text-[#1A1A1A] mb-6">{t.dashboard.newListing.step5.contactInfo}</h2>
 
                   <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                        Your Name *
+                        {t.dashboard.newListing.step5.name} *
                       </label>
                       <input
                         type="text"
@@ -763,7 +827,7 @@ export default function NewListingPage() {
                     <div className="grid sm:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                          Email *
+                          {t.dashboard.newListing.step5.email} *
                         </label>
                         <input
                           type="email"
@@ -776,7 +840,7 @@ export default function NewListingPage() {
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                          Phone *
+                          {t.dashboard.newListing.step5.phone} *
                         </label>
                         <input
                           type="tel"
@@ -793,6 +857,13 @@ export default function NewListingPage() {
               </motion.div>
             )}
 
+            {/* Error Message */}
+            {error && (
+              <div className="mt-6 p-4 bg-red-50 text-red-700 rounded-xl">
+                {error}
+              </div>
+            )}
+
             {/* Navigation Buttons */}
             <div className="flex items-center justify-between mt-8">
               {step > 1 ? (
@@ -805,7 +876,7 @@ export default function NewListingPage() {
                   <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
-                  Back
+                  {t.dashboard.newListing.navigation.back}
                 </Button>
               ) : (
                 <div />
@@ -818,7 +889,7 @@ export default function NewListingPage() {
                   disabled={!isStepValid()}
                   className="h-12 px-6 rounded-xl bg-[#1A1A1A] hover:bg-[#333] text-white disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Continue
+                  {t.dashboard.newListing.navigation.continue}
                   <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
@@ -826,10 +897,17 @@ export default function NewListingPage() {
               ) : (
                 <Button
                   type="submit"
-                  disabled={!isStepValid()}
+                  disabled={!isStepValid() || submitting}
                   className="h-12 px-8 rounded-xl bg-[#B8926A] hover:bg-[#A6825C] text-white disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Submit Property
+                  {submitting ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                      Submitting...
+                    </>
+                  ) : (
+                    t.dashboard.newListing.navigation.submitListing
+                  )}
                 </Button>
               )}
             </div>

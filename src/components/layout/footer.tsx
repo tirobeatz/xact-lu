@@ -1,12 +1,17 @@
+"use client"
+
 import Link from "next/link"
+import { useI18n } from "@/lib/i18n"
 
 export function Footer() {
+  const { t } = useI18n()
+
   return (
     <footer className="bg-[#1A1A1A]">
       {/* Main Footer */}
       <div className="container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12">
-          
+
           {/* Brand */}
           <div className="lg:col-span-4">
             <Link href="/" className="flex items-center gap-2.5">
@@ -19,9 +24,9 @@ export function Footer() {
               </div>
             </Link>
             <p className="mt-6 text-white/50 text-sm leading-relaxed max-w-xs">
-              Luxembourg&apos;s trusted platform for premium real estate. Find your perfect property or list with confidence.
+              {t.footer.description}
             </p>
-            
+
             {/* Social */}
             <div className="flex gap-3 mt-8">
               <a href="#" className="w-9 h-9 rounded-lg bg-white/5 hover:bg-[#B8926A] flex items-center justify-center text-white/50 hover:text-white transition-all duration-300">
@@ -42,48 +47,46 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Properties */}
+          {/* Quick Links */}
           <div className="lg:col-span-2">
-            <h4 className="text-white font-medium mb-5">Properties</h4>
+            <h4 className="text-white font-medium mb-5">{t.footer.quickLinks}</h4>
             <ul className="space-y-3">
-              <li><Link href="/properties?type=SALE" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">Buy</Link></li>
-              <li><Link href="/properties?type=RENT" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">Rent</Link></li>
-              <li><Link href="/properties?category=RESIDENTIAL" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">Residential</Link></li>
-              <li><Link href="/properties?category=COMMERCIAL" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">Commercial</Link></li>
-              <li><Link href="/properties?category=LAND" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">Land</Link></li>
+              <li><Link href="/properties?type=SALE" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">{t.nav.buy}</Link></li>
+              <li><Link href="/properties?type=RENT" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">{t.nav.rent}</Link></li>
+              <li><Link href="/properties" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">{t.nav.properties}</Link></li>
+              <li><Link href="/about" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">{t.nav.about}</Link></li>
+            </ul>
+          </div>
+
+          {/* Property Types */}
+          <div className="lg:col-span-2">
+            <h4 className="text-white font-medium mb-5">{t.footer.propertyTypes}</h4>
+            <ul className="space-y-3">
+              <li><Link href="/properties?propertyType=Apartment" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">{t.footer.apartments}</Link></li>
+              <li><Link href="/properties?propertyType=House" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">{t.footer.houses}</Link></li>
+              <li><Link href="/properties?propertyType=Villa" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">{t.footer.villas}</Link></li>
+              <li><Link href="/properties?propertyType=Commercial" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">{t.footer.commercial}</Link></li>
+              <li><Link href="/properties?propertyType=Land" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">{t.footer.land}</Link></li>
             </ul>
           </div>
 
           {/* Services */}
           <div className="lg:col-span-2">
-            <h4 className="text-white font-medium mb-5">Services</h4>
+            <h4 className="text-white font-medium mb-5">{t.home.services.label}</h4>
             <ul className="space-y-3">
-              <li><Link href="/estimate" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">Free Estimate</Link></li>
-              <li><Link href="/dashboard/listings/new" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">Submit Property</Link></li>
-              <li><Link href="/pricing" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">Pricing Plans</Link></li>
-              <li><Link href="/agencies" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">For Agencies</Link></li>
+              <li><Link href="/estimate" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">{t.home.estimation.badge}</Link></li>
+              <li><Link href="/dashboard/listings/new" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">{t.nav.listProperty}</Link></li>
+              <li><Link href="/agencies" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">{t.nav.agencies}</Link></li>
             </ul>
           </div>
 
-          {/* Company */}
+          {/* Contact */}
           <div className="lg:col-span-2">
-            <h4 className="text-white font-medium mb-5">Company</h4>
+            <h4 className="text-white font-medium mb-5">{t.footer.contact}</h4>
             <ul className="space-y-3">
-              <li><Link href="/about" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">About Us</Link></li>
-              <li><Link href="/contact" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">Contact</Link></li>
-              <li><Link href="/careers" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">Careers</Link></li>
-              <li><Link href="/press" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">Press</Link></li>
-            </ul>
-          </div>
-
-          {/* Legal */}
-          <div className="lg:col-span-2">
-            <h4 className="text-white font-medium mb-5">Legal</h4>
-            <ul className="space-y-3">
-              <li><Link href="/privacy" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">Privacy Policy</Link></li>
-              <li><Link href="/terms" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">Terms of Use</Link></li>
-              <li><Link href="/cookies" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">Cookie Policy</Link></li>
-              <li><Link href="/gdpr" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">GDPR</Link></li>
+              <li><a href="mailto:info@xact.lu" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">info@xact.lu</a></li>
+              <li><a href="tel:+352123456789" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">+352 123 456 789</a></li>
+              <li><span className="text-sm text-white/50">Luxembourg City</span></li>
             </ul>
           </div>
 
@@ -95,14 +98,16 @@ export function Footer() {
         <div className="container mx-auto px-4 py-5">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-xs text-white/40">
-              © {new Date().getFullYear()} Xact Luxembourg. All rights reserved.
+              © {new Date().getFullYear()} Xact Luxembourg. {t.footer.allRightsReserved}
             </p>
-            <div className="flex items-center gap-6 text-xs text-white/40">
-              <a href="mailto:info@xact.lu" className="hover:text-[#B8926A] transition-colors">info@xact.lu</a>
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-white/40">
+              <Link href="/legal/privacy" className="hover:text-[#B8926A] transition-colors">{t.footer.privacyPolicy}</Link>
               <span className="hidden sm:inline">•</span>
-              <a href="tel:+352123456789" className="hover:text-[#B8926A] transition-colors">+352 123 456 789</a>
+              <Link href="/legal/terms" className="hover:text-[#B8926A] transition-colors">{t.footer.terms}</Link>
               <span className="hidden sm:inline">•</span>
-              <span className="hidden sm:inline">Luxembourg City</span>
+              <Link href="/legal/cookies" className="hover:text-[#B8926A] transition-colors">{t.footer.cookies || "Cookies"}</Link>
+              <span className="hidden sm:inline">•</span>
+              <Link href="/legal/imprint" className="hover:text-[#B8926A] transition-colors">{t.footer.imprint || "Legal Notice"}</Link>
             </div>
           </div>
         </div>

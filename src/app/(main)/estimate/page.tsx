@@ -4,16 +4,9 @@ import { useState, useRef } from "react"
 import { motion, useReducedMotion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { locations } from "@/lib/locations"
+import { useI18n } from "@/lib/i18n"
 
 const propertyTypes = ["Apartment", "House", "Villa", "Penthouse", "Studio", "Duplex", "Land", "Commercial"]
-const conditions = ["New / Renovated", "Good condition", "Needs light refresh", "Needs full renovation"]
-
-const benefits = [
-  { icon: "📈", title: "Know Your True Value", desc: "Don't leave money on the table — get an accurate market price" },
-  { icon: "⏱️", title: "24h Expert Response", desc: "Personal call from a local agent who knows your area" },
-  { icon: "🔒", title: "100% Confidential", desc: "Your information stays private, no spam, no pressure" },
-  { icon: "🆓", title: "Completely Free", desc: "No fees, no obligations, no strings attached" },
-]
 
 const testimonials = [
   {
@@ -52,11 +45,50 @@ function Reveal({
 }
 
 export default function EstimatePage() {
+  const { t } = useI18n()
   const reduce = useReducedMotion()
   const [submitted, setSubmitted] = useState(false)
   const [photos, setPhotos] = useState<File[]>([])
   const [dragActive, setDragActive] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const benefits = [
+    { icon: "📈", title: t.estimate.benefits.trueValue.title, desc: t.estimate.benefits.trueValue.desc },
+    { icon: "⏱️", title: t.estimate.benefits.expertResponse.title, desc: t.estimate.benefits.expertResponse.desc },
+    { icon: "🔒", title: t.estimate.benefits.confidential.title, desc: t.estimate.benefits.confidential.desc },
+    { icon: "🆓", title: t.estimate.benefits.free.title, desc: t.estimate.benefits.free.desc },
+  ]
+
+  const conditions = [
+    t.estimate.conditions.newRenovated,
+    t.estimate.conditions.goodCondition,
+    t.estimate.conditions.lightRefresh,
+    t.estimate.conditions.fullRenovation,
+  ]
+
+  const parkingOptions = [
+    { value: "none", label: t.estimate.form.parkingOptions.none },
+    { value: "1 indoor", label: t.estimate.form.parkingOptions.indoor1 },
+    { value: "2 indoor", label: t.estimate.form.parkingOptions.indoor2 },
+    { value: "outdoor", label: t.estimate.form.parkingOptions.outdoor },
+    { value: "garage", label: t.estimate.form.parkingOptions.garage },
+  ]
+
+  const outdoorOptions = [
+    { value: "none", label: t.estimate.form.outdoorOptions.none },
+    { value: "balcony", label: t.estimate.form.outdoorOptions.balcony },
+    { value: "terrace", label: t.estimate.form.outdoorOptions.terrace },
+    { value: "garden", label: t.estimate.form.outdoorOptions.garden },
+    { value: "terrace+garden", label: t.estimate.form.outdoorOptions.terraceGarden },
+  ]
+
+  const timelineOptions = [
+    { value: "asap", label: t.estimate.form.timelineOptions.asap },
+    { value: "1-3 months", label: t.estimate.form.timelineOptions["1to3"] },
+    { value: "3-6 months", label: t.estimate.form.timelineOptions["3to6"] },
+    { value: "6+ months", label: t.estimate.form.timelineOptions["6plus"] },
+    { value: "just curious", label: t.estimate.form.timelineOptions.curious },
+  ]
 
   const [formData, setFormData] = useState({
     propertyType: "",
@@ -133,10 +165,10 @@ export default function EstimatePage() {
             </svg>
           </div>
           <h1 className="text-3xl md:text-4xl font-semibold text-[#1A1A1A] mt-6">
-            Request received!
+            {t.estimate.success.title}
           </h1>
           <p className="text-[#6B6B6B] mt-4 max-w-md mx-auto">
-            Thank you for your interest. One of our agents will contact you within 24 hours with a personalized valuation.
+            {t.estimate.success.description}
           </p>
           <Button
             onClick={() => {
@@ -146,7 +178,7 @@ export default function EstimatePage() {
             variant="outline"
             className="mt-8 h-11 px-6 rounded-xl border-[#E8E6E3]"
           >
-            Submit another request
+            {t.estimate.success.submitAnother}
           </Button>
         </motion.div>
       </section>
@@ -179,31 +211,31 @@ export default function EstimatePage() {
             >
               <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white/80 text-xs border border-white/10">
                 <span className="w-2 h-2 rounded-full bg-[#B8926A]" />
-                FREE VALUATION
+                {t.estimate.badge}
               </span>
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white mt-6 leading-tight">
-                Your property could be worth
-                <span className="block text-[#B8926A]">more than you think.</span>
+                {t.estimate.heroTitle}
+                <span className="block text-[#B8926A]">{t.estimate.heroHighlight}</span>
               </h1>
 
               <p className="text-white/60 mt-6 text-lg max-w-xl mx-auto">
-                Get a free, expert valuation in 24 hours. No commitment, no pressure — just an honest market price.
+                {t.estimate.heroSubtitle}
               </p>
 
               {/* Stats */}
               <div className="flex flex-wrap justify-center gap-8 mt-10">
                 <div className="text-center">
                   <p className="text-3xl font-bold text-white">500+</p>
-                  <p className="text-white/50 text-sm">Properties valued</p>
+                  <p className="text-white/50 text-sm">{t.estimate.stats.propertiesValued}</p>
                 </div>
                 <div className="text-center">
                   <p className="text-3xl font-bold text-white">24h</p>
-                  <p className="text-white/50 text-sm">Response time</p>
+                  <p className="text-white/50 text-sm">{t.estimate.stats.responseTime}</p>
                 </div>
                 <div className="text-center">
                   <p className="text-3xl font-bold text-white">98%</p>
-                  <p className="text-white/50 text-sm">Accuracy rate</p>
+                  <p className="text-white/50 text-sm">{t.estimate.stats.accuracyRate}</p>
                 </div>
               </div>
             </motion.div>
@@ -265,15 +297,15 @@ export default function EstimatePage() {
                   <div className="bg-white rounded-2xl border border-[#E8E6E3] p-6 md:p-8">
                     <h2 className="text-lg font-semibold text-[#1A1A1A] mb-6 flex items-center gap-2">
                       <span className="w-8 h-8 rounded-lg bg-[#B8926A]/10 flex items-center justify-center text-sm">1</span>
-                      Property Details
+                      {t.estimate.form.propertyDetails}
                     </h2>
-                    
+
                     <div className="space-y-4">
                       {/* Type & Location */}
                       <div className="grid sm:grid-cols-2 gap-4">
                         <div>
                           <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                            Property Type *
+                            {t.estimate.form.propertyType} *
                           </label>
                           <select
                             name="propertyType"
@@ -282,7 +314,7 @@ export default function EstimatePage() {
                             required
                             className="w-full h-12 px-4 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] outline-none focus:border-[#B8926A] transition-colors"
                           >
-                            <option value="">Select type</option>
+                            <option value="">{t.estimate.form.selectType}</option>
                             {propertyTypes.map((type) => (
                               <option key={type} value={type}>{type}</option>
                             ))}
@@ -290,7 +322,7 @@ export default function EstimatePage() {
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                            Location *
+                            {t.estimate.form.location} *
                           </label>
                           <select
                             name="location"
@@ -299,7 +331,7 @@ export default function EstimatePage() {
                             required
                             className="w-full h-12 px-4 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] outline-none focus:border-[#B8926A] transition-colors"
                           >
-                            <option value="">Select location</option>
+                            <option value="">{t.estimate.form.selectLocation}</option>
                             {locations.map((loc) => (
                               <option key={loc} value={loc}>{loc}</option>
                             ))}
@@ -310,7 +342,7 @@ export default function EstimatePage() {
                       {/* Address */}
                       <div>
                         <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                          Street Address <span className="text-[#6B6B6B] font-normal">(optional, helps accuracy)</span>
+                          {t.estimate.form.streetAddress} <span className="text-[#6B6B6B] font-normal">{t.estimate.form.streetAddressHint}</span>
                         </label>
                         <input
                           type="text"
@@ -326,7 +358,7 @@ export default function EstimatePage() {
                       <div className="grid sm:grid-cols-3 gap-4">
                         <div>
                           <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                            Size (m²) *
+                            {t.estimate.form.size} *
                           </label>
                           <input
                             type="number"
@@ -340,7 +372,7 @@ export default function EstimatePage() {
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                            Bedrooms *
+                            {t.estimate.form.bedrooms} *
                           </label>
                           <select
                             name="bedrooms"
@@ -349,7 +381,7 @@ export default function EstimatePage() {
                             required
                             className="w-full h-12 px-4 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] outline-none focus:border-[#B8926A] transition-colors"
                           >
-                            <option value="">Select</option>
+                            <option value="">{t.estimate.form.select}</option>
                             {[0, 1, 2, 3, 4, 5, "6+"].map((n) => (
                               <option key={n} value={n}>{n}</option>
                             ))}
@@ -357,7 +389,7 @@ export default function EstimatePage() {
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                            Bathrooms
+                            {t.estimate.form.bathrooms}
                           </label>
                           <select
                             name="bathrooms"
@@ -365,7 +397,7 @@ export default function EstimatePage() {
                             onChange={handleChange}
                             className="w-full h-12 px-4 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] outline-none focus:border-[#B8926A] transition-colors"
                           >
-                            <option value="">Select</option>
+                            <option value="">{t.estimate.form.select}</option>
                             {[1, 2, 3, 4, "5+"].map((n) => (
                               <option key={n} value={n}>{n}</option>
                             ))}
@@ -376,7 +408,7 @@ export default function EstimatePage() {
                       {/* Condition */}
                       <div>
                         <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                          Condition *
+                          {t.estimate.form.condition} *
                         </label>
                         <select
                           name="condition"
@@ -385,7 +417,7 @@ export default function EstimatePage() {
                           required
                           className="w-full h-12 px-4 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] outline-none focus:border-[#B8926A] transition-colors"
                         >
-                          <option value="">Select condition</option>
+                          <option value="">{t.estimate.form.selectCondition}</option>
                           {conditions.map((c) => (
                             <option key={c} value={c}>{c}</option>
                           ))}
@@ -396,7 +428,7 @@ export default function EstimatePage() {
                       <div className="grid sm:grid-cols-2 gap-4">
                         <div>
                           <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                            Floor <span className="text-[#6B6B6B] font-normal">(for apartments)</span>
+                            {t.estimate.form.floor} <span className="text-[#6B6B6B] font-normal">{t.estimate.form.floorHint}</span>
                           </label>
                           <input
                             type="text"
@@ -409,7 +441,7 @@ export default function EstimatePage() {
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                            Parking
+                            {t.estimate.form.parking}
                           </label>
                           <select
                             name="parking"
@@ -417,12 +449,10 @@ export default function EstimatePage() {
                             onChange={handleChange}
                             className="w-full h-12 px-4 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] outline-none focus:border-[#B8926A] transition-colors"
                           >
-                            <option value="">Select</option>
-                            <option value="none">None</option>
-                            <option value="1 indoor">1 indoor spot</option>
-                            <option value="2 indoor">2 indoor spots</option>
-                            <option value="outdoor">Outdoor only</option>
-                            <option value="garage">Private garage</option>
+                            <option value="">{t.estimate.form.select}</option>
+                            {parkingOptions.map((opt) => (
+                              <option key={opt.value} value={opt.value}>{opt.label}</option>
+                            ))}
                           </select>
                         </div>
                       </div>
@@ -430,7 +460,7 @@ export default function EstimatePage() {
                       {/* Outdoor */}
                       <div>
                         <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                          Outdoor Space
+                          {t.estimate.form.outdoorSpace}
                         </label>
                         <select
                           name="outdoor"
@@ -438,26 +468,24 @@ export default function EstimatePage() {
                           onChange={handleChange}
                           className="w-full h-12 px-4 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] outline-none focus:border-[#B8926A] transition-colors"
                         >
-                          <option value="">Select</option>
-                          <option value="none">None</option>
-                          <option value="balcony">Balcony</option>
-                          <option value="terrace">Terrace</option>
-                          <option value="garden">Garden</option>
-                          <option value="terrace+garden">Terrace + Garden</option>
+                          <option value="">{t.estimate.form.select}</option>
+                          {outdoorOptions.map((opt) => (
+                            <option key={opt.value} value={opt.value}>{opt.label}</option>
+                          ))}
                         </select>
                       </div>
 
                       {/* Additional Info */}
                       <div>
                         <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                          Anything else we should know?
+                          {t.estimate.form.anythingElse}
                         </label>
                         <textarea
                           name="extras"
                           value={formData.extras}
                           onChange={handleChange}
                           rows={3}
-                          placeholder="Recent renovations, special features, reason for selling..."
+                          placeholder={t.estimate.form.anythingElsePlaceholder}
                           className="w-full px-4 py-3 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] outline-none focus:border-[#B8926A] transition-colors resize-none placeholder:text-[#999]"
                         />
                       </div>
@@ -470,11 +498,11 @@ export default function EstimatePage() {
                   <div className="bg-white rounded-2xl border border-[#E8E6E3] p-6 md:p-8">
                     <h2 className="text-lg font-semibold text-[#1A1A1A] mb-2 flex items-center gap-2">
                       <span className="w-8 h-8 rounded-lg bg-[#B8926A]/10 flex items-center justify-center text-sm">2</span>
-                      Photos
-                      <span className="text-[#6B6B6B] font-normal text-sm ml-1">(optional but helps accuracy)</span>
+                      {t.estimate.form.photos}
+                      <span className="text-[#6B6B6B] font-normal text-sm ml-1">{t.estimate.form.photosHint}</span>
                     </h2>
                     <p className="text-[#6B6B6B] text-sm mb-6">
-                      Upload up to 10 photos of your property — interior, exterior, views.
+                      {t.estimate.form.photosDescription}
                     </p>
 
                     {/* Upload Area */}
@@ -504,13 +532,13 @@ export default function EstimatePage() {
                         </svg>
                       </div>
                       <p className="text-[#1A1A1A] font-medium mt-4">
-                        Drag & drop photos here
+                        {t.estimate.form.dragDrop}
                       </p>
                       <p className="text-[#6B6B6B] text-sm mt-1">
-                        or <span className="text-[#B8926A]">browse</span> to upload
+                        or <span className="text-[#B8926A]">{t.estimate.form.browse}</span> {t.estimate.form.toUpload}
                       </p>
                       <p className="text-[#999] text-xs mt-2">
-                        JPG, PNG up to 10MB each · Max 10 photos
+                        {t.estimate.form.photoLimits}
                       </p>
                     </div>
 
@@ -548,13 +576,13 @@ export default function EstimatePage() {
                   <div className="bg-white rounded-2xl border border-[#E8E6E3] p-6 md:p-8">
                     <h2 className="text-lg font-semibold text-[#1A1A1A] mb-6 flex items-center gap-2">
                       <span className="w-8 h-8 rounded-lg bg-[#B8926A]/10 flex items-center justify-center text-sm">3</span>
-                      Your Contact Details
+                      {t.estimate.form.contactDetails}
                     </h2>
-                    
+
                     <div className="space-y-4">
                       <div>
                         <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                          Full Name *
+                          {t.estimate.form.fullName} *
                         </label>
                         <input
                           type="text"
@@ -570,7 +598,7 @@ export default function EstimatePage() {
                       <div className="grid sm:grid-cols-2 gap-4">
                         <div>
                           <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                            Email *
+                            {t.estimate.form.email} *
                           </label>
                           <input
                             type="email"
@@ -584,7 +612,7 @@ export default function EstimatePage() {
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                            Phone *
+                            {t.estimate.form.phone} *
                           </label>
                           <input
                             type="tel"
@@ -600,7 +628,7 @@ export default function EstimatePage() {
 
                       <div>
                         <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                          When are you looking to sell?
+                          {t.estimate.form.timeline}
                         </label>
                         <select
                           name="timeline"
@@ -608,12 +636,10 @@ export default function EstimatePage() {
                           onChange={handleChange}
                           className="w-full h-12 px-4 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] outline-none focus:border-[#B8926A] transition-colors"
                         >
-                          <option value="">Select timeline</option>
-                          <option value="asap">As soon as possible</option>
-                          <option value="1-3 months">Within 1-3 months</option>
-                          <option value="3-6 months">Within 3-6 months</option>
-                          <option value="6+ months">6+ months</option>
-                          <option value="just curious">Just curious about the value</option>
+                          <option value="">{t.estimate.form.selectTimeline}</option>
+                          {timelineOptions.map((opt) => (
+                            <option key={opt.value} value={opt.value}>{opt.label}</option>
+                          ))}
                         </select>
                       </div>
                     </div>
@@ -627,10 +653,10 @@ export default function EstimatePage() {
                       type="submit"
                       className="h-14 px-10 rounded-xl bg-[#B8926A] hover:bg-[#A6825C] text-white text-lg w-full sm:w-auto"
                     >
-                      Get My Free Valuation
+                      {t.estimate.form.submit}
                     </Button>
                     <p className="text-[#6B6B6B] text-sm mt-4">
-                      We&apos;ll contact you within 24 hours · No commitment required
+                      {t.estimate.form.submitNote}
                     </p>
                   </div>
                 </Reveal>
@@ -643,13 +669,13 @@ export default function EstimatePage() {
                 {/* Testimonials */}
                 <Reveal>
                   <div className="bg-white rounded-2xl border border-[#E8E6E3] p-6">
-                    <h3 className="font-semibold text-[#1A1A1A] mb-4">What our clients say</h3>
+                    <h3 className="font-semibold text-[#1A1A1A] mb-4">{t.estimate.sidebar.clientsSay}</h3>
                     <div className="space-y-4">
-                      {testimonials.map((t, i) => (
+                      {testimonials.map((testimonial, i) => (
                         <div key={i} className="pb-4 border-b border-[#E8E6E3] last:border-0 last:pb-0">
-                          <p className="text-[#6B6B6B] text-sm italic">&ldquo;{t.quote}&rdquo;</p>
-                          <p className="text-[#1A1A1A] text-sm font-medium mt-2">{t.name}</p>
-                          <p className="text-[#999] text-xs">{t.location}</p>
+                          <p className="text-[#6B6B6B] text-sm italic">&ldquo;{testimonial.quote}&rdquo;</p>
+                          <p className="text-[#1A1A1A] text-sm font-medium mt-2">{testimonial.name}</p>
+                          <p className="text-[#999] text-xs">{testimonial.location}</p>
                         </div>
                       ))}
                     </div>
@@ -659,32 +685,16 @@ export default function EstimatePage() {
                 {/* Trust Signals */}
                 <Reveal delay={0.1}>
                   <div className="bg-[#0F0F10] rounded-2xl p-6 text-white">
-                    <h3 className="font-semibold mb-4">Why get a valuation?</h3>
+                    <h3 className="font-semibold mb-4">{t.estimate.sidebar.whyValuation}</h3>
                     <ul className="space-y-3 text-sm">
-                      <li className="flex gap-3">
-                        <svg className="w-5 h-5 text-[#B8926A] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span className="text-white/80">Know if now is the right time to sell</span>
-                      </li>
-                      <li className="flex gap-3">
-                        <svg className="w-5 h-5 text-[#B8926A] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span className="text-white/80">Understand your property&apos;s market position</span>
-                      </li>
-                      <li className="flex gap-3">
-                        <svg className="w-5 h-5 text-[#B8926A] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span className="text-white/80">Get tips to increase your property&apos;s value</span>
-                      </li>
-                      <li className="flex gap-3">
-                        <svg className="w-5 h-5 text-[#B8926A] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span className="text-white/80">Plan your next move with confidence</span>
-                      </li>
+                      {t.estimate.sidebar.whyPoints.map((point, i) => (
+                        <li key={i} className="flex gap-3">
+                          <svg className="w-5 h-5 text-[#B8926A] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                          <span className="text-white/80">{point}</span>
+                        </li>
+                      ))}
                     </ul>
                   </div>
                 </Reveal>
@@ -692,9 +702,9 @@ export default function EstimatePage() {
                 {/* Contact Card */}
                 <Reveal delay={0.2}>
                 <div className="bg-white rounded-2xl border border-[#E8E6E3] p-6">
-                    <h3 className="font-semibold text-[#1A1A1A] mb-2">Prefer to talk?</h3>
+                    <h3 className="font-semibold text-[#1A1A1A] mb-2">{t.estimate.sidebar.preferToTalk}</h3>
                     <p className="text-[#6B6B6B] text-sm mb-4">
-                    Call us directly for immediate assistance.
+                    {t.estimate.sidebar.callDirectly}
                     </p>
 
                     <a

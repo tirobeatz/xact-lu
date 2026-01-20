@@ -4,19 +4,13 @@ import Link from "next/link"
 import { useState, useEffect } from "react"
 import { useSession, signOut } from "next-auth/react"
 import { Button } from "@/components/ui/button"
-
-const languages = [
-  { code: "en", label: "EN", name: "English" },
-  { code: "fr", label: "FR", name: "Français" },
-  { code: "de", label: "DE", name: "Deutsch" },
-  { code: "lu", label: "LU", name: "Lëtzebuergesch" },
-]
+import { useI18n, locales, localeNames, localeFlags, Locale } from "@/lib/i18n"
 
 export function Header() {
   const { data: session, status } = useSession()
+  const { locale, setLocale, t } = useI18n()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const [currentLang, setCurrentLang] = useState(languages[0])
   const [langMenuOpen, setLangMenuOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
@@ -68,8 +62,8 @@ export function Header() {
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      scrolled 
-        ? "bg-white/80 backdrop-blur-xl border-b border-[#E8E6E3] shadow-sm" 
+      scrolled
+        ? "bg-white/80 backdrop-blur-xl border-b border-[#E8E6E3] shadow-sm"
         : "bg-transparent"
     }`}>
       <div className="container mx-auto px-4">
@@ -77,8 +71,8 @@ export function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 group">
             <div className={`relative w-9 h-9 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all ${
-              scrolled 
-                ? "bg-gradient-to-br from-[#1A1A1A] to-[#333]" 
+              scrolled
+                ? "bg-gradient-to-br from-[#1A1A1A] to-[#333]"
                 : "bg-white/10 backdrop-blur-sm border border-white/20"
             }`}>
               <span className="text-lg font-bold text-white">X</span>
@@ -103,25 +97,25 @@ export function Header() {
           <nav className="hidden lg:flex items-center">
             <div className="flex items-center gap-1 mr-4">
               <Link href="/properties" className={`px-3.5 py-2 rounded-lg text-sm transition-colors ${
-                scrolled 
-                  ? "text-[#1A1A1A] hover:bg-[#F5F3EF]" 
+                scrolled
+                  ? "text-[#1A1A1A] hover:bg-[#F5F3EF]"
                   : "text-white/90 hover:bg-white/10"
               }`}>
-                Properties
+                {t.nav.properties}
               </Link>
               <Link href="/about" className={`px-3.5 py-2 rounded-lg text-sm transition-colors ${
-                scrolled 
-                  ? "text-[#1A1A1A] hover:bg-[#F5F3EF]" 
+                scrolled
+                  ? "text-[#1A1A1A] hover:bg-[#F5F3EF]"
                   : "text-white/90 hover:bg-white/10"
               }`}>
-                About
+                {t.nav.about}
               </Link>
-              <Link href="/pricing" className={`px-3.5 py-2 rounded-lg text-sm transition-colors ${
-                scrolled 
-                  ? "text-[#1A1A1A] hover:bg-[#F5F3EF]" 
+              <Link href="/contact" className={`px-3.5 py-2 rounded-lg text-sm transition-colors ${
+                scrolled
+                  ? "text-[#1A1A1A] hover:bg-[#F5F3EF]"
                   : "text-white/90 hover:bg-white/10"
               }`}>
-                Pricing
+                {t.nav.contact}
               </Link>
             </div>
 
@@ -131,14 +125,14 @@ export function Header() {
             {/* Secondary Nav */}
             <div className="flex items-center gap-1 ml-2">
               <Link href="/estimate" className={`px-3.5 py-2 rounded-lg text-sm transition-colors flex items-center gap-1.5 ${
-                scrolled 
-                  ? "text-[#6B6B6B] hover:text-[#1A1A1A] hover:bg-[#F5F3EF]" 
+                scrolled
+                  ? "text-[#6B6B6B] hover:text-[#1A1A1A] hover:bg-[#F5F3EF]"
                   : "text-white/70 hover:text-white hover:bg-white/10"
               }`}>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                 </svg>
-                Free Estimate
+                {t.home.estimation.badge}
               </Link>
             </div>
           </nav>
@@ -154,15 +148,15 @@ export function Header() {
                   setUserMenuOpen(false)
                 }}
                 className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition-colors ${
-                  scrolled 
-                    ? "text-[#6B6B6B] hover:text-[#1A1A1A] hover:bg-[#F5F3EF]" 
+                  scrolled
+                    ? "text-[#6B6B6B] hover:text-[#1A1A1A] hover:bg-[#F5F3EF]"
                     : "text-white/70 hover:text-white hover:bg-white/10"
                 }`}
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
                 </svg>
-                {currentLang.label}
+                {localeFlags[locale]} {locale.toUpperCase()}
                 <svg className={`w-3 h-3 transition-transform ${langMenuOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
@@ -170,20 +164,27 @@ export function Header() {
 
               {/* Language Dropdown */}
               {langMenuOpen && (
-                <div className="absolute top-full right-0 mt-2 w-40 bg-white rounded-xl shadow-xl border border-[#E8E6E3] overflow-hidden">
-                  {languages.map((lang) => (
+                <div className="absolute top-full right-0 mt-2 w-44 bg-white rounded-xl shadow-xl border border-[#E8E6E3] overflow-hidden">
+                  {locales.map((loc) => (
                     <button
-                      key={lang.code}
+                      key={loc}
                       onClick={() => {
-                        setCurrentLang(lang)
+                        setLocale(loc)
                         setLangMenuOpen(false)
                       }}
                       className={`w-full px-4 py-2.5 text-left text-sm flex items-center justify-between hover:bg-[#F5F3EF] transition-colors ${
-                        currentLang.code === lang.code ? "bg-[#F5F3EF]" : ""
+                        locale === loc ? "bg-[#F5F3EF]" : ""
                       }`}
                     >
-                      <span className="text-[#1A1A1A]">{lang.name}</span>
-                      <span className="text-[#6B6B6B] text-xs">{lang.label}</span>
+                      <span className="flex items-center gap-2 text-[#1A1A1A]">
+                        <span>{localeFlags[loc]}</span>
+                        {localeNames[loc]}
+                      </span>
+                      {locale === loc && (
+                        <svg className="w-4 h-4 text-[#B8926A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                      )}
                     </button>
                   ))}
                 </div>
@@ -205,8 +206,8 @@ export function Header() {
                   className="flex items-center gap-2"
                 >
                   <div className={`w-9 h-9 rounded-full flex items-center justify-center font-medium text-sm transition-colors ${
-                    scrolled 
-                      ? "bg-[#B8926A] text-white" 
+                    scrolled
+                      ? "bg-[#B8926A] text-white"
                       : "bg-white/20 text-white"
                   }`}>
                     {userInitial.toUpperCase()}
@@ -228,7 +229,7 @@ export function Header() {
                         <svg className="w-4 h-4 text-[#6B6B6B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                         </svg>
-                        Dashboard
+                        {t.nav.dashboard}
                       </Link>
                       <Link
                         href="/dashboard/listings"
@@ -237,19 +238,19 @@ export function Header() {
                         <svg className="w-4 h-4 text-[#6B6B6B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                         </svg>
-                        My Listings
+                        {t.nav.properties}
                       </Link>
                       <Link
-                        href="/dashboard/favorites"
+                        href="/dashboard/saved"
                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#1A1A1A] hover:bg-[#F5F3EF] transition-colors"
                       >
                         <svg className="w-4 h-4 text-[#6B6B6B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                         </svg>
-                        Favorites
+                        {t.common.save}
                       </Link>
                       <Link
-                        href="/dashboard/settings"
+                        href="/dashboard/profile"
                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#1A1A1A] hover:bg-[#F5F3EF] transition-colors"
                       >
                         <svg className="w-4 h-4 text-[#6B6B6B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -267,7 +268,7 @@ export function Header() {
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                         </svg>
-                        Sign Out
+                        {t.nav.signOut}
                       </button>
                     </div>
                   </div>
@@ -276,24 +277,24 @@ export function Header() {
             ) : (
               /* Not Logged In */
               <Link href="/login" className={`px-4 py-2 rounded-lg text-sm transition-colors ${
-                scrolled 
-                  ? "text-[#6B6B6B] hover:text-[#1A1A1A]" 
+                scrolled
+                  ? "text-[#6B6B6B] hover:text-[#1A1A1A]"
                   : "text-white/70 hover:text-white"
               }`}>
-                Sign In
+                {t.nav.signIn}
               </Link>
             )}
 
             <Button className={`h-9 px-5 text-sm rounded-xl shadow-md hover:shadow-lg transition-all ${
-              scrolled 
-                ? "bg-gradient-to-r from-[#1A1A1A] to-[#333] hover:from-[#333] hover:to-[#1A1A1A] text-white" 
+              scrolled
+                ? "bg-gradient-to-r from-[#1A1A1A] to-[#333] hover:from-[#333] hover:to-[#1A1A1A] text-white"
                 : "bg-white/90 hover:bg-white text-[#1A1A1A]"
             }`} asChild>
               <Link href="/dashboard/listings/new" className="flex items-center gap-2">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                 </svg>
-                Submit Property
+                {t.nav.listProperty}
               </Link>
             </Button>
           </div>
@@ -306,19 +307,19 @@ export function Header() {
                 setLangMenuOpen(!langMenuOpen)
               }}
               className={`p-2 rounded-lg transition-colors ${
-                scrolled 
-                  ? "text-[#1A1A1A] hover:bg-[#F5F3EF]" 
+                scrolled
+                  ? "text-[#1A1A1A] hover:bg-[#F5F3EF]"
                   : "text-white hover:bg-white/10"
               }`}
             >
-              <span className="text-sm font-medium">{currentLang.label}</span>
+              <span className="text-sm font-medium">{localeFlags[locale]} {locale.toUpperCase()}</span>
             </button>
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className={`p-2 rounded-lg transition-colors ${
-                scrolled 
-                  ? "text-[#1A1A1A] hover:bg-[#F5F3EF]" 
+                scrolled
+                  ? "text-[#1A1A1A] hover:bg-[#F5F3EF]"
                   : "text-white hover:bg-white/10"
               }`}
             >
@@ -336,20 +337,27 @@ export function Header() {
 
       {/* Mobile Language Dropdown */}
       {langMenuOpen && (
-        <div className="lg:hidden absolute top-16 right-4 w-40 bg-white rounded-xl shadow-xl border border-[#E8E6E3] overflow-hidden z-50">
-          {languages.map((lang) => (
+        <div className="lg:hidden absolute top-16 right-4 w-44 bg-white rounded-xl shadow-xl border border-[#E8E6E3] overflow-hidden z-50">
+          {locales.map((loc) => (
             <button
-              key={lang.code}
+              key={loc}
               onClick={() => {
-                setCurrentLang(lang)
+                setLocale(loc)
                 setLangMenuOpen(false)
               }}
               className={`w-full px-4 py-2.5 text-left text-sm flex items-center justify-between hover:bg-[#F5F3EF] transition-colors ${
-                currentLang.code === lang.code ? "bg-[#F5F3EF]" : ""
+                locale === loc ? "bg-[#F5F3EF]" : ""
               }`}
             >
-              <span className="text-[#1A1A1A]">{lang.name}</span>
-              <span className="text-[#6B6B6B] text-xs">{lang.label}</span>
+              <span className="flex items-center gap-2 text-[#1A1A1A]">
+                <span>{localeFlags[loc]}</span>
+                {localeNames[loc]}
+              </span>
+              {locale === loc && (
+                <svg className="w-4 h-4 text-[#B8926A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              )}
             </button>
           ))}
         </div>
@@ -373,59 +381,59 @@ export function Header() {
             )}
 
             <nav className="space-y-1">
-              <p className="px-3 py-2 text-xs font-medium text-[#6B6B6B] uppercase tracking-wider">Browse</p>
+              <p className="px-3 py-2 text-xs font-medium text-[#6B6B6B] uppercase tracking-wider">{t.home.categories.label}</p>
               <Link href="/properties" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-3 py-2.5 text-[#1A1A1A] hover:bg-[#F5F3EF] rounded-xl transition-colors">
                 <svg className="w-5 h-5 text-[#B8926A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-                All Properties
+                {t.nav.properties}
               </Link>
               <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-3 py-2.5 text-[#1A1A1A] hover:bg-[#F5F3EF] rounded-xl transition-colors">
                 <svg className="w-5 h-5 text-[#B8926A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
-                About Us
+                {t.nav.about}
               </Link>
-              <Link href="/pricing" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-3 py-2.5 text-[#1A1A1A] hover:bg-[#F5F3EF] rounded-xl transition-colors">
+              <Link href="/contact" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-3 py-2.5 text-[#1A1A1A] hover:bg-[#F5F3EF] rounded-xl transition-colors">
                 <svg className="w-5 h-5 text-[#B8926A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                Pricing
+                {t.nav.contact}
               </Link>
             </nav>
 
             {/* Dashboard Links (if logged in) */}
             {session && (
               <div className="mt-6 pt-6 border-t border-[#E8E6E3]">
-                <p className="px-3 py-2 text-xs font-medium text-[#6B6B6B] uppercase tracking-wider">Dashboard</p>
+                <p className="px-3 py-2 text-xs font-medium text-[#6B6B6B] uppercase tracking-wider">{t.nav.dashboard}</p>
                 <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-3 py-2.5 text-[#1A1A1A] hover:bg-[#F5F3EF] rounded-xl transition-colors">
                   <svg className="w-5 h-5 text-[#B8926A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                   </svg>
-                  Overview
+                  {t.nav.dashboard}
                 </Link>
                 <Link href="/dashboard/listings" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-3 py-2.5 text-[#1A1A1A] hover:bg-[#F5F3EF] rounded-xl transition-colors">
                   <svg className="w-5 h-5 text-[#B8926A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                   </svg>
-                  My Listings
+                  {t.nav.properties}
                 </Link>
-                <Link href="/dashboard/favorites" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-3 py-2.5 text-[#1A1A1A] hover:bg-[#F5F3EF] rounded-xl transition-colors">
+                <Link href="/dashboard/saved" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-3 py-2.5 text-[#1A1A1A] hover:bg-[#F5F3EF] rounded-xl transition-colors">
                   <svg className="w-5 h-5 text-[#B8926A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                   </svg>
-                  Favorites
+                  {t.common.save}
                 </Link>
               </div>
             )}
 
             <div className="mt-6 pt-6 border-t border-[#E8E6E3]">
-              <p className="px-3 py-2 text-xs font-medium text-[#6B6B6B] uppercase tracking-wider">Services</p>
+              <p className="px-3 py-2 text-xs font-medium text-[#6B6B6B] uppercase tracking-wider">{t.home.services.label}</p>
               <Link href="/estimate" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-3 py-2.5 text-[#1A1A1A] hover:bg-[#F5F3EF] rounded-xl transition-colors">
                 <svg className="w-5 h-5 text-[#B8926A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                 </svg>
-                Free Property Estimate
+                {t.home.estimation.button}
               </Link>
             </div>
 
@@ -437,31 +445,31 @@ export function Header() {
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                       </svg>
-                      Submit Your Property
+                      {t.nav.listProperty}
                     </Link>
                   </Button>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     className="w-full h-11 justify-center rounded-xl border-red-200 text-red-600 hover:bg-red-50"
                     onClick={() => {
                       setMobileMenuOpen(false)
                       signOut({ callbackUrl: "/" })
                     }}
                   >
-                    Sign Out
+                    {t.nav.signOut}
                   </Button>
                 </>
               ) : (
                 <>
                   <Button variant="outline" className="w-full h-11 justify-center rounded-xl border-[#E8E6E3]" asChild>
-                    <Link href="/login" onClick={() => setMobileMenuOpen(false)}>Sign In</Link>
+                    <Link href="/login" onClick={() => setMobileMenuOpen(false)}>{t.nav.signIn}</Link>
                   </Button>
                   <Button className="w-full h-11 justify-center rounded-xl bg-gradient-to-r from-[#1A1A1A] to-[#333] shadow-md" asChild>
                     <Link href="/dashboard/listings/new" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                       </svg>
-                      Submit Your Property
+                      {t.nav.listProperty}
                     </Link>
                   </Button>
                 </>
@@ -470,7 +478,7 @@ export function Header() {
 
             <div className="mt-6 pt-6 border-t border-[#E8E6E3]">
               <p className="px-3 text-xs text-[#6B6B6B]">
-                Need help? <a href="mailto:info@xact.lu" className="text-[#B8926A] hover:underline">info@xact.lu</a>
+                {t.nav.contact}? <a href="mailto:info@xact.lu" className="text-[#B8926A] hover:underline">info@xact.lu</a>
               </p>
             </div>
           </div>

@@ -1,0 +1,652 @@
+{
+  "common": {
+    "search": "Rechercher",
+    "viewAll": "Voir tout",
+    "learnMore": "En savoir plus",
+    "contact": "Contact",
+    "save": "Sauvegarder",
+    "share": "Partager",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "loading": "Chargement...",
+    "noResults": "Aucun résultat trouvé",
+    "beds": "chambres",
+    "bed": "chambre",
+    "baths": "salles de bain",
+    "bath": "salle de bain",
+    "area": "m²",
+    "perMonth": "/mois",
+    "optional": "facultatif",
+    "propertyTypes": {
+      "APARTMENT": "Appartement",
+      "HOUSE": "Maison",
+      "VILLA": "Villa",
+      "STUDIO": "Studio",
+      "PENTHOUSE": "Penthouse",
+      "DUPLEX": "Duplex",
+      "TRIPLEX": "Triplex",
+      "LOFT": "Loft",
+      "OFFICE": "Bureau",
+      "RETAIL": "Commerce",
+      "WAREHOUSE": "Entrepôt",
+      "LAND": "Terrain",
+      "PARKING": "Parking",
+      "OTHER": "Autre"
+    },
+    "features": {
+      "Parking": "Parking",
+      "Garage": "Garage",
+      "Garden": "Jardin",
+      "Terrace": "Terrasse",
+      "Balcony": "Balcon",
+      "Elevator": "Ascenseur",
+      "Pool": "Piscine",
+      "Air Conditioning": "Climatisation",
+      "Fireplace": "Cheminée",
+      "Storage": "Rangement",
+      "Cellar": "Cave",
+      "Furnished": "Meublé"
+    }
+  },
+  "nav": {
+    "home": "Accueil",
+    "properties": "Biens",
+    "buy": "Acheter",
+    "rent": "Louer",
+    "sell": "Vendre",
+    "agencies": "Agences",
+    "about": "À propos",
+    "contact": "Contact",
+    "signIn": "Connexion",
+    "signUp": "Inscription",
+    "dashboard": "Tableau de bord",
+    "admin": "Admin",
+    "signOut": "Déconnexion",
+    "listProperty": "Publier un bien"
+  },
+  "home": {
+    "badge": "La plateforme immobilière premium du Luxembourg",
+    "title": "Découvrez votre",
+    "titleHighlight": "maison de rêve.",
+    "subtitle": "Des propriétés exceptionnelles à travers le Luxembourg. Achetez, louez ou publiez sur la plateforme de confiance.",
+    "stats": {
+      "activeListings": "Annonces actives",
+      "propertyValue": "Valeur immobilière",
+      "satisfiedClients": "Clients satisfaits"
+    },
+    "featured": {
+      "label": "À LA UNE",
+      "title": "Propriétés exceptionnelles"
+    },
+    "categories": {
+      "label": "PARCOURIR",
+      "title": "Trouvez votre bien idéal",
+      "apartments": "Appartements",
+      "houses": "Maisons",
+      "land": "Terrains",
+      "commercial": "Commercial",
+      "properties": "biens"
+    },
+    "services": {
+      "label": "POURQUOI XACT",
+      "title": "La façon intelligente de trouver un bien",
+      "advancedSearch": {
+        "title": "Recherche avancée",
+        "desc": "Filtrez selon plus de 20 critères pour trouver votre bien idéal."
+      },
+      "verifiedListings": {
+        "title": "Annonces vérifiées",
+        "desc": "Chaque bien est vérifié avant publication."
+      },
+      "freeValuation": {
+        "title": "Estimation gratuite",
+        "desc": "Obtenez une estimation professionnelle — entièrement gratuite."
+      },
+      "easyListing": {
+        "title": "Publication facile",
+        "desc": "Publiez votre bien en quelques minutes."
+      },
+      "directContact": {
+        "title": "Contact direct",
+        "desc": "Contactez vendeurs et agents directement."
+      },
+      "agencyProfiles": {
+        "title": "Profils d'agences",
+        "desc": "Pages dédiées pour les partenaires vérifiés."
+      }
+    },
+    "estimation": {
+      "badge": "Service gratuit",
+      "title": "Quelle est la valeur de votre bien ?",
+      "subtitle": "Obtenez une estimation professionnelle de notre équipe d'experts — entièrement gratuite, sans engagement.",
+      "button": "Demander une estimation gratuite"
+    },
+    "mortgage": {
+      "label": "OUTILS FINANCIERS",
+      "title": "Calculateur hypothécaire",
+      "subtitle": "Planifiez votre achat avec notre calculateur interactif. Comparez les taux des banques luxembourgeoises.",
+      "propertyPrice": "Prix du bien",
+      "downPayment": "Apport personnel",
+      "loanTerm": "Durée du prêt",
+      "selectBank": "Choisissez votre banque",
+      "monthlyPayment": "Votre mensualité",
+      "perMonth": "par mois",
+      "loanAmount": "Montant du prêt",
+      "interestRate": "Taux d'intérêt",
+      "totalInterest": "Intérêts totaux",
+      "totalPayment": "Paiement total",
+      "findProperties": "Trouver des biens sous",
+      "disclaimer": "* Les taux sont indicatifs. Contactez directement les banques pour des offres précises.",
+      "years": "ans"
+    },
+    "cta": {
+      "title": "Prêt à trouver votre maison de rêve ?",
+      "subtitle": "Rejoignez des milliers de clients satisfaits qui ont trouvé leur bien idéal via Xact.",
+      "browse": "Parcourir les biens",
+      "submit": "Publier votre bien"
+    }
+  },
+  "search": {
+    "allLocations": "Tous les emplacements",
+    "buyRent": "Acheter / Louer",
+    "buy": "Acheter",
+    "rent": "Louer",
+    "all": "Tous",
+    "bedrooms": "Chambres",
+    "maxPrice": "Prix max.",
+    "propertyType": "Type de bien",
+    "minArea": "Surface min.",
+    "allTypes": "Tous les types",
+    "filters": "Filtres",
+    "resetFilters": "Réinitialiser les filtres",
+    "sortBy": "Trier par",
+    "newest": "Plus récent",
+    "priceLow": "Prix : croissant",
+    "priceHigh": "Prix : décroissant",
+    "areaHigh": "Plus grand d'abord",
+    "bedsHigh": "Plus de chambres"
+  },
+  "properties": {
+    "title": "Trouvez votre bien",
+    "available": "biens disponibles au Luxembourg",
+    "showing": "Affichage de",
+    "of": "sur",
+    "forSale": "À vendre",
+    "forRent": "À louer",
+    "featured": "À la une",
+    "rental": "Location",
+    "noProperties": "Aucun bien trouvé",
+    "noPropertiesDesc": "Essayez d'ajuster vos filtres pour voir plus de résultats.",
+    "clearFilters": "Effacer tous les filtres",
+    "page": "Page",
+    "backToProperties": "Retour aux biens"
+  },
+  "propertyDetail": {
+    "description": "Description",
+    "features": "Caractéristiques",
+    "details": "Détails",
+    "propertyType": "Type de bien",
+    "yearBuilt": "Année de construction",
+    "energyClass": "Classe énergétique",
+    "floor": "Étage",
+    "bedrooms": "Chambres",
+    "bathrooms": "Salles de bain",
+    "livingArea": "m² habitables",
+    "landArea": "m² terrain",
+    "contactAgent": "Contacter l'agent",
+    "sendMessage": "Envoyer un message",
+    "yourName": "Votre nom",
+    "yourEmail": "Votre email",
+    "yourPhone": "Votre téléphone",
+    "yourMessage": "Votre message",
+    "send": "Envoyer le message",
+    "similarProperties": "Biens similaires",
+    "notFound": "Bien non trouvé",
+    "notFoundDesc": "Le bien que vous recherchez n'existe pas."
+  },
+  "footer": {
+    "description": "La plateforme immobilière de référence au Luxembourg. Trouvez votre bien de rêve ou publiez le vôtre dès aujourd'hui.",
+    "quickLinks": "Liens rapides",
+    "propertyTypes": "Types de biens",
+    "contact": "Contact",
+    "apartments": "Appartements",
+    "houses": "Maisons",
+    "villas": "Villas",
+    "commercial": "Commercial",
+    "land": "Terrains",
+    "allRightsReserved": "Tous droits réservés.",
+    "privacyPolicy": "Politique de confidentialité",
+    "terms": "Conditions d'utilisation",
+    "cookies": "Cookies",
+    "imprint": "Mentions légales"
+  },
+  "auth": {
+    "welcomeBack": "Bon retour",
+    "signInToAccount": "Connectez-vous à votre compte",
+    "continueWithGoogle": "Continuer avec Google",
+    "or": "ou",
+    "email": "Email",
+    "password": "Mot de passe",
+    "rememberMe": "Se souvenir de moi",
+    "forgotPassword": "Mot de passe oublié ?",
+    "signIn": "Connexion",
+    "signingIn": "Connexion en cours...",
+    "noAccount": "Pas encore de compte ?",
+    "createOne": "Créez-en un",
+    "createAccount": "Créer un compte",
+    "startJourney": "Commencez votre aventure immobilière aujourd'hui",
+    "fullName": "Nom complet",
+    "confirmPassword": "Confirmer le mot de passe",
+    "atLeast8Chars": "Au moins 8 caractères",
+    "agreeToTerms": "J'accepte les",
+    "termsOfService": "Conditions d'utilisation",
+    "and": "et",
+    "privacyPolicy": "Politique de confidentialité",
+    "creatingAccount": "Création du compte...",
+    "alreadyHaveAccount": "Vous avez déjà un compte ?",
+    "signInLink": "Connectez-vous",
+    "invalidCredentials": "Email ou mot de passe invalide",
+    "passwordsNotMatch": "Les mots de passe ne correspondent pas",
+    "passwordTooShort": "Le mot de passe doit contenir au moins 8 caractères",
+    "somethingWentWrong": "Une erreur s'est produite"
+  },
+  "about": {
+    "badge": "À PROPOS DE XACT",
+    "heroTitle": "Nous rendons l'immobilier",
+    "heroPremium": "premium",
+    "heroNotPainful": ", pas compliqué.",
+    "heroSubtitle": "Xact est une agence boutique luxembourgeoise pour ceux qui veulent clarté, rapidité et confiance — que vous achetiez, vendiez ou investissiez.",
+    "heroWords": ["fiable", "moderne", "précis", "personnel", "Luxembourg"],
+    "exploreListings": "Explorer les annonces",
+    "talkToTeam": "Parler à notre équipe",
+    "scrollToDiscover": "Faites défiler pour découvrir notre histoire",
+    "agencySnapshot": "Aperçu de l'agence",
+    "boutiqueTag": "Luxembourg • Boutique • Premium",
+    "since": "Depuis 2014",
+    "marketMomentum": "Dynamique du marché",
+    "ourPromise": "Notre promesse",
+    "promiseText": "Réponse rapide, prix précis et zéro surprise.",
+    "stats": {
+      "yearsExperience": "Années d'expérience",
+      "propertiesSold": "Biens vendus",
+      "totalSalesVolume": "Volume total des ventes",
+      "clientSatisfaction": "Satisfaction client"
+    },
+    "story": {
+      "label": "NOTRE HISTOIRE",
+      "title": "Construit sur l'expertise, pas le battage",
+      "description": "Acheter ou vendre un bien devrait être serein et clair. Nous combinons expertise locale et marketing moderne pour une expérience premium du premier appel à la signature.",
+      "points": ["Des prix qui ont du sens", "Un marketing qui performe", "Une négociation qui vous protège"]
+    },
+    "timeline": {
+      "title": "Chronologie",
+      "subtitle": "Comment nous en sommes arrivés là",
+      "2014": { "title": "Xact est fondé", "text": "Une agence boutique avec une approche moderne et centrée sur le client." },
+      "2017": { "title": "Premier objectif de €50M", "text": "Un palmarès construit sur les recommandations et la confiance." },
+      "2020": { "title": "Expansion digitale", "text": "Meilleure photographie, visites et performance marketing." },
+      "2024": { "title": "Modèle de service premium", "text": "Positionnement affiné et expérience d'achat/vente élevée." }
+    },
+    "values": {
+      "label": "NOS VALEURS",
+      "title": "Ce qui nous distingue",
+      "subtitle": "Nous sommes boutique par choix — moins de clients, plus d'attention, de meilleurs résultats.",
+      "trustTransparency": { "title": "Confiance & Transparence", "desc": "Communication claire et conseils honnêtes — toujours." },
+      "clientFocused": { "title": "Orienté client", "desc": "Nous écoutons d'abord, puis construisons un plan adapté à vos objectifs." },
+      "qualityOverQuantity": { "title": "Qualité avant quantité", "desc": "Annonces sélectionnées et acheteurs sérieux — pas de bruit, que des résultats." },
+      "localExpertise": { "title": "Expertise locale", "desc": "Une connaissance du Luxembourg sur laquelle vous pouvez compter, des prix aux formalités." }
+    },
+    "team": {
+      "label": "NOTRE ÉQUIPE",
+      "title": "Rencontrez les experts",
+      "subtitle": "De vraies personnes, une vraie expérience — avec une approche premium.",
+      "contact": "Contact",
+      "bookConsultation": "Réserver une consultation"
+    },
+    "roles": {
+      "founderCeo": "Fondatrice & CEO",
+      "seniorAgent": "Agent senior",
+      "propertyConsultant": "Consultant immobilier",
+      "salesManager": "Directeur commercial"
+    },
+    "cta": {
+      "label": "PRÊT ?",
+      "title": "Rendons votre prochain pas facile.",
+      "description": "Dites-nous ce que vous essayez d'accomplir — nous vous donnerons un plan clair et la prochaine meilleure étape.",
+      "browseProperties": "Parcourir les biens",
+      "contactUs": "Contactez-nous",
+      "backToHome": "Retour à l'accueil"
+    }
+  },
+  "contact": {
+    "badge": "NOUS CONTACTER",
+    "heroTitle": "Parlons de",
+    "heroHighlight": "votre prochain pas.",
+    "heroSubtitle": "Que vous achetiez, vendiez ou ayez simplement des questions — nous sommes là pour vous aider.",
+    "phone": "Téléphone",
+    "phoneHours": "Lun-Ven 9h00-18h00",
+    "email": "Email",
+    "emailReply": "Nous répondons sous 24 heures",
+    "office": "Bureau",
+    "officeAddress": "L-1930 Luxembourg Ville",
+    "sendMessage": "Envoyez-nous un message",
+    "formSubtitle": "Remplissez le formulaire et nous vous recontacterons sous 24 heures.",
+    "fullName": "Nom complet",
+    "emailLabel": "Email",
+    "phoneLabel": "Téléphone",
+    "helpWith": "Comment pouvons-nous vous aider ?",
+    "selectOption": "Sélectionner une option",
+    "message": "Message",
+    "messagePlaceholder": "Dites-nous en plus sur ce que vous recherchez...",
+    "sendButton": "Envoyer le message",
+    "privacyNote": "En soumettant, vous acceptez notre",
+    "officeHours": "Heures d'ouverture",
+    "mondayFriday": "Lundi - Vendredi",
+    "saturday": "Samedi",
+    "sunday": "Dimanche",
+    "closed": "Fermé",
+    "cantVisit": "Vous ne pouvez pas venir pendant les heures d'ouverture ?",
+    "scheduleAppointment": "Prenez rendez-vous",
+    "arrangeTime": "et nous trouverons un créneau qui vous convient.",
+    "quickLinks": "Liens rapides",
+    "freeValuation": "Obtenez une estimation gratuite",
+    "browseProperties": "Parcourir les biens disponibles",
+    "viewPricing": "Voir nos tarifs",
+    "faq": {
+      "title": "Questions fréquentes",
+      "subtitle": "Trouvez des réponses aux questions fréquentes sur l'achat, la vente et la collaboration avec Xact.",
+      "viewFaq": "Voir la FAQ"
+    },
+    "success": {
+      "title": "Message envoyé !",
+      "description": "Merci de nous avoir contactés. Nous vous répondrons sous 24 heures.",
+      "sendAnother": "Envoyer un autre message",
+      "browseProperties": "Parcourir les biens"
+    },
+    "inquiryTypes": {
+      "buying": "Acheter un bien",
+      "selling": "Vendre mon bien",
+      "valuation": "Estimation immobilière",
+      "renting": "Location",
+      "investment": "Conseil en investissement",
+      "general": "Demande générale"
+    }
+  },
+  "estimate": {
+    "badge": "ESTIMATION GRATUITE",
+    "heroTitle": "Votre bien pourrait valoir",
+    "heroHighlight": "plus que vous ne le pensez.",
+    "heroSubtitle": "Obtenez une estimation gratuite d'expert en 24 heures. Aucun engagement, aucune pression — juste un prix de marché honnête.",
+    "stats": {
+      "propertiesValued": "Biens estimés",
+      "responseTime": "Délai de réponse",
+      "accuracyRate": "Taux de précision"
+    },
+    "benefits": {
+      "trueValue": { "title": "Connaissez votre vraie valeur", "desc": "Ne laissez pas d'argent sur la table — obtenez un prix de marché précis" },
+      "expertResponse": { "title": "Réponse expert en 24h", "desc": "Appel personnel d'un agent local qui connaît votre quartier" },
+      "confidential": { "title": "100% Confidentiel", "desc": "Vos informations restent privées, pas de spam, pas de pression" },
+      "free": { "title": "Entièrement gratuit", "desc": "Pas de frais, pas d'obligations, pas de conditions" }
+    },
+    "form": {
+      "propertyDetails": "Détails du bien",
+      "propertyType": "Type de bien",
+      "selectType": "Sélectionner le type",
+      "location": "Emplacement",
+      "selectLocation": "Sélectionner l'emplacement",
+      "streetAddress": "Adresse",
+      "streetAddressHint": "(optionnel, améliore la précision)",
+      "size": "Surface (m²)",
+      "bedrooms": "Chambres",
+      "bathrooms": "Salles de bain",
+      "select": "Sélectionner",
+      "condition": "État",
+      "selectCondition": "Sélectionner l'état",
+      "floor": "Étage",
+      "floorHint": "(pour les appartements)",
+      "parking": "Parking",
+      "parkingOptions": {
+        "none": "Aucun",
+        "indoor1": "1 place intérieure",
+        "indoor2": "2 places intérieures",
+        "outdoor": "Extérieur uniquement",
+        "garage": "Garage privé"
+      },
+      "outdoorSpace": "Espace extérieur",
+      "outdoorOptions": {
+        "none": "Aucun",
+        "balcony": "Balcon",
+        "terrace": "Terrasse",
+        "garden": "Jardin",
+        "terraceGarden": "Terrasse + Jardin"
+      },
+      "anythingElse": "Autre chose à nous dire ?",
+      "anythingElsePlaceholder": "Rénovations récentes, caractéristiques spéciales, raison de la vente...",
+      "photos": "Photos",
+      "photosHint": "(optionnel mais améliore la précision)",
+      "photosDescription": "Téléchargez jusqu'à 10 photos de votre bien — intérieur, extérieur, vues.",
+      "dragDrop": "Glissez-déposez vos photos ici",
+      "browse": "parcourir",
+      "toUpload": "pour télécharger",
+      "photoLimits": "JPG, PNG jusqu'à 10Mo · Max 10 photos",
+      "contactDetails": "Vos coordonnées",
+      "fullName": "Nom complet",
+      "email": "Email",
+      "phone": "Téléphone",
+      "timeline": "Quand souhaitez-vous vendre ?",
+      "selectTimeline": "Sélectionner le délai",
+      "timelineOptions": {
+        "asap": "Dès que possible",
+        "1to3": "Dans 1-3 mois",
+        "3to6": "Dans 3-6 mois",
+        "6plus": "6+ mois",
+        "curious": "Juste curieux de la valeur"
+      },
+      "submit": "Obtenir mon estimation gratuite",
+      "submitNote": "Nous vous contacterons sous 24 heures · Sans engagement"
+    },
+    "conditions": {
+      "newRenovated": "Neuf / Rénové",
+      "goodCondition": "Bon état",
+      "lightRefresh": "Rafraîchissement léger nécessaire",
+      "fullRenovation": "Rénovation complète nécessaire"
+    },
+    "sidebar": {
+      "clientsSay": "Ce que disent nos clients",
+      "whyValuation": "Pourquoi une estimation ?",
+      "whyPoints": [
+        "Savoir si c'est le bon moment pour vendre",
+        "Comprendre la position de votre bien sur le marché",
+        "Obtenir des conseils pour augmenter la valeur de votre bien",
+        "Planifier votre prochain pas en toute confiance"
+      ],
+      "preferToTalk": "Vous préférez parler ?",
+      "callDirectly": "Appelez-nous directement pour une assistance immédiate."
+    },
+    "success": {
+      "title": "Demande reçue !",
+      "description": "Merci pour votre intérêt. Un de nos agents vous contactera sous 24 heures avec une estimation personnalisée.",
+      "submitAnother": "Soumettre une autre demande"
+    }
+  },
+  "dashboard": {
+    "welcome": "Bienvenue,",
+    "manageProperties": "Gérez vos biens et paramètres de compte.",
+    "signOut": "Déconnexion",
+    "cards": {
+      "myListings": { "title": "Mes annonces", "desc": "Voir et gérer vos biens" },
+      "addNew": { "title": "Nouvelle annonce", "desc": "Soumettre un nouveau bien" },
+      "saved": { "title": "Biens sauvegardés", "desc": "Vos favoris" },
+      "messages": { "title": "Messages", "desc": "Voir les demandes et messages" },
+      "profile": { "title": "Profil", "desc": "Mettre à jour vos paramètres de compte" }
+    },
+"listings": {
+      "title": "Mes annonces",
+      "subtitle": "Gérez vos annonces immobilières",
+      "addNew": "Ajouter une annonce",
+      "filterAll": "Toutes",
+      "filterActive": "Actives",
+      "filterPending": "En attente",
+      "filterSold": "Vendues",
+      "statusActive": "Active",
+      "statusPending": "En révision",
+      "statusSold": "Vendue",
+      "noListings": "Pas encore d'annonces",
+      "noListingsDesc": "Commencez par ajouter votre première annonce"
+    },
+    "profile": {
+      "title": "Paramètres du profil",
+      "subtitle": "Gérez les informations de votre compte",
+      "photo": "Photo de profil",
+      "changePhoto": "Changer la photo",
+      "personalInfo": "Informations personnelles",
+      "fullName": "Nom complet",
+      "email": "Email",
+      "phone": "Téléphone",
+      "company": "Entreprise",
+      "bio": "Bio",
+      "bioPlaceholder": "Parlez-nous un peu de vous...",
+      "notifications": "Notifications",
+      "emailNotifications": "Notifications par email",
+      "emailNotificationsDesc": "Recevez des mises à jour sur vos annonces et demandes",
+      "smsNotifications": "Notifications SMS",
+      "smsNotificationsDesc": "Recevez des SMS pour les mises à jour urgentes",
+      "marketingEmails": "Emails marketing",
+      "marketingEmailsDesc": "Recevez des conseils, tendances et contenus promotionnels",
+      "security": "Sécurité",
+      "changePassword": "Changer le mot de passe",
+      "saveChanges": "Enregistrer les modifications",
+      "saving": "Enregistrement...",
+      "saved": "Modifications enregistrées"
+    },
+    "saved": {
+      "title": "Biens sauvegardés",
+      "subtitle": "Les biens que vous avez mis en favoris",
+      "noSaved": "Aucun bien sauvegardé",
+      "noSavedDesc": "Parcourez les biens et sauvegardez ceux qui vous plaisent",
+      "browseProperties": "Parcourir les biens"
+    },
+    "messages": {
+      "title": "Messages",
+      "subtitle": "Demandes d'acheteurs intéressés",
+      "new": "nouveau",
+      "yesterday": "Hier",
+      "regarding": "Concernant",
+      "reply": "Répondre",
+      "replyPlaceholder": "Tapez votre réponse...",
+      "sendReply": "Envoyer la réponse",
+      "replySent": "Réponse envoyée !",
+      "selectMessage": "Sélectionnez un message pour le voir",
+      "noMessages": "Pas encore de messages",
+      "noMessagesDesc": "Quand des acheteurs vous contactent pour vos annonces, leurs messages apparaîtront ici"
+    },
+    "newListing": {
+      "title": "Publier votre bien",
+      "subtitle": "Remplissez le formulaire ci-dessous pour soumettre votre annonce à révision.",
+      "steps": {
+        "basicInfo": "Infos de base",
+        "location": "Emplacement",
+        "details": "Détails",
+        "photos": "Photos",
+        "description": "Description"
+      },
+      "step1": {
+        "title": "Informations de base",
+        "subtitle": "Parlez-nous de votre bien",
+        "listingType": "Type d'annonce",
+        "forSale": "À vendre",
+        "forRent": "À louer",
+        "propertyTitle": "Titre du bien",
+        "propertyTitlePlaceholder": "ex. Appartement moderne à Kirchberg",
+        "propertyType": "Type de bien",
+        "selectType": "Sélectionner le type",
+        "price": "Prix (€)",
+        "pricePerMonth": "Prix (€/mois)"
+      },
+      "step2": {
+        "title": "Emplacement",
+        "subtitle": "Où se trouve votre bien ?",
+        "cityArea": "Ville / Quartier",
+        "selectCityArea": "Sélectionner une ville ou quartier",
+        "streetAddress": "Adresse",
+        "streetAddressPlaceholder": "123 Rue Principale",
+        "zipCode": "Code postal",
+        "zipCodePlaceholder": "L-1234"
+      },
+      "step3": {
+        "title": "Détails du bien",
+        "subtitle": "Décrivez les spécifications de votre bien",
+        "livingArea": "Surface habitable (m²)",
+        "bedrooms": "Chambres",
+        "bathrooms": "Salles de bain",
+        "floors": "Étages",
+        "yearBuilt": "Année de construction",
+        "energyClass": "Classe énergétique",
+        "selectEnergyClass": "Sélectionner",
+        "features": "Caractéristiques",
+        "selectFeatures": "Sélectionnez tout ce qui s'applique"
+      },
+      "step4": {
+        "title": "Photos",
+        "subtitle": "Ajoutez des photos de votre bien",
+        "uploadTitle": "Télécharger des photos du bien",
+        "uploadSubtitle": "Des photos de qualité rendent votre annonce plus attractive",
+        "dragDrop": "Glissez-déposez vos photos ici, ou",
+        "browse": "parcourir",
+        "minPhotos": "Minimum 3 photos, maximum 20 · JPG, PNG jusqu'à 10Mo",
+        "photoCount": "photos téléchargées"
+      },
+      "step5": {
+        "title": "Description & Contact",
+        "subtitle": "Ajoutez des détails et vos coordonnées",
+        "description": "Description du bien",
+        "descriptionPlaceholder": "Décrivez votre bien en détail. Mentionnez les caractéristiques clés, les commodités à proximité, les transports, etc.",
+        "descriptionHint": "caractères",
+        "contactInfo": "Coordonnées",
+        "name": "Nom",
+        "email": "Email",
+        "phone": "Téléphone"
+      },
+      "navigation": {
+        "back": "Retour",
+        "continue": "Continuer",
+        "submitListing": "Soumettre l'annonce",
+        "submitting": "Soumission en cours..."
+      },
+      "success": {
+        "title": "Annonce soumise !",
+        "message": "Merci d'avoir soumis votre bien. Notre équipe examinera votre annonce et vous recontactera sous 24-48 heures.",
+        "whatHappensNext": "Que se passe-t-il ensuite ?",
+        "step1": "Notre équipe examine votre annonce pour la qualité et l'exactitude",
+        "step2": "Nous pourrions vous contacter pour des informations ou photos supplémentaires",
+        "step3": "Une fois approuvée, votre annonce est publiée sur Xact",
+        "viewListings": "Voir mes annonces",
+        "addAnother": "Ajouter un autre bien"
+      },
+      "features": {
+        "parking": "Parking",
+        "garage": "Garage",
+        "garden": "Jardin",
+        "terrace": "Terrasse",
+        "balcony": "Balcon",
+        "elevator": "Ascenseur",
+        "pool": "Piscine",
+        "airConditioning": "Climatisation",
+        "fireplace": "Cheminée",
+        "storage": "Rangement",
+        "cellar": "Cave",
+        "furnished": "Meublé"
+      },
+      "propertyTypes": {
+        "apartment": "Appartement",
+        "house": "Maison",
+        "villa": "Villa",
+        "penthouse": "Penthouse",
+        "studio": "Studio",
+        "duplex": "Duplex",
+        "land": "Terrain",
+        "commercial": "Commercial"
+      }
+    }
+  }
+}

@@ -1,0 +1,652 @@
+{
+  "common": {
+    "search": "Search",
+    "viewAll": "View all",
+    "learnMore": "Learn more",
+    "contact": "Contact",
+    "save": "Save",
+    "share": "Share",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "loading": "Loading...",
+    "noResults": "No results found",
+    "beds": "beds",
+    "bed": "bed",
+    "baths": "baths",
+    "bath": "bath",
+    "area": "m²",
+    "perMonth": "/month",
+    "optional": "optional",
+    "propertyTypes": {
+      "APARTMENT": "Apartment",
+      "HOUSE": "House",
+      "VILLA": "Villa",
+      "STUDIO": "Studio",
+      "PENTHOUSE": "Penthouse",
+      "DUPLEX": "Duplex",
+      "TRIPLEX": "Triplex",
+      "LOFT": "Loft",
+      "OFFICE": "Office",
+      "RETAIL": "Retail",
+      "WAREHOUSE": "Warehouse",
+      "LAND": "Land",
+      "PARKING": "Parking",
+      "OTHER": "Other"
+    },
+    "features": {
+      "Parking": "Parking",
+      "Garage": "Garage",
+      "Garden": "Garden",
+      "Terrace": "Terrace",
+      "Balcony": "Balcony",
+      "Elevator": "Elevator",
+      "Pool": "Pool",
+      "Air Conditioning": "Air Conditioning",
+      "Fireplace": "Fireplace",
+      "Storage": "Storage",
+      "Cellar": "Cellar",
+      "Furnished": "Furnished"
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "properties": "Properties",
+    "buy": "Buy",
+    "rent": "Rent",
+    "sell": "Sell",
+    "agencies": "Agencies",
+    "about": "About",
+    "contact": "Contact",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "dashboard": "Dashboard",
+    "admin": "Admin",
+    "signOut": "Sign Out",
+    "listProperty": "List Property"
+  },
+  "home": {
+    "badge": "Luxembourg's Premium Real Estate Platform",
+    "title": "Discover your",
+    "titleHighlight": "dream home.",
+    "subtitle": "Exceptional properties across Luxembourg. Buy, rent, or list with the platform trusted by thousands.",
+    "stats": {
+      "activeListings": "Active Listings",
+      "propertyValue": "Property Value",
+      "satisfiedClients": "Satisfied Clients"
+    },
+    "featured": {
+      "label": "FEATURED",
+      "title": "Exceptional properties"
+    },
+    "categories": {
+      "label": "BROWSE",
+      "title": "Find your perfect match",
+      "apartments": "Apartments",
+      "houses": "Houses",
+      "land": "Land",
+      "commercial": "Commercial",
+      "properties": "properties"
+    },
+    "services": {
+      "label": "WHY XACT",
+      "title": "The smarter way to find property",
+      "advancedSearch": {
+        "title": "Advanced Search",
+        "desc": "Filter by 20+ criteria to find your perfect property."
+      },
+      "verifiedListings": {
+        "title": "Verified Listings",
+        "desc": "Every property is reviewed before publication."
+      },
+      "freeValuation": {
+        "title": "Free Valuation",
+        "desc": "Get a professional estimate — completely free."
+      },
+      "easyListing": {
+        "title": "Easy Listing",
+        "desc": "Upload your property in minutes."
+      },
+      "directContact": {
+        "title": "Direct Contact",
+        "desc": "Message sellers and agents directly."
+      },
+      "agencyProfiles": {
+        "title": "Agency Profiles",
+        "desc": "Dedicated pages for verified partners."
+      }
+    },
+    "estimation": {
+      "badge": "Free Service",
+      "title": "What's your property worth?",
+      "subtitle": "Get a professional valuation from our expert team — completely free, no obligations.",
+      "button": "Request Free Estimation"
+    },
+    "mortgage": {
+      "label": "FINANCIAL TOOLS",
+      "title": "Mortgage Calculator",
+      "subtitle": "Plan your purchase with our interactive calculator. Compare rates from Luxembourg banks.",
+      "propertyPrice": "Property Price",
+      "downPayment": "Down Payment",
+      "loanTerm": "Loan Term",
+      "selectBank": "Select Your Bank",
+      "monthlyPayment": "Your Monthly Payment",
+      "perMonth": "per month",
+      "loanAmount": "Loan Amount",
+      "interestRate": "Interest Rate",
+      "totalInterest": "Total Interest",
+      "totalPayment": "Total Payment",
+      "findProperties": "Find Properties Under",
+      "disclaimer": "* Rates are indicative. Contact banks directly for accurate quotes.",
+      "years": "years"
+    },
+    "cta": {
+      "title": "Ready to find your dream home?",
+      "subtitle": "Join thousands of happy clients who found their perfect property through Xact.",
+      "browse": "Browse Properties",
+      "submit": "Submit Your Property"
+    }
+  },
+  "search": {
+    "allLocations": "All Locations",
+    "buyRent": "Buy / Rent",
+    "buy": "Buy",
+    "rent": "Rent",
+    "all": "All",
+    "bedrooms": "Bedrooms",
+    "maxPrice": "Max Price",
+    "propertyType": "Property Type",
+    "minArea": "Min. Area",
+    "allTypes": "All Types",
+    "filters": "Filters",
+    "resetFilters": "Reset All Filters",
+    "sortBy": "Sort By",
+    "newest": "Newest First",
+    "priceLow": "Price: Low to High",
+    "priceHigh": "Price: High to Low",
+    "areaHigh": "Largest First",
+    "bedsHigh": "Most Bedrooms"
+  },
+  "properties": {
+    "title": "Find Your Property",
+    "available": "properties available in Luxembourg",
+    "showing": "Showing",
+    "of": "of",
+    "forSale": "For Sale",
+    "forRent": "For Rent",
+    "featured": "Featured",
+    "rental": "Rental",
+    "noProperties": "No properties found",
+    "noPropertiesDesc": "Try adjusting your filters to see more results.",
+    "clearFilters": "Clear All Filters",
+    "page": "Page",
+    "backToProperties": "Back to Properties"
+  },
+  "propertyDetail": {
+    "description": "Description",
+    "features": "Features",
+    "details": "Details",
+    "propertyType": "Property Type",
+    "yearBuilt": "Year Built",
+    "energyClass": "Energy Class",
+    "floor": "Floor",
+    "bedrooms": "Bedrooms",
+    "bathrooms": "Bathrooms",
+    "livingArea": "m² Living",
+    "landArea": "m² Land",
+    "contactAgent": "Contact Agent",
+    "sendMessage": "Send a Message",
+    "yourName": "Your Name",
+    "yourEmail": "Your Email",
+    "yourPhone": "Your Phone",
+    "yourMessage": "Your Message",
+    "send": "Send Message",
+    "similarProperties": "Similar Properties",
+    "notFound": "Property Not Found",
+    "notFoundDesc": "The property you're looking for doesn't exist."
+  },
+  "footer": {
+    "description": "Luxembourg's premier real estate platform. Find your dream property or list yours today.",
+    "quickLinks": "Quick Links",
+    "propertyTypes": "Property Types",
+    "contact": "Contact",
+    "apartments": "Apartments",
+    "houses": "Houses",
+    "villas": "Villas",
+    "commercial": "Commercial",
+    "land": "Land",
+    "allRightsReserved": "All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "cookies": "Cookies",
+    "imprint": "Legal Notice"
+  },
+  "auth": {
+    "welcomeBack": "Welcome back",
+    "signInToAccount": "Sign in to your account",
+    "continueWithGoogle": "Continue with Google",
+    "or": "or",
+    "email": "Email",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "signIn": "Sign In",
+    "signingIn": "Signing in...",
+    "noAccount": "Don't have an account?",
+    "createOne": "Create one",
+    "createAccount": "Create an account",
+    "startJourney": "Start your property journey today",
+    "fullName": "Full Name",
+    "confirmPassword": "Confirm Password",
+    "atLeast8Chars": "At least 8 characters",
+    "agreeToTerms": "I agree to the",
+    "termsOfService": "Terms of Service",
+    "and": "and",
+    "privacyPolicy": "Privacy Policy",
+    "creatingAccount": "Creating account...",
+    "alreadyHaveAccount": "Already have an account?",
+    "signInLink": "Sign in",
+    "invalidCredentials": "Invalid email or password",
+    "passwordsNotMatch": "Passwords do not match",
+    "passwordTooShort": "Password must be at least 8 characters",
+    "somethingWentWrong": "Something went wrong"
+  },
+  "about": {
+    "badge": "ABOUT XACT",
+    "heroTitle": "We make real estate feel",
+    "heroPremium": "premium",
+    "heroNotPainful": ", not painful.",
+    "heroSubtitle": "Xact is a boutique Luxembourg agency built for people who want clarity, speed, and confidence — whether you're buying, selling, or investing.",
+    "heroWords": ["trusted", "modern", "sharp", "personal", "Luxembourg"],
+    "exploreListings": "Explore Listings",
+    "talkToTeam": "Talk to our team",
+    "scrollToDiscover": "Scroll to discover our story",
+    "agencySnapshot": "Agency Snapshot",
+    "boutiqueTag": "Luxembourg • Boutique • Premium",
+    "since": "Since 2014",
+    "marketMomentum": "Market momentum",
+    "ourPromise": "Our promise",
+    "promiseText": "Fast feedback, sharp pricing, and zero surprises.",
+    "stats": {
+      "yearsExperience": "Years Experience",
+      "propertiesSold": "Properties Sold",
+      "totalSalesVolume": "Total Sales Volume",
+      "clientSatisfaction": "Client Satisfaction"
+    },
+    "story": {
+      "label": "OUR STORY",
+      "title": "Built on craft, not hype",
+      "description": "Buying or selling property should feel confident and clear. We combine local expertise with modern marketing to deliver an experience that feels premium from first call to final signature.",
+      "points": ["Pricing that makes sense", "Marketing that performs", "Negotiation that protects you"]
+    },
+    "timeline": {
+      "title": "Timeline",
+      "subtitle": "How we got here",
+      "2014": { "title": "Xact is founded", "text": "A boutique agency with a modern, client-first approach." },
+      "2017": { "title": "First €50M milestone", "text": "A track record built on referrals and trust." },
+      "2020": { "title": "Digital-first expansion", "text": "Better photography, tours, and marketing performance." },
+      "2024": { "title": "Premium service model", "text": "Sharper positioning and an elevated buying/selling experience." }
+    },
+    "values": {
+      "label": "OUR VALUES",
+      "title": "What sets us apart",
+      "subtitle": "We're boutique on purpose — fewer clients, better attention, stronger outcomes.",
+      "trustTransparency": { "title": "Trust & Transparency", "desc": "Clear communication and honest advice — always." },
+      "clientFocused": { "title": "Client-Focused", "desc": "We listen first, then build a plan that fits your goals." },
+      "qualityOverQuantity": { "title": "Quality Over Quantity", "desc": "Curated listings and serious buyers — no noise, just results." },
+      "localExpertise": { "title": "Local Expertise", "desc": "Luxembourg knowledge you can rely on, from pricing to paperwork." }
+    },
+    "team": {
+      "label": "OUR TEAM",
+      "title": "Meet the experts",
+      "subtitle": "Real humans, real experience — with a premium approach.",
+      "contact": "Contact",
+      "bookConsultation": "Book a consultation"
+    },
+    "roles": {
+      "founderCeo": "Founder & CEO",
+      "seniorAgent": "Senior Agent",
+      "propertyConsultant": "Property Consultant",
+      "salesManager": "Sales Manager"
+    },
+    "cta": {
+      "label": "READY?",
+      "title": "Let's make your next move feel easy.",
+      "description": "Tell us what you're trying to achieve — we'll give you a clear plan and the next best step.",
+      "browseProperties": "Browse properties",
+      "contactUs": "Contact us",
+      "backToHome": "Back to home"
+    }
+  },
+  "contact": {
+    "badge": "GET IN TOUCH",
+    "heroTitle": "Let's talk about",
+    "heroHighlight": "your next move.",
+    "heroSubtitle": "Whether you're buying, selling, or just have questions — we're here to help.",
+    "phone": "Phone",
+    "phoneHours": "Mon-Fri 9:00-18:00",
+    "email": "Email",
+    "emailReply": "We reply within 24 hours",
+    "office": "Office",
+    "officeAddress": "L-1930 Luxembourg City",
+    "sendMessage": "Send us a message",
+    "formSubtitle": "Fill out the form and we'll get back to you within 24 hours.",
+    "fullName": "Full Name",
+    "emailLabel": "Email",
+    "phoneLabel": "Phone",
+    "helpWith": "What can we help with?",
+    "selectOption": "Select an option",
+    "message": "Message",
+    "messagePlaceholder": "Tell us more about what you're looking for...",
+    "sendButton": "Send Message",
+    "privacyNote": "By submitting, you agree to our",
+    "officeHours": "Office Hours",
+    "mondayFriday": "Monday - Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+    "closed": "Closed",
+    "cantVisit": "Can't visit during office hours?",
+    "scheduleAppointment": "Schedule an appointment",
+    "arrangeTime": "and we'll arrange a time that works for you.",
+    "quickLinks": "Quick Links",
+    "freeValuation": "Get a free property valuation",
+    "browseProperties": "Browse available properties",
+    "viewPricing": "View our pricing",
+    "faq": {
+      "title": "Common Questions",
+      "subtitle": "Find answers to frequently asked questions about buying, selling, and working with Xact.",
+      "viewFaq": "View FAQ"
+    },
+    "success": {
+      "title": "Message sent!",
+      "description": "Thank you for reaching out. We'll get back to you within 24 hours.",
+      "sendAnother": "Send another message",
+      "browseProperties": "Browse Properties"
+    },
+    "inquiryTypes": {
+      "buying": "Buying a property",
+      "selling": "Selling my property",
+      "valuation": "Property valuation",
+      "renting": "Renting",
+      "investment": "Investment advice",
+      "general": "General inquiry"
+    }
+  },
+  "estimate": {
+    "badge": "FREE VALUATION",
+    "heroTitle": "Your property could be worth",
+    "heroHighlight": "more than you think.",
+    "heroSubtitle": "Get a free, expert valuation in 24 hours. No commitment, no pressure — just an honest market price.",
+    "stats": {
+      "propertiesValued": "Properties valued",
+      "responseTime": "Response time",
+      "accuracyRate": "Accuracy rate"
+    },
+    "benefits": {
+      "trueValue": { "title": "Know Your True Value", "desc": "Don't leave money on the table — get an accurate market price" },
+      "expertResponse": { "title": "24h Expert Response", "desc": "Personal call from a local agent who knows your area" },
+      "confidential": { "title": "100% Confidential", "desc": "Your information stays private, no spam, no pressure" },
+      "free": { "title": "Completely Free", "desc": "No fees, no obligations, no strings attached" }
+    },
+    "form": {
+      "propertyDetails": "Property Details",
+      "propertyType": "Property Type",
+      "selectType": "Select type",
+      "location": "Location",
+      "selectLocation": "Select location",
+      "streetAddress": "Street Address",
+      "streetAddressHint": "(optional, helps accuracy)",
+      "size": "Size (m²)",
+      "bedrooms": "Bedrooms",
+      "bathrooms": "Bathrooms",
+      "select": "Select",
+      "condition": "Condition",
+      "selectCondition": "Select condition",
+      "floor": "Floor",
+      "floorHint": "(for apartments)",
+      "parking": "Parking",
+      "parkingOptions": {
+        "none": "None",
+        "indoor1": "1 indoor spot",
+        "indoor2": "2 indoor spots",
+        "outdoor": "Outdoor only",
+        "garage": "Private garage"
+      },
+      "outdoorSpace": "Outdoor Space",
+      "outdoorOptions": {
+        "none": "None",
+        "balcony": "Balcony",
+        "terrace": "Terrace",
+        "garden": "Garden",
+        "terraceGarden": "Terrace + Garden"
+      },
+      "anythingElse": "Anything else we should know?",
+      "anythingElsePlaceholder": "Recent renovations, special features, reason for selling...",
+      "photos": "Photos",
+      "photosHint": "(optional but helps accuracy)",
+      "photosDescription": "Upload up to 10 photos of your property — interior, exterior, views.",
+      "dragDrop": "Drag & drop photos here",
+      "browse": "browse",
+      "toUpload": "to upload",
+      "photoLimits": "JPG, PNG up to 10MB each · Max 10 photos",
+      "contactDetails": "Your Contact Details",
+      "fullName": "Full Name",
+      "email": "Email",
+      "phone": "Phone",
+      "timeline": "When are you looking to sell?",
+      "selectTimeline": "Select timeline",
+      "timelineOptions": {
+        "asap": "As soon as possible",
+        "1to3": "Within 1-3 months",
+        "3to6": "Within 3-6 months",
+        "6plus": "6+ months",
+        "curious": "Just curious about the value"
+      },
+      "submit": "Get My Free Valuation",
+      "submitNote": "We'll contact you within 24 hours · No commitment required"
+    },
+    "conditions": {
+      "newRenovated": "New / Renovated",
+      "goodCondition": "Good condition",
+      "lightRefresh": "Needs light refresh",
+      "fullRenovation": "Needs full renovation"
+    },
+    "sidebar": {
+      "clientsSay": "What our clients say",
+      "whyValuation": "Why get a valuation?",
+      "whyPoints": [
+        "Know if now is the right time to sell",
+        "Understand your property's market position",
+        "Get tips to increase your property's value",
+        "Plan your next move with confidence"
+      ],
+      "preferToTalk": "Prefer to talk?",
+      "callDirectly": "Call us directly for immediate assistance."
+    },
+    "success": {
+      "title": "Request received!",
+      "description": "Thank you for your interest. One of our agents will contact you within 24 hours with a personalized valuation.",
+      "submitAnother": "Submit another request"
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome,",
+    "manageProperties": "Manage your properties and account settings.",
+    "signOut": "Sign Out",
+    "cards": {
+      "myListings": { "title": "My Listings", "desc": "View and manage your properties" },
+      "addNew": { "title": "Add New Listing", "desc": "Submit a new property" },
+      "saved": { "title": "Saved Properties", "desc": "Properties you've favorited" },
+      "messages": { "title": "Messages", "desc": "View inquiries and messages" },
+      "profile": { "title": "Profile", "desc": "Update your account settings" }
+    },
+"listings": {
+      "title": "My Listings",
+      "subtitle": "Manage your property listings",
+      "addNew": "Add New Listing",
+      "filterAll": "All",
+      "filterActive": "Active",
+      "filterPending": "Pending",
+      "filterSold": "Sold",
+      "statusActive": "Active",
+      "statusPending": "Pending Review",
+      "statusSold": "Sold",
+      "noListings": "No listings yet",
+      "noListingsDesc": "Start by adding your first property listing"
+    },
+    "profile": {
+      "title": "Profile Settings",
+      "subtitle": "Manage your account information",
+      "photo": "Profile Photo",
+      "changePhoto": "Change Photo",
+      "personalInfo": "Personal Information",
+      "fullName": "Full Name",
+      "email": "Email",
+      "phone": "Phone",
+      "company": "Company",
+      "bio": "Bio",
+      "bioPlaceholder": "Tell us a bit about yourself...",
+      "notifications": "Notifications",
+      "emailNotifications": "Email notifications",
+      "emailNotificationsDesc": "Receive updates about your listings and inquiries",
+      "smsNotifications": "SMS notifications",
+      "smsNotificationsDesc": "Get text messages for urgent updates",
+      "marketingEmails": "Marketing emails",
+      "marketingEmailsDesc": "Receive tips, trends, and promotional content",
+      "security": "Security",
+      "changePassword": "Change Password",
+      "saveChanges": "Save Changes",
+      "saving": "Saving...",
+      "saved": "Changes saved"
+    },
+    "saved": {
+      "title": "Saved Properties",
+      "subtitle": "Properties you've favorited",
+      "noSaved": "No saved properties",
+      "noSavedDesc": "Start browsing and save properties you like",
+      "browseProperties": "Browse Properties"
+    },
+    "messages": {
+      "title": "Messages",
+      "subtitle": "Property inquiries from interested buyers",
+      "new": "new",
+      "yesterday": "Yesterday",
+      "regarding": "Regarding",
+      "reply": "Reply",
+      "replyPlaceholder": "Type your reply...",
+      "sendReply": "Send Reply",
+      "replySent": "Reply sent!",
+      "selectMessage": "Select a message to view",
+      "noMessages": "No messages yet",
+      "noMessagesDesc": "When buyers contact you about your listings, you'll see their messages here"
+    },
+    "newListing": {
+      "title": "List Your Property",
+      "subtitle": "Complete the form below to submit your property listing for review.",
+      "steps": {
+        "basicInfo": "Basic Info",
+        "location": "Location",
+        "details": "Details",
+        "photos": "Photos",
+        "description": "Description"
+      },
+      "step1": {
+        "title": "Basic Information",
+        "subtitle": "Tell us about your property",
+        "listingType": "Listing Type",
+        "forSale": "For Sale",
+        "forRent": "For Rent",
+        "propertyTitle": "Property Title",
+        "propertyTitlePlaceholder": "e.g. Modern Apartment in Kirchberg",
+        "propertyType": "Property Type",
+        "selectType": "Select type",
+        "price": "Price (€)",
+        "pricePerMonth": "Price (€/month)"
+      },
+      "step2": {
+        "title": "Location",
+        "subtitle": "Where is your property located?",
+        "cityArea": "City / Area",
+        "selectCityArea": "Select city or area",
+        "streetAddress": "Street Address",
+        "streetAddressPlaceholder": "123 Main Street",
+        "zipCode": "Zip Code",
+        "zipCodePlaceholder": "L-1234"
+      },
+      "step3": {
+        "title": "Property Details",
+        "subtitle": "Describe your property specifications",
+        "livingArea": "Living Area (m²)",
+        "bedrooms": "Bedrooms",
+        "bathrooms": "Bathrooms",
+        "floors": "Floors",
+        "yearBuilt": "Year Built",
+        "energyClass": "Energy Class",
+        "selectEnergyClass": "Select",
+        "features": "Features",
+        "selectFeatures": "Select all that apply"
+      },
+      "step4": {
+        "title": "Photos",
+        "subtitle": "Add photos of your property",
+        "uploadTitle": "Upload Property Photos",
+        "uploadSubtitle": "High-quality photos help your listing stand out",
+        "dragDrop": "Drag and drop photos here, or",
+        "browse": "browse",
+        "minPhotos": "Minimum 3 photos, maximum 20 · JPG, PNG up to 10MB each",
+        "photoCount": "photos uploaded"
+      },
+      "step5": {
+        "title": "Description & Contact",
+        "subtitle": "Add details and your contact information",
+        "description": "Property Description",
+        "descriptionPlaceholder": "Describe your property in detail. Mention key features, nearby amenities, transport links, etc.",
+        "descriptionHint": "characters",
+        "contactInfo": "Contact Information",
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone"
+      },
+      "navigation": {
+        "back": "Back",
+        "continue": "Continue",
+        "submitListing": "Submit Listing",
+        "submitting": "Submitting..."
+      },
+      "success": {
+        "title": "Listing Submitted!",
+        "message": "Thank you for submitting your property. Our team will review your listing and get back to you within 24-48 hours.",
+        "whatHappensNext": "What happens next?",
+        "step1": "Our team reviews your listing for quality and accuracy",
+        "step2": "We may contact you for additional information or photos",
+        "step3": "Once approved, your listing goes live on Xact",
+        "viewListings": "View My Listings",
+        "addAnother": "Add Another Property"
+      },
+      "features": {
+        "parking": "Parking",
+        "garage": "Garage",
+        "garden": "Garden",
+        "terrace": "Terrace",
+        "balcony": "Balcony",
+        "elevator": "Elevator",
+        "pool": "Pool",
+        "airConditioning": "Air Conditioning",
+        "fireplace": "Fireplace",
+        "storage": "Storage",
+        "cellar": "Cellar",
+        "furnished": "Furnished"
+      },
+      "propertyTypes": {
+        "apartment": "Apartment",
+        "house": "House",
+        "villa": "Villa",
+        "penthouse": "Penthouse",
+        "studio": "Studio",
+        "duplex": "Duplex",
+        "land": "Land",
+        "commercial": "Commercial"
+      }
+    }
+  }
+}

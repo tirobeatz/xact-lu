@@ -1,132 +1,67 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
+import { FavoriteButton } from "@/components/favorite-button"
+import { useI18n } from "@/lib/i18n"
 
-// Mock data - will come from database later
-const mockProperties: Record<string, any> = {
-  "cozy-family-home-strassen": {
-    id: "1",
-    title: "Cozy Family Home",
-    slug: "cozy-family-home-strassen",
-    description:
-      "Beautiful family home in a quiet neighborhood of Strassen. This charming property features a spacious living area, modern kitchen, and a lovely garden perfect for children and entertaining. Recently renovated with high-quality materials throughout.\n\nThe ground floor offers an open-plan living and dining area with direct access to the terrace and garden. The fully equipped kitchen includes premium appliances. Upstairs you'll find three comfortable bedrooms and a family bathroom.\n\nLocated in one of Luxembourg's most sought-after residential areas, close to schools, shops, and public transport.",
-    location: "Strassen",
-    address: "12 Rue des Jardins, Strassen",
-    price: 685000,
-    type: "HOUSE",
-    listingType: "SALE",
-    beds: 3,
-    baths: 2,
-    area: 145,
-    landArea: 320,
-    yearBuilt: 2005,
-    energyClass: "B",
-    features: [
-      "Garden",
-      "Terrace",
-      "Garage",
-      "Modern Kitchen",
-      "Fireplace",
-      "Double Glazing",
-      "Alarm System",
-    ],
-    images: [
-      "https://images.unsplash.com/photo-1449844908441-8829872d2607?q=80&w=2070&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=2080&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=2070&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop",
-    ],
-    agent: {
-      name: "Marie Schmidt",
-      phone: "+352 621 123 456",
-      email: "marie@xact.lu",
-      image:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop",
-      agency: "Xact Real Estate",
-    },
-  },
-  "bright-city-apartment-bonnevoie": {
-    id: "2",
-    title: "Bright City Apartment",
-    slug: "bright-city-apartment-bonnevoie",
-    description:
-      "Modern and luminous apartment in the heart of Bonnevoie. Perfect for young professionals or couples looking for city living with excellent transport connections.\n\nThis beautifully renovated apartment features an open-plan living space with large windows flooding the rooms with natural light. The contemporary kitchen is fully equipped with quality appliances.\n\nBonnevoie is a vibrant neighborhood with cafes, restaurants, and shops at your doorstep. The train station is just a 5-minute walk away.",
-    location: "Bonnevoie",
-    address: "45 Avenue de la Gare, Bonnevoie",
-    price: 425000,
-    type: "APARTMENT",
-    listingType: "SALE",
-    beds: 2,
-    baths: 1,
-    area: 78,
-    floor: 3,
-    totalFloors: 5,
-    yearBuilt: 2018,
-    energyClass: "A",
-    features: [
-      "Balcony",
-      "Elevator",
-      "Modern Kitchen",
-      "Built-in Wardrobes",
-      "Cellar",
-      "Bike Storage",
-    ],
-    images: [
-      "https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=2070&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=2080&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=2070&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?q=80&w=2070&auto=format&fit=crop",
-    ],
-    agent: {
-      name: "Jean Muller",
-      phone: "+352 621 789 012",
-      email: "jean@xact.lu",
-      image:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=200&auto=format&fit=crop",
-      agency: "Xact Real Estate",
-    },
-  },
+interface Property {
+  id: string
+  title: string
+  slug: string
+  description: string
+  location: string
+  address: string
+  price: number
+  type: string
+  listingType: string
+  beds: number
+  baths: number
+  area: number
+  landArea?: number
+  yearBuilt?: number
+  energyClass?: string
+  floor?: number
+  totalFloors?: number
+  features: string[]
+  images: string[]
+  agent: {
+    name: string
+    phone: string
+    email: string
+    image: string
+    agency: string
+  }
 }
 
-const defaultProperty = {
-  id: "0",
-  title: "Property",
-  slug: "property",
-  description: "Beautiful property in Luxembourg.",
-  location: "Luxembourg",
-  address: "Luxembourg",
-  price: 500000,
-  type: "HOUSE",
-  listingType: "SALE",
-  beds: 3,
-  baths: 2,
-  area: 120,
-  yearBuilt: 2010,
-  energyClass: "C",
-  features: ["Garden", "Garage"],
-  images: [
-    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2070&auto=format&fit=crop",
-  ],
-  agent: {
-    name: "Agent",
-    phone: "+352 621 000 000",
-    email: "info@xact.lu",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=200&auto=format&fit=crop",
-    agency: "Xact Real Estate",
-  },
+interface SimilarProperty {
+  id: string
+  title: string
+  slug: string
+  location: string
+  price: number
+  type: string
+  listingType: string
+  beds: number
+  baths: number
+  area: number
+  image: string
 }
 
 const formatNumber = (num: number) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 
 export default function PropertyDetailPage() {
+  const { t } = useI18n()
   const params = useParams()
   const slug = params.slug as string
-  const property = mockProperties[slug] || defaultProperty
+
+  const [property, setProperty] = useState<Property | null>(null)
+  const [similarProperties, setSimilarProperties] = useState<SimilarProperty[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   const [activeImage, setActiveImage] = useState(0)
   const [showContact, setShowContact] = useState(false)
@@ -134,8 +69,57 @@ export default function PropertyDetailPage() {
     name: "",
     email: "",
     phone: "",
-    message: `Hi, I'm interested in this property: ${property.title}`,
+    message: "",
   })
+
+  useEffect(() => {
+    async function fetchProperty() {
+      try {
+        const res = await fetch(`/api/properties/${slug}`)
+        const data = await res.json()
+
+        if (!res.ok) {
+          setError(data.error || "Property not found")
+          return
+        }
+
+        setProperty(data.property)
+        setSimilarProperties(data.similarProperties)
+        setContactForm((prev) => ({
+          ...prev,
+          message: `Hi, I'm interested in this property: ${data.property.title}`,
+        }))
+      } catch (err) {
+        setError("Failed to load property")
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchProperty()
+  }, [slug])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#FAFAF8] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#B8926A]"></div>
+      </div>
+    )
+  }
+
+  if (error || !property) {
+    return (
+      <div className="min-h-screen bg-[#FAFAF8] flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-semibold text-[#1A1A1A] mb-4">{t.propertyDetail.notFound}</h1>
+          <p className="text-[#6B6B6B] mb-6">{error || t.propertyDetail.notFoundDesc}</p>
+          <Button asChild className="rounded-xl bg-[#1A1A1A]">
+            <Link href="/properties">{t.properties.backToProperties}</Link>
+          </Button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <>
@@ -148,17 +132,16 @@ export default function PropertyDetailPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="relative rounded-2xl overflow-hidden cursor-pointer"
-              onClick={() => {}}
             >
               <div
                 className="absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: `url('${property.images[activeImage]}')` }}
+                style={{ backgroundImage: `url('${property.images[activeImage] || property.images[0]}')` }}
               />
             </motion.div>
 
             {/* Thumbnails */}
             <div className="grid grid-cols-2 gap-4">
-              {property.images.slice(0, 4).map((image: string, index: number) => (
+              {property.images.slice(0, 4).map((image, index) => (
                 <div
                   key={index}
                   onClick={() => setActiveImage(index)}
@@ -202,10 +185,10 @@ export default function PropertyDetailPage() {
                           property.listingType === "RENT" ? "bg-blue-500 text-white" : "bg-[#B8926A] text-white"
                         }`}
                       >
-                        For {property.listingType === "RENT" ? "Rent" : "Sale"}
+                        {property.listingType === "RENT" ? t.properties.forRent : t.properties.forSale}
                       </span>
                       <span className="px-3 py-1 rounded-full text-xs font-medium bg-[#F5F3EF] text-[#6B6B6B]">
-                        {property.type}
+                        {t.common.propertyTypes?.[property.type as keyof typeof t.common.propertyTypes] || property.type}
                       </span>
                     </div>
 
@@ -234,7 +217,7 @@ export default function PropertyDetailPage() {
                     <p className="text-3xl font-bold text-[#1A1A1A]">
                       €{formatNumber(property.price)}
                       {property.listingType === "RENT" && (
-                        <span className="text-lg font-normal text-[#6B6B6B]">/month</span>
+                        <span className="text-lg font-normal text-[#6B6B6B]">{t.common.perMonth}</span>
                       )}
                     </p>
 
@@ -251,21 +234,21 @@ export default function PropertyDetailPage() {
                   {property.beds > 0 && (
                     <div className="text-center p-4 bg-[#F5F3EF] rounded-xl">
                       <p className="text-2xl font-semibold text-[#1A1A1A]">{property.beds}</p>
-                      <p className="text-sm text-[#6B6B6B]">Bedrooms</p>
+                      <p className="text-sm text-[#6B6B6B]">{t.propertyDetail.bedrooms}</p>
                     </div>
                   )}
                   <div className="text-center p-4 bg-[#F5F3EF] rounded-xl">
                     <p className="text-2xl font-semibold text-[#1A1A1A]">{property.baths}</p>
-                    <p className="text-sm text-[#6B6B6B]">Bathrooms</p>
+                    <p className="text-sm text-[#6B6B6B]">{t.propertyDetail.bathrooms}</p>
                   </div>
                   <div className="text-center p-4 bg-[#F5F3EF] rounded-xl">
                     <p className="text-2xl font-semibold text-[#1A1A1A]">{property.area}</p>
-                    <p className="text-sm text-[#6B6B6B]">m² Living</p>
+                    <p className="text-sm text-[#6B6B6B]">{t.propertyDetail.livingArea}</p>
                   </div>
                   {property.landArea && (
                     <div className="text-center p-4 bg-[#F5F3EF] rounded-xl">
                       <p className="text-2xl font-semibold text-[#1A1A1A]">{property.landArea}</p>
-                      <p className="text-sm text-[#6B6B6B]">m² Land</p>
+                      <p className="text-sm text-[#6B6B6B]">{t.propertyDetail.landArea}</p>
                     </div>
                   )}
                 </div>
@@ -278,29 +261,31 @@ export default function PropertyDetailPage() {
                 transition={{ delay: 0.1 }}
                 className="bg-white rounded-2xl p-6 shadow-sm"
               >
-                <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">Description</h2>
+                <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">{t.propertyDetail.description}</h2>
                 <div className="text-[#6B6B6B] whitespace-pre-line leading-relaxed">{property.description}</div>
               </motion.div>
 
               {/* Features */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="bg-white rounded-2xl p-6 shadow-sm"
-              >
-                <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">Features</h2>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  {property.features.map((feature: string, index: number) => (
-                    <div key={index} className="flex items-center gap-2 text-[#6B6B6B]">
-                      <svg className="w-5 h-5 text-[#B8926A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                      {feature}
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
+              {property.features.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="bg-white rounded-2xl p-6 shadow-sm"
+                >
+                  <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">{t.propertyDetail.features}</h2>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    {property.features.map((feature, index) => (
+                      <div key={index} className="flex items-center gap-2 text-[#6B6B6B]">
+                        <svg className="w-5 h-5 text-[#B8926A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        {t.common.features?.[feature as keyof typeof t.common.features] || feature}
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
 
               {/* Details */}
               <motion.div
@@ -309,35 +294,39 @@ export default function PropertyDetailPage() {
                 transition={{ delay: 0.3 }}
                 className="bg-white rounded-2xl p-6 shadow-sm"
               >
-                <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">Details</h2>
+                <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">{t.propertyDetail.details}</h2>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="flex justify-between py-3 border-b border-[#E8E6E3]">
-                    <span className="text-[#6B6B6B]">Property Type</span>
-                    <span className="font-medium text-[#1A1A1A]">{property.type}</span>
+                    <span className="text-[#6B6B6B]">{t.propertyDetail.propertyType}</span>
+                    <span className="font-medium text-[#1A1A1A]">{t.common.propertyTypes?.[property.type as keyof typeof t.common.propertyTypes] || property.type}</span>
                   </div>
-                  <div className="flex justify-between py-3 border-b border-[#E8E6E3]">
-                    <span className="text-[#6B6B6B]">Year Built</span>
-                    <span className="font-medium text-[#1A1A1A]">{property.yearBuilt}</span>
-                  </div>
-                  <div className="flex justify-between py-3 border-b border-[#E8E6E3]">
-                    <span className="text-[#6B6B6B]">Energy Class</span>
-                    <span
-                      className={`font-medium px-2 py-0.5 rounded ${
-                        property.energyClass === "A" || property.energyClass === "B"
-                          ? "bg-green-100 text-green-700"
-                          : property.energyClass === "C" || property.energyClass === "D"
-                          ? "bg-yellow-100 text-yellow-700"
-                          : "bg-red-100 text-red-700"
-                      }`}
-                    >
-                      {property.energyClass}
-                    </span>
-                  </div>
+                  {property.yearBuilt && (
+                    <div className="flex justify-between py-3 border-b border-[#E8E6E3]">
+                      <span className="text-[#6B6B6B]">{t.propertyDetail.yearBuilt}</span>
+                      <span className="font-medium text-[#1A1A1A]">{property.yearBuilt}</span>
+                    </div>
+                  )}
+                  {property.energyClass && (
+                    <div className="flex justify-between py-3 border-b border-[#E8E6E3]">
+                      <span className="text-[#6B6B6B]">{t.propertyDetail.energyClass}</span>
+                      <span
+                        className={`font-medium px-2 py-0.5 rounded ${
+                          property.energyClass === "A" || property.energyClass === "B"
+                            ? "bg-green-100 text-green-700"
+                            : property.energyClass === "C" || property.energyClass === "D"
+                            ? "bg-yellow-100 text-yellow-700"
+                            : "bg-red-100 text-red-700"
+                        }`}
+                      >
+                        {property.energyClass}
+                      </span>
+                    </div>
+                  )}
                   {property.floor !== undefined && property.totalFloors !== undefined && (
                     <div className="flex justify-between py-3 border-b border-[#E8E6E3]">
-                      <span className="text-[#6B6B6B]">Floor</span>
+                      <span className="text-[#6B6B6B]">{t.propertyDetail.floor}</span>
                       <span className="font-medium text-[#1A1A1A]">
-                        {property.floor} of {property.totalFloors}
+                        {property.floor} / {property.totalFloors}
                       </span>
                     </div>
                   )}
@@ -366,7 +355,6 @@ export default function PropertyDetailPage() {
                     </div>
                   </div>
 
-                  {/* ✅ FIXED LINKS */}
                   <div className="space-y-3 mb-6">
                     <a
                       href={`tel:${property.agent.phone}`}
@@ -403,7 +391,7 @@ export default function PropertyDetailPage() {
                     onClick={() => setShowContact(!showContact)}
                     className="w-full h-12 bg-[#1A1A1A] hover:bg-[#333] text-white rounded-xl"
                   >
-                    Contact Agent
+                    {t.propertyDetail.contactAgent}
                   </Button>
                 </motion.div>
 
@@ -414,38 +402,38 @@ export default function PropertyDetailPage() {
                     animate={{ opacity: 1, height: "auto" }}
                     className="bg-white rounded-2xl p-6 shadow-sm"
                   >
-                    <h3 className="font-semibold text-[#1A1A1A] mb-4">Send a Message</h3>
+                    <h3 className="font-semibold text-[#1A1A1A] mb-4">{t.propertyDetail.sendMessage}</h3>
                     <form className="space-y-4">
                       <input
                         type="text"
-                        placeholder="Your Name"
+                        placeholder={t.propertyDetail.yourName}
                         value={contactForm.name}
                         onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
                         className="w-full h-11 px-4 rounded-xl border border-[#E8E6E3] outline-none focus:border-[#B8926A]"
                       />
                       <input
                         type="email"
-                        placeholder="Your Email"
+                        placeholder={t.propertyDetail.yourEmail}
                         value={contactForm.email}
                         onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
                         className="w-full h-11 px-4 rounded-xl border border-[#E8E6E3] outline-none focus:border-[#B8926A]"
                       />
                       <input
                         type="tel"
-                        placeholder="Your Phone"
+                        placeholder={t.propertyDetail.yourPhone}
                         value={contactForm.phone}
                         onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
                         className="w-full h-11 px-4 rounded-xl border border-[#E8E6E3] outline-none focus:border-[#B8926A]"
                       />
                       <textarea
-                        placeholder="Your Message"
+                        placeholder={t.propertyDetail.yourMessage}
                         rows={4}
                         value={contactForm.message}
                         onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
                         className="w-full px-4 py-3 rounded-xl border border-[#E8E6E3] outline-none focus:border-[#B8926A] resize-none"
                       />
                       <Button className="w-full h-12 bg-[#B8926A] hover:bg-[#A6825C] text-white rounded-xl">
-                        Send Message
+                        {t.propertyDetail.send}
                       </Button>
                     </form>
                   </motion.div>
@@ -453,19 +441,29 @@ export default function PropertyDetailPage() {
 
                 {/* Actions */}
                 <div className="flex gap-3">
-                  <Button variant="outline" className="flex-1 h-11 rounded-xl border-[#E8E6E3]">
-                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                      />
-                    </svg>
-                    Save
-                  </Button>
+                  <FavoriteButton
+                    propertyId={property.id}
+                    variant="full"
+                    label={t.common.save}
+                    className="flex-1 h-11 rounded-xl border border-[#E8E6E3] bg-white hover:bg-[#F5F3EF]"
+                    size="md"
+                  />
 
-                  <Button variant="outline" className="flex-1 h-11 rounded-xl border-[#E8E6E3]">
+                  <Button
+                    variant="outline"
+                    className="flex-1 h-11 rounded-xl border-[#E8E6E3]"
+                    onClick={() => {
+                      if (navigator.share) {
+                        navigator.share({
+                          title: property.title,
+                          url: window.location.href,
+                        })
+                      } else {
+                        navigator.clipboard.writeText(window.location.href)
+                        alert("Link copied to clipboard!")
+                      }
+                    }}
+                  >
                     <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
@@ -474,7 +472,7 @@ export default function PropertyDetailPage() {
                         d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
                       />
                     </svg>
-                    Share
+                    {t.common.share}
                   </Button>
                 </div>
               </div>
@@ -484,16 +482,47 @@ export default function PropertyDetailPage() {
       </section>
 
       {/* Similar Properties */}
-      <section className="py-12 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-semibold text-[#1A1A1A] mb-8">Similar Properties</h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            <p className="text-[#6B6B6B] col-span-3 text-center py-8">
-              Similar properties will be shown here based on location and price.
-            </p>
+      {similarProperties.length > 0 && (
+        <section className="py-12 bg-white">
+          <div className="container mx-auto px-4">
+            <h2 className="text-2xl font-semibold text-[#1A1A1A] mb-8">{t.propertyDetail.similarProperties}</h2>
+            <div className="grid md:grid-cols-3 gap-6">
+              {similarProperties.map((p) => (
+                <Link
+                  key={p.id}
+                  href={`/properties/${p.slug}`}
+                  className="group block bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-[#E8E6E3]"
+                >
+                  <div className="relative aspect-[4/3] overflow-hidden">
+                    <div
+                      className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                      style={{ backgroundImage: `url('${p.image}')` }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                    <div className="absolute bottom-4 left-4">
+                      <p className="text-xl font-bold text-white">
+                        €{formatNumber(p.price)}
+                        {p.listingType === "RENT" && <span className="text-sm font-normal opacity-80">/mo</span>}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="p-4">
+                    <h3 className="font-semibold text-[#1A1A1A] group-hover:text-[#B8926A] transition-colors">
+                      {p.title}
+                    </h3>
+                    <p className="text-sm text-[#6B6B6B] mt-1">{p.location}</p>
+                    <div className="flex items-center gap-4 mt-3 text-sm text-[#6B6B6B]">
+                      {p.beds > 0 && <span>{p.beds} {t.common.beds}</span>}
+                      <span>{p.baths} {t.common.baths}</span>
+                      <span>{p.area} m²</span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Back Button */}
       <div className="fixed bottom-6 left-6 z-50">
@@ -502,7 +531,7 @@ export default function PropertyDetailPage() {
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
-            Back to Properties
+            {t.properties.backToProperties}
           </Button>
         </Link>
       </div>

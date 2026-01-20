@@ -1,0 +1,5 @@
+export { locales, defaultLocale, localeNames, localeFlags } from "./config"
+export type { Locale } from "./config"
+export { getDictionary } from "./get-dictionary"
+export type { Dictionary } from "./get-dictionary"
+export { I18nProvider, useI18n, useTranslations, useLocale } from "./context"

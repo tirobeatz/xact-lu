@@ -35,7 +35,7 @@ export default async function DashboardLayout({
               <Link href="/dashboard/listings" className="text-sm text-[#6B6B6B] hover:text-[#1A1A1A] transition-colors">
                 My Listings
               </Link>
-              <Link href="/dashboard/favorites" className="text-sm text-[#6B6B6B] hover:text-[#1A1A1A] transition-colors">
+              <Link href="/dashboard/saved" className="text-sm text-[#6B6B6B] hover:text-[#1A1A1A] transition-colors">
                 Favorites
               </Link>
             </nav>

@@ -1,0 +1,652 @@
+{
+  "common": {
+    "search": "Suchen",
+    "viewAll": "Alle anzeigen",
+    "learnMore": "Mehr erfahren",
+    "contact": "Kontakt",
+    "save": "Speichern",
+    "share": "Teilen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "previous": "Zurück",
+    "loading": "Lädt...",
+    "noResults": "Keine Ergebnisse gefunden",
+    "beds": "Schlafzimmer",
+    "bed": "Schlafzimmer",
+    "baths": "Bäder",
+    "bath": "Bad",
+    "area": "m²",
+    "perMonth": "/Monat",
+    "optional": "optional",
+    "propertyTypes": {
+      "APARTMENT": "Wohnung",
+      "HOUSE": "Haus",
+      "VILLA": "Villa",
+      "STUDIO": "Studio",
+      "PENTHOUSE": "Penthouse",
+      "DUPLEX": "Duplex",
+      "TRIPLEX": "Triplex",
+      "LOFT": "Loft",
+      "OFFICE": "Büro",
+      "RETAIL": "Einzelhandel",
+      "WAREHOUSE": "Lager",
+      "LAND": "Grundstück",
+      "PARKING": "Parkplatz",
+      "OTHER": "Sonstiges"
+    },
+    "features": {
+      "Parking": "Parkplatz",
+      "Garage": "Garage",
+      "Garden": "Garten",
+      "Terrace": "Terrasse",
+      "Balcony": "Balkon",
+      "Elevator": "Aufzug",
+      "Pool": "Pool",
+      "Air Conditioning": "Klimaanlage",
+      "Fireplace": "Kamin",
+      "Storage": "Abstellraum",
+      "Cellar": "Keller",
+      "Furnished": "Möbliert"
+    }
+  },
+  "nav": {
+    "home": "Startseite",
+    "properties": "Immobilien",
+    "buy": "Kaufen",
+    "rent": "Mieten",
+    "sell": "Verkaufen",
+    "agencies": "Agenturen",
+    "about": "Über uns",
+    "contact": "Kontakt",
+    "signIn": "Anmelden",
+    "signUp": "Registrieren",
+    "dashboard": "Dashboard",
+    "admin": "Admin",
+    "signOut": "Abmelden",
+    "listProperty": "Immobilie inserieren"
+  },
+  "home": {
+    "badge": "Luxemburgs Premium-Immobilienplattform",
+    "title": "Entdecken Sie Ihr",
+    "titleHighlight": "Traumhaus.",
+    "subtitle": "Außergewöhnliche Immobilien in ganz Luxemburg. Kaufen, mieten oder inserieren Sie auf der Plattform, der Tausende vertrauen.",
+    "stats": {
+      "activeListings": "Aktive Inserate",
+      "propertyValue": "Immobilienwert",
+      "satisfiedClients": "Zufriedene Kunden"
+    },
+    "featured": {
+      "label": "EMPFOHLEN",
+      "title": "Außergewöhnliche Immobilien"
+    },
+    "categories": {
+      "label": "DURCHSUCHEN",
+      "title": "Finden Sie Ihr perfektes Zuhause",
+      "apartments": "Wohnungen",
+      "houses": "Häuser",
+      "land": "Grundstücke",
+      "commercial": "Gewerbe",
+      "properties": "Immobilien"
+    },
+    "services": {
+      "label": "WARUM XACT",
+      "title": "Der smartere Weg zur Immobilie",
+      "advancedSearch": {
+        "title": "Erweiterte Suche",
+        "desc": "Filtern Sie nach über 20 Kriterien, um Ihre perfekte Immobilie zu finden."
+      },
+      "verifiedListings": {
+        "title": "Verifizierte Inserate",
+        "desc": "Jede Immobilie wird vor der Veröffentlichung geprüft."
+      },
+      "freeValuation": {
+        "title": "Kostenlose Bewertung",
+        "desc": "Erhalten Sie eine professionelle Schätzung — völlig kostenlos."
+      },
+      "easyListing": {
+        "title": "Einfaches Inserieren",
+        "desc": "Laden Sie Ihre Immobilie in wenigen Minuten hoch."
+      },
+      "directContact": {
+        "title": "Direkter Kontakt",
+        "desc": "Kontaktieren Sie Verkäufer und Makler direkt."
+      },
+      "agencyProfiles": {
+        "title": "Agentur-Profile",
+        "desc": "Eigene Seiten für verifizierte Partner."
+      }
+    },
+    "estimation": {
+      "badge": "Kostenloser Service",
+      "title": "Was ist Ihre Immobilie wert?",
+      "subtitle": "Erhalten Sie eine professionelle Bewertung von unserem Expertenteam — völlig kostenlos und unverbindlich.",
+      "button": "Kostenlose Bewertung anfordern"
+    },
+    "mortgage": {
+      "label": "FINANZTOOLS",
+      "title": "Hypothekenrechner",
+      "subtitle": "Planen Sie Ihren Kauf mit unserem interaktiven Rechner. Vergleichen Sie Zinsen luxemburgischer Banken.",
+      "propertyPrice": "Immobilienpreis",
+      "downPayment": "Anzahlung",
+      "loanTerm": "Kreditlaufzeit",
+      "selectBank": "Wählen Sie Ihre Bank",
+      "monthlyPayment": "Ihre monatliche Rate",
+      "perMonth": "pro Monat",
+      "loanAmount": "Kreditsumme",
+      "interestRate": "Zinssatz",
+      "totalInterest": "Gesamtzinsen",
+      "totalPayment": "Gesamtzahlung",
+      "findProperties": "Immobilien unter",
+      "disclaimer": "* Zinssätze sind Richtwerte. Kontaktieren Sie die Banken direkt für genaue Angebote.",
+      "years": "Jahre"
+    },
+    "cta": {
+      "title": "Bereit, Ihr Traumhaus zu finden?",
+      "subtitle": "Schließen Sie sich Tausenden zufriedener Kunden an, die ihre perfekte Immobilie über Xact gefunden haben.",
+      "browse": "Immobilien durchsuchen",
+      "submit": "Immobilie inserieren"
+    }
+  },
+  "search": {
+    "allLocations": "Alle Standorte",
+    "buyRent": "Kaufen / Mieten",
+    "buy": "Kaufen",
+    "rent": "Mieten",
+    "all": "Alle",
+    "bedrooms": "Schlafzimmer",
+    "maxPrice": "Max. Preis",
+    "propertyType": "Immobilientyp",
+    "minArea": "Min. Fläche",
+    "allTypes": "Alle Typen",
+    "filters": "Filter",
+    "resetFilters": "Alle Filter zurücksetzen",
+    "sortBy": "Sortieren nach",
+    "newest": "Neueste zuerst",
+    "priceLow": "Preis: Aufsteigend",
+    "priceHigh": "Preis: Absteigend",
+    "areaHigh": "Größte zuerst",
+    "bedsHigh": "Meiste Schlafzimmer"
+  },
+  "properties": {
+    "title": "Ihre Immobilie finden",
+    "available": "Immobilien verfügbar in Luxemburg",
+    "showing": "Zeige",
+    "of": "von",
+    "forSale": "Zu verkaufen",
+    "forRent": "Zu vermieten",
+    "featured": "Empfohlen",
+    "rental": "Mietobjekt",
+    "noProperties": "Keine Immobilien gefunden",
+    "noPropertiesDesc": "Passen Sie Ihre Filter an, um mehr Ergebnisse zu sehen.",
+    "clearFilters": "Alle Filter löschen",
+    "page": "Seite",
+    "backToProperties": "Zurück zu Immobilien"
+  },
+  "propertyDetail": {
+    "description": "Beschreibung",
+    "features": "Ausstattung",
+    "details": "Details",
+    "propertyType": "Immobilientyp",
+    "yearBuilt": "Baujahr",
+    "energyClass": "Energieklasse",
+    "floor": "Etage",
+    "bedrooms": "Schlafzimmer",
+    "bathrooms": "Badezimmer",
+    "livingArea": "m² Wohnfläche",
+    "landArea": "m² Grundstück",
+    "contactAgent": "Makler kontaktieren",
+    "sendMessage": "Nachricht senden",
+    "yourName": "Ihr Name",
+    "yourEmail": "Ihre E-Mail",
+    "yourPhone": "Ihre Telefonnummer",
+    "yourMessage": "Ihre Nachricht",
+    "send": "Nachricht senden",
+    "similarProperties": "Ähnliche Immobilien",
+    "notFound": "Immobilie nicht gefunden",
+    "notFoundDesc": "Die gesuchte Immobilie existiert nicht."
+  },
+  "footer": {
+    "description": "Luxemburgs führende Immobilienplattform. Finden Sie Ihre Traumimmobilie oder inserieren Sie Ihre noch heute.",
+    "quickLinks": "Schnelllinks",
+    "propertyTypes": "Immobilientypen",
+    "contact": "Kontakt",
+    "apartments": "Wohnungen",
+    "houses": "Häuser",
+    "villas": "Villen",
+    "commercial": "Gewerbe",
+    "land": "Grundstücke",
+    "allRightsReserved": "Alle Rechte vorbehalten.",
+    "privacyPolicy": "Datenschutz",
+    "terms": "Nutzungsbedingungen",
+    "cookies": "Cookies",
+    "imprint": "Impressum"
+  },
+  "auth": {
+    "welcomeBack": "Willkommen zurück",
+    "signInToAccount": "Melden Sie sich an",
+    "continueWithGoogle": "Mit Google fortfahren",
+    "or": "oder",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "rememberMe": "Angemeldet bleiben",
+    "forgotPassword": "Passwort vergessen?",
+    "signIn": "Anmelden",
+    "signingIn": "Wird angemeldet...",
+    "noAccount": "Noch kein Konto?",
+    "createOne": "Jetzt registrieren",
+    "createAccount": "Konto erstellen",
+    "startJourney": "Starten Sie Ihre Immobilienreise heute",
+    "fullName": "Vollständiger Name",
+    "confirmPassword": "Passwort bestätigen",
+    "atLeast8Chars": "Mindestens 8 Zeichen",
+    "agreeToTerms": "Ich akzeptiere die",
+    "termsOfService": "Nutzungsbedingungen",
+    "and": "und",
+    "privacyPolicy": "Datenschutzerklärung",
+    "creatingAccount": "Konto wird erstellt...",
+    "alreadyHaveAccount": "Bereits ein Konto?",
+    "signInLink": "Anmelden",
+    "invalidCredentials": "Ungültige E-Mail oder Passwort",
+    "passwordsNotMatch": "Passwörter stimmen nicht überein",
+    "passwordTooShort": "Passwort muss mindestens 8 Zeichen lang sein",
+    "somethingWentWrong": "Etwas ist schiefgelaufen"
+  },
+  "about": {
+    "badge": "ÜBER XACT",
+    "heroTitle": "Wir machen Immobilien",
+    "heroPremium": "erstklassig",
+    "heroNotPainful": ", nicht kompliziert.",
+    "heroSubtitle": "Xact ist eine Boutique-Agentur in Luxemburg für Menschen, die Klarheit, Schnelligkeit und Vertrauen wollen — ob Sie kaufen, verkaufen oder investieren.",
+    "heroWords": ["vertrauenswürdig", "modern", "präzise", "persönlich", "Luxemburg"],
+    "exploreListings": "Inserate entdecken",
+    "talkToTeam": "Mit uns sprechen",
+    "scrollToDiscover": "Scrollen Sie, um unsere Geschichte zu entdecken",
+    "agencySnapshot": "Agentur-Überblick",
+    "boutiqueTag": "Luxemburg • Boutique • Premium",
+    "since": "Seit 2014",
+    "marketMomentum": "Marktdynamik",
+    "ourPromise": "Unser Versprechen",
+    "promiseText": "Schnelles Feedback, präzise Preise und keine Überraschungen.",
+    "stats": {
+      "yearsExperience": "Jahre Erfahrung",
+      "propertiesSold": "Verkaufte Immobilien",
+      "totalSalesVolume": "Gesamtverkaufsvolumen",
+      "clientSatisfaction": "Kundenzufriedenheit"
+    },
+    "story": {
+      "label": "UNSERE GESCHICHTE",
+      "title": "Auf Handwerk gebaut, nicht auf Hype",
+      "description": "Immobilien kaufen oder verkaufen sollte sich sicher und klar anfühlen. Wir kombinieren lokale Expertise mit modernem Marketing für ein erstklassiges Erlebnis vom ersten Anruf bis zur Unterschrift.",
+      "points": ["Preise, die Sinn machen", "Marketing, das funktioniert", "Verhandlung, die Sie schützt"]
+    },
+    "timeline": {
+      "title": "Zeitachse",
+      "subtitle": "Wie wir hierher kamen",
+      "2014": { "title": "Xact wird gegründet", "text": "Eine Boutique-Agentur mit modernem, kundenorientiertem Ansatz." },
+      "2017": { "title": "Erstes €50M-Ziel", "text": "Eine Erfolgsbilanz aufgebaut durch Empfehlungen und Vertrauen." },
+      "2020": { "title": "Digital-first Expansion", "text": "Bessere Fotografie, Touren und Marketing-Performance." },
+      "2024": { "title": "Premium-Servicemodell", "text": "Schärfere Positionierung und ein gehobenes Kauf-/Verkaufserlebnis." }
+    },
+    "values": {
+      "label": "UNSERE WERTE",
+      "title": "Was uns auszeichnet",
+      "subtitle": "Wir sind bewusst Boutique — weniger Kunden, mehr Aufmerksamkeit, bessere Ergebnisse.",
+      "trustTransparency": { "title": "Vertrauen & Transparenz", "desc": "Klare Kommunikation und ehrliche Beratung — immer." },
+      "clientFocused": { "title": "Kundenorientiert", "desc": "Wir hören zuerst zu, dann erstellen wir einen Plan, der zu Ihren Zielen passt." },
+      "qualityOverQuantity": { "title": "Qualität vor Quantität", "desc": "Kuratierte Inserate und ernsthafte Käufer — kein Lärm, nur Ergebnisse." },
+      "localExpertise": { "title": "Lokale Expertise", "desc": "Luxemburg-Wissen, auf das Sie sich verlassen können, von Preisen bis Papierkram." }
+    },
+    "team": {
+      "label": "UNSER TEAM",
+      "title": "Lernen Sie die Experten kennen",
+      "subtitle": "Echte Menschen, echte Erfahrung — mit einem Premium-Ansatz.",
+      "contact": "Kontakt",
+      "bookConsultation": "Beratung buchen"
+    },
+    "roles": {
+      "founderCeo": "Gründerin & CEO",
+      "seniorAgent": "Senior Makler",
+      "propertyConsultant": "Immobilienberater",
+      "salesManager": "Vertriebsleiter"
+    },
+    "cta": {
+      "label": "BEREIT?",
+      "title": "Machen wir Ihren nächsten Schritt einfach.",
+      "description": "Erzählen Sie uns, was Sie erreichen möchten — wir geben Ihnen einen klaren Plan und den nächsten besten Schritt.",
+      "browseProperties": "Immobilien durchsuchen",
+      "contactUs": "Kontaktieren Sie uns",
+      "backToHome": "Zurück zur Startseite"
+    }
+  },
+  "contact": {
+    "badge": "KONTAKT AUFNEHMEN",
+    "heroTitle": "Lassen Sie uns über",
+    "heroHighlight": "Ihren nächsten Schritt sprechen.",
+    "heroSubtitle": "Ob Sie kaufen, verkaufen oder nur Fragen haben — wir sind hier, um zu helfen.",
+    "phone": "Telefon",
+    "phoneHours": "Mo-Fr 9:00-18:00",
+    "email": "E-Mail",
+    "emailReply": "Wir antworten innerhalb von 24 Stunden",
+    "office": "Büro",
+    "officeAddress": "L-1930 Luxemburg Stadt",
+    "sendMessage": "Nachricht senden",
+    "formSubtitle": "Füllen Sie das Formular aus und wir melden uns innerhalb von 24 Stunden.",
+    "fullName": "Vollständiger Name",
+    "emailLabel": "E-Mail",
+    "phoneLabel": "Telefon",
+    "helpWith": "Wie können wir helfen?",
+    "selectOption": "Option auswählen",
+    "message": "Nachricht",
+    "messagePlaceholder": "Erzählen Sie uns mehr darüber, wonach Sie suchen...",
+    "sendButton": "Nachricht senden",
+    "privacyNote": "Mit dem Absenden akzeptieren Sie unsere",
+    "officeHours": "Öffnungszeiten",
+    "mondayFriday": "Montag - Freitag",
+    "saturday": "Samstag",
+    "sunday": "Sonntag",
+    "closed": "Geschlossen",
+    "cantVisit": "Können Sie nicht während der Öffnungszeiten kommen?",
+    "scheduleAppointment": "Vereinbaren Sie einen Termin",
+    "arrangeTime": "und wir finden eine passende Zeit für Sie.",
+    "quickLinks": "Schnelllinks",
+    "freeValuation": "Kostenlose Immobilienbewertung",
+    "browseProperties": "Verfügbare Immobilien durchsuchen",
+    "viewPricing": "Preise ansehen",
+    "faq": {
+      "title": "Häufige Fragen",
+      "subtitle": "Finden Sie Antworten auf häufig gestellte Fragen zum Kauf, Verkauf und zur Zusammenarbeit mit Xact.",
+      "viewFaq": "FAQ ansehen"
+    },
+    "success": {
+      "title": "Nachricht gesendet!",
+      "description": "Vielen Dank für Ihre Kontaktaufnahme. Wir melden uns innerhalb von 24 Stunden.",
+      "sendAnother": "Weitere Nachricht senden",
+      "browseProperties": "Immobilien durchsuchen"
+    },
+    "inquiryTypes": {
+      "buying": "Immobilie kaufen",
+      "selling": "Meine Immobilie verkaufen",
+      "valuation": "Immobilienbewertung",
+      "renting": "Mieten",
+      "investment": "Anlageberatung",
+      "general": "Allgemeine Anfrage"
+    }
+  },
+  "estimate": {
+    "badge": "KOSTENLOSE BEWERTUNG",
+    "heroTitle": "Ihre Immobilie könnte",
+    "heroHighlight": "mehr wert sein als Sie denken.",
+    "heroSubtitle": "Erhalten Sie eine kostenlose Expertenbewertung in 24 Stunden. Keine Verpflichtung, kein Druck — nur ein ehrlicher Marktpreis.",
+    "stats": {
+      "propertiesValued": "Bewertete Immobilien",
+      "responseTime": "Antwortzeit",
+      "accuracyRate": "Genauigkeitsrate"
+    },
+    "benefits": {
+      "trueValue": { "title": "Kennen Sie Ihren wahren Wert", "desc": "Lassen Sie kein Geld liegen — erhalten Sie einen genauen Marktpreis" },
+      "expertResponse": { "title": "24h Expertenantwort", "desc": "Persönlicher Anruf von einem lokalen Makler, der Ihre Gegend kennt" },
+      "confidential": { "title": "100% Vertraulich", "desc": "Ihre Informationen bleiben privat, kein Spam, kein Druck" },
+      "free": { "title": "Komplett kostenlos", "desc": "Keine Gebühren, keine Verpflichtungen, keine Bedingungen" }
+    },
+    "form": {
+      "propertyDetails": "Immobiliendetails",
+      "propertyType": "Immobilientyp",
+      "selectType": "Typ auswählen",
+      "location": "Standort",
+      "selectLocation": "Standort auswählen",
+      "streetAddress": "Straße",
+      "streetAddressHint": "(optional, verbessert Genauigkeit)",
+      "size": "Größe (m²)",
+      "bedrooms": "Schlafzimmer",
+      "bathrooms": "Badezimmer",
+      "select": "Auswählen",
+      "condition": "Zustand",
+      "selectCondition": "Zustand auswählen",
+      "floor": "Etage",
+      "floorHint": "(für Wohnungen)",
+      "parking": "Parkplatz",
+      "parkingOptions": {
+        "none": "Keiner",
+        "indoor1": "1 Tiefgaragenplatz",
+        "indoor2": "2 Tiefgaragenplätze",
+        "outdoor": "Nur Außenstellplatz",
+        "garage": "Private Garage"
+      },
+      "outdoorSpace": "Außenbereich",
+      "outdoorOptions": {
+        "none": "Keiner",
+        "balcony": "Balkon",
+        "terrace": "Terrasse",
+        "garden": "Garten",
+        "terraceGarden": "Terrasse + Garten"
+      },
+      "anythingElse": "Gibt es noch etwas, das wir wissen sollten?",
+      "anythingElsePlaceholder": "Kürzliche Renovierungen, besondere Merkmale, Verkaufsgrund...",
+      "photos": "Fotos",
+      "photosHint": "(optional, verbessert aber Genauigkeit)",
+      "photosDescription": "Laden Sie bis zu 10 Fotos Ihrer Immobilie hoch — Innen, Außen, Aussicht.",
+      "dragDrop": "Fotos hierher ziehen",
+      "browse": "durchsuchen",
+      "toUpload": "zum Hochladen",
+      "photoLimits": "JPG, PNG bis 10MB · Max. 10 Fotos",
+      "contactDetails": "Ihre Kontaktdaten",
+      "fullName": "Vollständiger Name",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "timeline": "Wann möchten Sie verkaufen?",
+      "selectTimeline": "Zeitrahmen auswählen",
+      "timelineOptions": {
+        "asap": "So bald wie möglich",
+        "1to3": "Innerhalb von 1-3 Monaten",
+        "3to6": "Innerhalb von 3-6 Monaten",
+        "6plus": "6+ Monate",
+        "curious": "Nur neugierig auf den Wert"
+      },
+      "submit": "Kostenlose Bewertung anfordern",
+      "submitNote": "Wir kontaktieren Sie innerhalb von 24 Stunden · Keine Verpflichtung"
+    },
+    "conditions": {
+      "newRenovated": "Neu / Renoviert",
+      "goodCondition": "Guter Zustand",
+      "lightRefresh": "Leichte Auffrischung nötig",
+      "fullRenovation": "Komplettrenovierung nötig"
+    },
+    "sidebar": {
+      "clientsSay": "Was unsere Kunden sagen",
+      "whyValuation": "Warum eine Bewertung?",
+      "whyPoints": [
+        "Erfahren Sie, ob jetzt der richtige Zeitpunkt zum Verkauf ist",
+        "Verstehen Sie die Marktposition Ihrer Immobilie",
+        "Erhalten Sie Tipps, um den Wert Ihrer Immobilie zu steigern",
+        "Planen Sie Ihren nächsten Schritt mit Zuversicht"
+      ],
+      "preferToTalk": "Lieber telefonieren?",
+      "callDirectly": "Rufen Sie uns direkt an für sofortige Hilfe."
+    },
+    "success": {
+      "title": "Anfrage erhalten!",
+      "description": "Vielen Dank für Ihr Interesse. Einer unserer Makler wird sich innerhalb von 24 Stunden mit einer personalisierten Bewertung bei Ihnen melden.",
+      "submitAnother": "Weitere Anfrage senden"
+    }
+  },
+  "dashboard": {
+    "welcome": "Willkommen,",
+    "manageProperties": "Verwalten Sie Ihre Immobilien und Kontoeinstellungen.",
+    "signOut": "Abmelden",
+    "cards": {
+      "myListings": { "title": "Meine Inserate", "desc": "Ihre Immobilien anzeigen und verwalten" },
+      "addNew": { "title": "Neues Inserat", "desc": "Eine neue Immobilie einreichen" },
+      "saved": { "title": "Gespeicherte Immobilien", "desc": "Ihre Favoriten" },
+      "messages": { "title": "Nachrichten", "desc": "Anfragen und Nachrichten anzeigen" },
+      "profile": { "title": "Profil", "desc": "Kontoeinstellungen aktualisieren" }
+    },
+"listings": {
+      "title": "Meine Inserate",
+      "subtitle": "Verwalten Sie Ihre Immobilieninserate",
+      "addNew": "Neues Inserat hinzufügen",
+      "filterAll": "Alle",
+      "filterActive": "Aktiv",
+      "filterPending": "Ausstehend",
+      "filterSold": "Verkauft",
+      "statusActive": "Aktiv",
+      "statusPending": "In Prüfung",
+      "statusSold": "Verkauft",
+      "noListings": "Noch keine Inserate",
+      "noListingsDesc": "Beginnen Sie mit Ihrem ersten Immobilieninserat"
+    },
+    "profile": {
+      "title": "Profileinstellungen",
+      "subtitle": "Verwalten Sie Ihre Kontoinformationen",
+      "photo": "Profilfoto",
+      "changePhoto": "Foto ändern",
+      "personalInfo": "Persönliche Informationen",
+      "fullName": "Vollständiger Name",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "company": "Unternehmen",
+      "bio": "Bio",
+      "bioPlaceholder": "Erzählen Sie uns etwas über sich...",
+      "notifications": "Benachrichtigungen",
+      "emailNotifications": "E-Mail-Benachrichtigungen",
+      "emailNotificationsDesc": "Updates zu Ihren Inseraten und Anfragen erhalten",
+      "smsNotifications": "SMS-Benachrichtigungen",
+      "smsNotificationsDesc": "Textnachrichten für dringende Updates erhalten",
+      "marketingEmails": "Marketing-E-Mails",
+      "marketingEmailsDesc": "Tipps, Trends und Werbeinhalte erhalten",
+      "security": "Sicherheit",
+      "changePassword": "Passwort ändern",
+      "saveChanges": "Änderungen speichern",
+      "saving": "Wird gespeichert...",
+      "saved": "Änderungen gespeichert"
+    },
+    "saved": {
+      "title": "Gespeicherte Immobilien",
+      "subtitle": "Ihre favorisierten Immobilien",
+      "noSaved": "Keine gespeicherten Immobilien",
+      "noSavedDesc": "Durchsuchen Sie Immobilien und speichern Sie Ihre Favoriten",
+      "browseProperties": "Immobilien durchsuchen"
+    },
+    "messages": {
+      "title": "Nachrichten",
+      "subtitle": "Anfragen von interessierten Käufern",
+      "new": "neu",
+      "yesterday": "Gestern",
+      "regarding": "Betreff",
+      "reply": "Antworten",
+      "replyPlaceholder": "Ihre Antwort eingeben...",
+      "sendReply": "Antwort senden",
+      "replySent": "Antwort gesendet!",
+      "selectMessage": "Wählen Sie eine Nachricht aus",
+      "noMessages": "Noch keine Nachrichten",
+      "noMessagesDesc": "Wenn Käufer Sie zu Ihren Inseraten kontaktieren, sehen Sie ihre Nachrichten hier"
+    },
+    "newListing": {
+      "title": "Immobilie inserieren",
+      "subtitle": "Füllen Sie das Formular aus, um Ihre Immobilie zur Überprüfung einzureichen.",
+      "steps": {
+        "basicInfo": "Grundinfo",
+        "location": "Standort",
+        "details": "Details",
+        "photos": "Fotos",
+        "description": "Beschreibung"
+      },
+      "step1": {
+        "title": "Grundinformationen",
+        "subtitle": "Erzählen Sie uns von Ihrer Immobilie",
+        "listingType": "Inserattyp",
+        "forSale": "Zu verkaufen",
+        "forRent": "Zu vermieten",
+        "propertyTitle": "Titel der Immobilie",
+        "propertyTitlePlaceholder": "z.B. Moderne Wohnung in Kirchberg",
+        "propertyType": "Immobilientyp",
+        "selectType": "Typ auswählen",
+        "price": "Preis (€)",
+        "pricePerMonth": "Preis (€/Monat)"
+      },
+      "step2": {
+        "title": "Standort",
+        "subtitle": "Wo befindet sich Ihre Immobilie?",
+        "cityArea": "Stadt / Gebiet",
+        "selectCityArea": "Stadt oder Gebiet auswählen",
+        "streetAddress": "Straße",
+        "streetAddressPlaceholder": "Hauptstraße 123",
+        "zipCode": "Postleitzahl",
+        "zipCodePlaceholder": "L-1234"
+      },
+      "step3": {
+        "title": "Immobiliendetails",
+        "subtitle": "Beschreiben Sie die Spezifikationen Ihrer Immobilie",
+        "livingArea": "Wohnfläche (m²)",
+        "bedrooms": "Schlafzimmer",
+        "bathrooms": "Badezimmer",
+        "floors": "Etagen",
+        "yearBuilt": "Baujahr",
+        "energyClass": "Energieklasse",
+        "selectEnergyClass": "Auswählen",
+        "features": "Ausstattung",
+        "selectFeatures": "Alle zutreffenden auswählen"
+      },
+      "step4": {
+        "title": "Fotos",
+        "subtitle": "Fügen Sie Fotos Ihrer Immobilie hinzu",
+        "uploadTitle": "Immobilienfotos hochladen",
+        "uploadSubtitle": "Hochwertige Fotos machen Ihr Inserat attraktiver",
+        "dragDrop": "Fotos hierher ziehen oder",
+        "browse": "durchsuchen",
+        "minPhotos": "Mindestens 3 Fotos, maximal 20 · JPG, PNG bis 10MB",
+        "photoCount": "Fotos hochgeladen"
+      },
+      "step5": {
+        "title": "Beschreibung & Kontakt",
+        "subtitle": "Fügen Sie Details und Ihre Kontaktdaten hinzu",
+        "description": "Immobilienbeschreibung",
+        "descriptionPlaceholder": "Beschreiben Sie Ihre Immobilie im Detail. Erwähnen Sie wichtige Merkmale, Annehmlichkeiten in der Nähe, Verkehrsanbindung usw.",
+        "descriptionHint": "Zeichen",
+        "contactInfo": "Kontaktinformationen",
+        "name": "Name",
+        "email": "E-Mail",
+        "phone": "Telefon"
+      },
+      "navigation": {
+        "back": "Zurück",
+        "continue": "Weiter",
+        "submitListing": "Inserat einreichen",
+        "submitting": "Wird eingereicht..."
+      },
+      "success": {
+        "title": "Inserat eingereicht!",
+        "message": "Vielen Dank für das Einreichen Ihrer Immobilie. Unser Team wird Ihr Inserat prüfen und sich innerhalb von 24-48 Stunden bei Ihnen melden.",
+        "whatHappensNext": "Was passiert als Nächstes?",
+        "step1": "Unser Team prüft Ihr Inserat auf Qualität und Richtigkeit",
+        "step2": "Wir kontaktieren Sie möglicherweise für zusätzliche Informationen oder Fotos",
+        "step3": "Nach der Genehmigung geht Ihr Inserat auf Xact online",
+        "viewListings": "Meine Inserate anzeigen",
+        "addAnother": "Weitere Immobilie hinzufügen"
+      },
+      "features": {
+        "parking": "Parkplatz",
+        "garage": "Garage",
+        "garden": "Garten",
+        "terrace": "Terrasse",
+        "balcony": "Balkon",
+        "elevator": "Aufzug",
+        "pool": "Pool",
+        "airConditioning": "Klimaanlage",
+        "fireplace": "Kamin",
+        "storage": "Abstellraum",
+        "cellar": "Keller",
+        "furnished": "Möbliert"
+      },
+      "propertyTypes": {
+        "apartment": "Wohnung",
+        "house": "Haus",
+        "villa": "Villa",
+        "penthouse": "Penthouse",
+        "studio": "Studio",
+        "duplex": "Duplex",
+        "land": "Grundstück",
+        "commercial": "Gewerbe"
+      }
+    }
+  }
+}

@@ -4,52 +4,7 @@ import { useState } from "react"
 import { motion, useReducedMotion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-
-const contactInfo = [
-  {
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-      </svg>
-    ),
-    label: "Phone",
-    value: "+352 26 26 26 26",
-    href: "tel:+35226262626",
-    subtext: "Mon-Fri 9:00-18:00",
-  },
-  {
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-      </svg>
-    ),
-    label: "Email",
-    value: "info@xact.lu",
-    href: "mailto:info@xact.lu",
-    subtext: "We reply within 24 hours",
-  },
-  {
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-      </svg>
-    ),
-    label: "Office",
-    value: "2 Rue de la Liberté",
-    href: "https://maps.google.com/?q=2+Rue+de+la+Liberté+Luxembourg",
-    subtext: "L-1930 Luxembourg City",
-  },
-]
-
-const inquiryTypes = [
-  "Buying a property",
-  "Selling my property",
-  "Property valuation",
-  "Renting",
-  "Investment advice",
-  "General inquiry",
-]
+import { useI18n } from "@/lib/i18n"
 
 function Reveal({
   children,
@@ -75,6 +30,7 @@ function Reveal({
 }
 
 export default function ContactPage() {
+  const { t } = useI18n()
   const reduce = useReducedMotion()
   const [submitted, setSubmitted] = useState(false)
   const [formData, setFormData] = useState({
@@ -84,6 +40,52 @@ export default function ContactPage() {
     inquiryType: "",
     message: "",
   })
+
+  const contactInfo = [
+    {
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+        </svg>
+      ),
+      label: t.contact.phone,
+      value: "+352 26 26 26 26",
+      href: "tel:+35226262626",
+      subtext: t.contact.phoneHours,
+    },
+    {
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+      ),
+      label: t.contact.email,
+      value: "info@xact.lu",
+      href: "mailto:info@xact.lu",
+      subtext: t.contact.emailReply,
+    },
+    {
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      ),
+      label: t.contact.office,
+      value: "2 Rue de la Liberte",
+      href: "https://maps.google.com/?q=2+Rue+de+la+Liberte+Luxembourg",
+      subtext: t.contact.officeAddress,
+    },
+  ]
+
+  const inquiryTypes = [
+    { key: "buying", label: t.contact.inquiryTypes.buying },
+    { key: "selling", label: t.contact.inquiryTypes.selling },
+    { key: "valuation", label: t.contact.inquiryTypes.valuation },
+    { key: "renting", label: t.contact.inquiryTypes.renting },
+    { key: "investment", label: t.contact.inquiryTypes.investment },
+    { key: "general", label: t.contact.inquiryTypes.general },
+  ]
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -109,10 +111,10 @@ export default function ContactPage() {
             </svg>
           </div>
           <h1 className="text-3xl font-semibold text-[#1A1A1A] mt-6">
-            Message sent!
+            {t.contact.success.title}
           </h1>
           <p className="text-[#6B6B6B] mt-4">
-            Thank you for reaching out. We&apos;ll get back to you within 24 hours.
+            {t.contact.success.description}
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
             <Button
@@ -129,10 +131,10 @@ export default function ContactPage() {
               variant="outline"
               className="h-11 px-6 rounded-xl border-[#E8E6E3]"
             >
-              Send another message
+              {t.contact.success.sendAnother}
             </Button>
             <Button className="h-11 px-6 rounded-xl bg-[#B8926A] hover:bg-[#A6825C] text-white" asChild>
-              <Link href="/properties">Browse Properties</Link>
+              <Link href="/properties">{t.contact.success.browseProperties}</Link>
             </Button>
           </div>
         </motion.div>
@@ -166,16 +168,16 @@ export default function ContactPage() {
             >
               <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white/80 text-xs border border-white/10">
                 <span className="w-2 h-2 rounded-full bg-[#B8926A]" />
-                GET IN TOUCH
+                {t.contact.badge}
               </span>
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white mt-6 leading-tight">
-                Let&apos;s talk about
-                <span className="block text-[#B8926A]">your next move.</span>
+                {t.contact.heroTitle}
+                <span className="block text-[#B8926A]">{t.contact.heroHighlight}</span>
               </h1>
 
               <p className="text-white/60 mt-6 text-lg">
-                Whether you&apos;re buying, selling, or just have questions — we&apos;re here to help.
+                {t.contact.heroSubtitle}
               </p>
             </motion.div>
           </div>
@@ -190,8 +192,8 @@ export default function ContactPage() {
               <motion.a
                 key={info.label}
                 href={info.href}
-                target={info.label === "Office" ? "_blank" : undefined}
-                rel={info.label === "Office" ? "noopener noreferrer" : undefined}
+                target={info.label === t.contact.office ? "_blank" : undefined}
+                rel={info.label === t.contact.office ? "noopener noreferrer" : undefined}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -220,16 +222,16 @@ export default function ContactPage() {
             {/* Form */}
             <Reveal>
               <div className="bg-white rounded-2xl border border-[#E8E6E3] p-6 md:p-8">
-                <h2 className="text-2xl font-semibold text-[#1A1A1A]">Send us a message</h2>
+                <h2 className="text-2xl font-semibold text-[#1A1A1A]">{t.contact.sendMessage}</h2>
                 <p className="text-[#6B6B6B] mt-2">
-                  Fill out the form and we&apos;ll get back to you within 24 hours.
+                  {t.contact.formSubtitle}
                 </p>
 
                 <form onSubmit={handleSubmit} className="mt-8 space-y-5">
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                        Full Name *
+                        {t.contact.fullName} *
                       </label>
                       <input
                         type="text"
@@ -243,7 +245,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                        Email *
+                        {t.contact.emailLabel} *
                       </label>
                       <input
                         type="email"
@@ -260,7 +262,7 @@ export default function ContactPage() {
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                        Phone
+                        {t.contact.phoneLabel}
                       </label>
                       <input
                         type="tel"
@@ -273,7 +275,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                        What can we help with? *
+                        {t.contact.helpWith} *
                       </label>
                       <select
                         name="inquiryType"
@@ -282,9 +284,9 @@ export default function ContactPage() {
                         required
                         className="w-full h-12 px-4 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] outline-none focus:border-[#B8926A] transition-colors"
                       >
-                        <option value="">Select an option</option>
+                        <option value="">{t.contact.selectOption}</option>
                         {inquiryTypes.map((type) => (
-                          <option key={type} value={type}>{type}</option>
+                          <option key={type.key} value={type.key}>{type.label}</option>
                         ))}
                       </select>
                     </div>
@@ -292,7 +294,7 @@ export default function ContactPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                      Message *
+                      {t.contact.message} *
                     </label>
                     <textarea
                       name="message"
@@ -300,7 +302,7 @@ export default function ContactPage() {
                       onChange={handleChange}
                       required
                       rows={5}
-                      placeholder="Tell us more about what you're looking for..."
+                      placeholder={t.contact.messagePlaceholder}
                       className="w-full px-4 py-3 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] outline-none focus:border-[#B8926A] transition-colors resize-none placeholder:text-[#999]"
                     />
                   </div>
@@ -309,13 +311,13 @@ export default function ContactPage() {
                     type="submit"
                     className="w-full h-12 rounded-xl bg-[#B8926A] hover:bg-[#A6825C] text-white text-base"
                   >
-                    Send Message
+                    {t.contact.sendButton}
                   </Button>
 
                   <p className="text-center text-sm text-[#6B6B6B]">
-                    By submitting, you agree to our{" "}
+                    {t.contact.privacyNote}{" "}
                     <Link href="/privacy" className="text-[#B8926A] hover:underline">
-                      Privacy Policy
+                      {t.footer.privacyPolicy}
                     </Link>
                   </p>
                 </form>
@@ -340,25 +342,25 @@ export default function ContactPage() {
 
               <Reveal delay={0.2}>
                 <div className="bg-white rounded-2xl border border-[#E8E6E3] p-6">
-                  <h3 className="font-semibold text-[#1A1A1A]">Office Hours</h3>
+                  <h3 className="font-semibold text-[#1A1A1A]">{t.contact.officeHours}</h3>
                   <div className="mt-4 space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span className="text-[#6B6B6B]">Monday - Friday</span>
+                      <span className="text-[#6B6B6B]">{t.contact.mondayFriday}</span>
                       <span className="text-[#1A1A1A] font-medium">9:00 - 18:00</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-[#6B6B6B]">Saturday</span>
+                      <span className="text-[#6B6B6B]">{t.contact.saturday}</span>
                       <span className="text-[#1A1A1A] font-medium">10:00 - 14:00</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-[#6B6B6B]">Sunday</span>
-                      <span className="text-[#1A1A1A] font-medium">Closed</span>
+                      <span className="text-[#6B6B6B]">{t.contact.sunday}</span>
+                      <span className="text-[#1A1A1A] font-medium">{t.contact.closed}</span>
                     </div>
                   </div>
                   <div className="mt-6 pt-6 border-t border-[#E8E6E3]">
                     <p className="text-sm text-[#6B6B6B]">
-                      Can&apos;t visit during office hours?{" "}
-                      <span className="text-[#1A1A1A]">Schedule an appointment</span> and we&apos;ll arrange a time that works for you.
+                      {t.contact.cantVisit}{" "}
+                      <span className="text-[#1A1A1A]">{t.contact.scheduleAppointment}</span> {t.contact.arrangeTime}
                     </p>
                   </div>
                 </div>
@@ -366,7 +368,7 @@ export default function ContactPage() {
 
               <Reveal delay={0.3}>
                 <div className="bg-[#0F0F10] rounded-2xl p-6">
-                  <h3 className="font-semibold text-white">Quick Links</h3>
+                  <h3 className="font-semibold text-white">{t.contact.quickLinks}</h3>
                   <div className="mt-4 space-y-2">
                     <Link href="/estimate" className="flex items-center gap-3 text-white/70 hover:text-white transition-colors group">
                       <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center group-hover:bg-[#B8926A] transition-colors">
@@ -374,7 +376,7 @@ export default function ContactPage() {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                         </svg>
                       </div>
-                      <span className="text-sm">Get a free property valuation</span>
+                      <span className="text-sm">{t.contact.freeValuation}</span>
                     </Link>
                     <Link href="/properties" className="flex items-center gap-3 text-white/70 hover:text-white transition-colors group">
                       <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center group-hover:bg-[#B8926A] transition-colors">
@@ -382,15 +384,15 @@ export default function ContactPage() {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                       </div>
-                      <span className="text-sm">Browse available properties</span>
+                      <span className="text-sm">{t.contact.browseProperties}</span>
                     </Link>
-                    <Link href="/pricing" className="flex items-center gap-3 text-white/70 hover:text-white transition-colors group">
+                    <Link href="/about" className="flex items-center gap-3 text-white/70 hover:text-white transition-colors group">
                       <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center group-hover:bg-[#B8926A] transition-colors">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                       </div>
-                      <span className="text-sm">View our pricing</span>
+                      <span className="text-sm">{t.nav.about}</span>
                     </Link>
                   </div>
                 </div>
@@ -406,14 +408,14 @@ export default function ContactPage() {
           <Reveal>
             <div className="max-w-2xl mx-auto text-center">
               <h2 className="text-2xl font-semibold text-[#1A1A1A]">
-                Common Questions
+                {t.contact.faq.title}
               </h2>
               <p className="text-[#6B6B6B] mt-2">
-                Find answers to frequently asked questions about buying, selling, and working with Xact.
+                {t.contact.faq.subtitle}
               </p>
               <div className="mt-6">
                 <Button variant="outline" className="h-11 px-6 rounded-xl border-[#E8E6E3]" asChild>
-                  <Link href="/pricing#faq">View FAQ</Link>
+                  <Link href="/contact">{t.common.contact}</Link>
                 </Button>
               </div>
             </div>
