@@ -469,6 +469,24 @@
       "submitAnother": "Soumettre une autre demande"
     }
   },
+  "legal": {
+    "privacy": {
+      "title": "Politique de Confidentialité",
+      "lastUpdated": "Dernière mise à jour"
+    },
+    "terms": {
+      "title": "Conditions d'Utilisation",
+      "lastUpdated": "Dernière mise à jour"
+    },
+    "cookies": {
+      "title": "Politique des Cookies",
+      "lastUpdated": "Dernière mise à jour"
+    },
+    "imprint": {
+      "title": "Mentions Légales",
+      "lastUpdated": "Dernière mise à jour"
+    }
+  },
   "dashboard": {
     "welcome": "Bienvenue,",
     "manageProperties": "Gérez vos biens et paramètres de compte.",

@@ -469,6 +469,24 @@
       "submitAnother": "Weitere Anfrage senden"
     }
   },
+  "legal": {
+    "privacy": {
+      "title": "Datenschutzerklärung",
+      "lastUpdated": "Zuletzt aktualisiert"
+    },
+    "terms": {
+      "title": "Nutzungsbedingungen",
+      "lastUpdated": "Zuletzt aktualisiert"
+    },
+    "cookies": {
+      "title": "Cookie-Richtlinie",
+      "lastUpdated": "Zuletzt aktualisiert"
+    },
+    "imprint": {
+      "title": "Impressum",
+      "lastUpdated": "Zuletzt aktualisiert"
+    }
+  },
   "dashboard": {
     "welcome": "Willkommen,",
     "manageProperties": "Verwalten Sie Ihre Immobilien und Kontoeinstellungen.",

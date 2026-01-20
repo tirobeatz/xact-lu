@@ -469,6 +469,24 @@
       "submitAnother": "Submit another request"
     }
   },
+  "legal": {
+    "privacy": {
+      "title": "Privacy Policy",
+      "lastUpdated": "Last updated"
+    },
+    "terms": {
+      "title": "Terms of Service",
+      "lastUpdated": "Last updated"
+    },
+    "cookies": {
+      "title": "Cookie Policy",
+      "lastUpdated": "Last updated"
+    },
+    "imprint": {
+      "title": "Legal Notice",
+      "lastUpdated": "Last updated"
+    }
+  },
   "dashboard": {
     "welcome": "Welcome,",
     "manageProperties": "Manage your properties and account settings.",
