@@ -209,17 +209,17 @@ export default function HomePage() {
               {t.home.badge}
             </motion.div>
 
-            <motion.h1 variants={fadeUp} className="text-5xl md:text-6xl lg:text-7xl font-semibold text-white leading-[1.1] tracking-tight">
+            <motion.h1 variants={fadeUp} className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-semibold text-white leading-[1.1] tracking-tight">
               {t.home.title}
               <span className="block bg-gradient-to-r from-[#B8926A] via-[#D4AF7A] to-[#B8926A] bg-clip-text text-transparent">{t.home.titleHighlight}</span>
             </motion.h1>
 
-            <motion.p variants={fadeUp} className="mt-6 text-xl text-white/60 max-w-xl leading-relaxed">
+            <motion.p variants={fadeUp} className="mt-4 md:mt-6 text-base md:text-xl text-white/60 max-w-xl leading-relaxed">
               {t.home.subtitle}
             </motion.p>
 
             {/* Search Bar */}
-            <motion.div variants={fadeUp} className="mt-10 bg-white/95 backdrop-blur-sm rounded-2xl p-3 shadow-2xl max-w-3xl">
+            <motion.div variants={fadeUp} className="mt-6 md:mt-10 bg-white/95 backdrop-blur-sm rounded-2xl p-3 shadow-2xl max-w-3xl">
               <form
                 onSubmit={(e) => {
                   e.preventDefault()
@@ -261,7 +261,7 @@ export default function HomePage() {
                     {t.common.search}
                   </Button>
                 </div>
-                <div className="flex flex-wrap gap-3">
+                <div className="hidden sm:flex flex-wrap gap-3">
                   <select name="minBeds" className="px-4 py-2.5 rounded-xl bg-[#F5F3EF] text-[#1A1A1A] text-sm outline-none cursor-pointer">
                     <option value="">{t.search.bedrooms}</option>
                     <option value="1">1+ {t.common.bed}</option>
@@ -303,17 +303,17 @@ export default function HomePage() {
             </motion.div>
 
             {/* Stats */}
-            <motion.div variants={fadeUp} className="mt-16 flex flex-wrap gap-8 md:gap-16">
+            <motion.div variants={fadeUp} className="mt-10 md:mt-16 grid grid-cols-3 gap-4 md:flex md:flex-wrap md:gap-16">
               {[
                 { value: stats.activeListings, label: t.home.stats.activeListings },
                 { value: stats.propertyValue, label: t.home.stats.propertyValue },
                 { value: stats.satisfiedClients, label: t.home.stats.satisfiedClients },
               ].map((stat) => (
-                <div key={stat.label} className="relative">
+                <div key={stat.label} className="relative text-center md:text-left">
                   <div className="absolute -inset-2 bg-white/5 rounded-lg blur-sm" />
                   <div className="relative">
-                    <p className="text-3xl md:text-4xl font-semibold text-white">{stat.value}</p>
-                    <p className="text-sm text-white/50 mt-1">{stat.label}</p>
+                    <p className="text-xl sm:text-2xl md:text-4xl font-semibold text-white">{stat.value}</p>
+                    <p className="text-xs md:text-sm text-white/50 mt-1">{stat.label}</p>
                   </div>
                 </div>
               ))}
