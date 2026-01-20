@@ -99,6 +99,7 @@ export async function GET(request: NextRequest) {
       id: property.id,
       title: property.title,
       slug: property.slug,
+      titleTranslations: property.titleTranslations as Record<string, string> | null,
       location: property.city,
       address: `${property.address}, ${property.city}`,
       price: Number(property.price),

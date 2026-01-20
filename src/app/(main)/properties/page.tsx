@@ -9,10 +9,18 @@ import { FavoriteButton } from "@/components/favorite-button"
 import { locations } from "@/lib/locations"
 import { useI18n } from "@/lib/i18n"
 
+interface Translations {
+  en?: string
+  fr?: string
+  de?: string
+  [key: string]: string | undefined
+}
+
 interface Property {
   id: string
   title: string
   slug: string
+  titleTranslations?: Translations | null
   location: string
   price: number
   type: string
@@ -36,7 +44,17 @@ const fadeUp = {
 }
 
 function PropertiesContent() {
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
+
+  // Helper to get translated text
+  const getTranslated = (defaultValue: string, translations?: Translations | null): string => {
+    if (!translations || typeof translations !== 'object') return defaultValue
+    const localeValue = translations[locale]
+    if (localeValue && localeValue.trim()) return localeValue
+    const enValue = translations.en
+    if (enValue && enValue.trim()) return enValue
+    return defaultValue
+  }
   const searchParams = useSearchParams()
 
   // Get URL params
@@ -447,7 +465,7 @@ function PropertiesContent() {
                       <div className="flex items-start justify-between gap-2">
                         <div>
                           <h3 className="font-semibold text-[#1A1A1A] group-hover:text-[#B8926A] transition-colors line-clamp-1">
-                            {property.title}
+                            {getTranslated(property.title, property.titleTranslations)}
                           </h3>
                           <p className="text-sm text-[#6B6B6B] mt-1 flex items-center gap-1">
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

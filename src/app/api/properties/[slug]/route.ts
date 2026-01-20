@@ -80,6 +80,8 @@ export async function GET(
       title: property.title,
       slug: property.slug,
       description: property.description,
+      titleTranslations: property.titleTranslations as Record<string, string> | null,
+      descriptionTranslations: property.descriptionTranslations as Record<string, string> | null,
       location: property.city,
       address: `${property.address}, ${property.city}`,
       price: Number(property.price),

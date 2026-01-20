@@ -32,10 +32,18 @@ const banks = [
   { name: "BIL", rate: 3.4 },
 ]
 
+interface Translations {
+  en?: string
+  fr?: string
+  de?: string
+  [key: string]: string | undefined
+}
+
 interface FeaturedProperty {
   id: string
   title: string
   slug: string
+  titleTranslations?: Translations | null
   location: string
   price: number
   beds: number
@@ -61,7 +69,17 @@ interface Categories {
 }
 
 export default function HomePage() {
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
+
+  // Helper to get translated text
+  const getTranslated = (defaultValue: string, translations?: Translations | null): string => {
+    if (!translations || typeof translations !== 'object') return defaultValue
+    const localeValue = translations[locale]
+    if (localeValue && localeValue.trim()) return localeValue
+    const enValue = translations.en
+    if (enValue && enValue.trim()) return enValue
+    return defaultValue
+  }
 
   // Mortgage calculator state
   const [propertyPrice, setPropertyPrice] = useState(750000)
@@ -340,7 +358,7 @@ export default function HomePage() {
                           </div>
                         </div>
                         <h3 className="text-xl font-semibold text-[#1A1A1A] group-hover:text-[#B8926A] transition-colors">
-                          {property.title}
+                          {getTranslated(property.title, property.titleTranslations)}
                         </h3>
                         <div className="flex gap-4 mt-3 text-sm text-[#6B6B6B]">
                           <span>{property.beds} {t.common.beds}</span>

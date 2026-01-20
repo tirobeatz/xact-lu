@@ -85,6 +85,8 @@ export default async function EditPropertyPage({ params }: EditPropertyPageProps
           title: property.title,
           slug: property.slug,
           description: property.description,
+          titleTranslations: (property.titleTranslations as { en: string; fr: string; de: string }) || { en: property.title, fr: "", de: "" },
+          descriptionTranslations: (property.descriptionTranslations as { en: string; fr: string; de: string }) || { en: property.description, fr: "", de: "" },
           type: property.type,
           category: property.category,
           status: property.status,

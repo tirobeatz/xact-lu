@@ -8,11 +8,20 @@ import { Button } from "@/components/ui/button"
 import { FavoriteButton } from "@/components/favorite-button"
 import { useI18n } from "@/lib/i18n"
 
+interface Translations {
+  en?: string
+  fr?: string
+  de?: string
+  [key: string]: string | undefined
+}
+
 interface Property {
   id: string
   title: string
   slug: string
   description: string
+  titleTranslations?: Translations | null
+  descriptionTranslations?: Translations | null
   location: string
   address: string
   price: number
@@ -54,9 +63,19 @@ interface SimilarProperty {
 const formatNumber = (num: number) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 
 export default function PropertyDetailPage() {
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
   const params = useParams()
   const slug = params.slug as string
+
+  // Helper to get translated content
+  const getTranslated = (defaultValue: string, translations?: Translations | null): string => {
+    if (!translations || typeof translations !== 'object') return defaultValue
+    const localeValue = translations[locale]
+    if (localeValue && localeValue.trim()) return localeValue
+    const enValue = translations.en
+    if (enValue && enValue.trim()) return enValue
+    return defaultValue
+  }
 
   const [property, setProperty] = useState<Property | null>(null)
   const [similarProperties, setSimilarProperties] = useState<SimilarProperty[]>([])
@@ -64,6 +83,8 @@ export default function PropertyDetailPage() {
   const [error, setError] = useState<string | null>(null)
 
   const [activeImage, setActiveImage] = useState(0)
+  const [showGallery, setShowGallery] = useState(false)
+  const [galleryIndex, setGalleryIndex] = useState(0)
   const [showContact, setShowContact] = useState(false)
   const [contactForm, setContactForm] = useState({
     name: "",
@@ -121,8 +142,102 @@ export default function PropertyDetailPage() {
     )
   }
 
+  // Gallery navigation
+  const openGallery = (index: number) => {
+    setGalleryIndex(index)
+    setShowGallery(true)
+  }
+
+  const nextImage = () => {
+    setGalleryIndex((prev) => (prev + 1) % property.images.length)
+  }
+
+  const prevImage = () => {
+    setGalleryIndex((prev) => (prev - 1 + property.images.length) % property.images.length)
+  }
+
+  // Handle keyboard navigation
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowRight") nextImage()
+    else if (e.key === "ArrowLeft") prevImage()
+    else if (e.key === "Escape") setShowGallery(false)
+  }
+
   return (
     <>
+      {/* Full Screen Gallery Modal */}
+      {showGallery && (
+        <div
+          className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
+          onClick={() => setShowGallery(false)}
+          onKeyDown={handleKeyDown}
+          tabIndex={0}
+        >
+          {/* Close Button */}
+          <button
+            onClick={() => setShowGallery(false)}
+            className="absolute top-4 right-4 z-10 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+          >
+            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+
+          {/* Image Counter */}
+          <div className="absolute top-4 left-4 px-4 py-2 bg-white/10 rounded-full text-white text-sm">
+            {galleryIndex + 1} / {property.images.length}
+          </div>
+
+          {/* Previous Button */}
+          <button
+            onClick={(e) => { e.stopPropagation(); prevImage(); }}
+            className="absolute left-4 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+          >
+            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          {/* Main Image */}
+          <div
+            className="absolute inset-0 flex items-center justify-center"
+            style={{ top: '60px', bottom: '100px', left: '80px', right: '80px' }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={property.images[galleryIndex]}
+              alt={`Property image ${galleryIndex + 1}`}
+              className="w-full h-full object-contain"
+            />
+          </div>
+
+          {/* Next Button */}
+          <button
+            onClick={(e) => { e.stopPropagation(); nextImage(); }}
+            className="absolute right-4 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+          >
+            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+
+          {/* Thumbnail Strip */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 max-w-[90vw] overflow-x-auto py-2 px-4">
+            {property.images.map((image, index) => (
+              <button
+                key={index}
+                onClick={(e) => { e.stopPropagation(); setGalleryIndex(index); }}
+                className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden transition-all ${
+                  galleryIndex === index ? "ring-2 ring-[#B8926A] opacity-100" : "opacity-50 hover:opacity-80"
+                }`}
+              >
+                <img src={image} alt={`Thumbnail ${index + 1}`} className="w-full h-full object-cover" />
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Image Gallery */}
       <section className="pt-16 bg-[#1A1A1A]">
         <div className="container mx-auto px-4 py-6">
@@ -131,12 +246,18 @@ export default function PropertyDetailPage() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="relative rounded-2xl overflow-hidden cursor-pointer"
+              onClick={() => openGallery(activeImage)}
+              className="relative rounded-2xl overflow-hidden cursor-pointer group"
             >
               <div
-                className="absolute inset-0 bg-cover bg-center"
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover:scale-105"
                 style={{ backgroundImage: `url('${property.images[activeImage] || property.images[0]}')` }}
               />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 px-4 py-2 rounded-full text-sm font-medium text-[#1A1A1A]">
+                  Click to view gallery
+                </span>
+              </div>
             </motion.div>
 
             {/* Thumbnails */}
@@ -144,7 +265,7 @@ export default function PropertyDetailPage() {
               {property.images.slice(0, 4).map((image, index) => (
                 <div
                   key={index}
-                  onClick={() => setActiveImage(index)}
+                  onClick={() => index === 3 && property.images.length > 4 ? openGallery(3) : setActiveImage(index)}
                   className={`relative rounded-xl overflow-hidden cursor-pointer transition-all ${
                     activeImage === index ? "ring-2 ring-[#B8926A]" : "opacity-80 hover:opacity-100"
                   }`}
@@ -154,7 +275,7 @@ export default function PropertyDetailPage() {
                     style={{ backgroundImage: `url('${image}')` }}
                   />
                   {index === 3 && property.images.length > 4 && (
-                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-black/50 hover:bg-black/40 transition-colors flex items-center justify-center">
                       <span className="text-white font-semibold">+{property.images.length - 4} more</span>
                     </div>
                   )}
@@ -192,7 +313,9 @@ export default function PropertyDetailPage() {
                       </span>
                     </div>
 
-                    <h1 className="text-2xl md:text-3xl font-semibold text-[#1A1A1A]">{property.title}</h1>
+                    <h1 className="text-2xl md:text-3xl font-semibold text-[#1A1A1A]">
+                      {getTranslated(property.title, property.titleTranslations)}
+                    </h1>
 
                     <p className="text-[#6B6B6B] mt-1 flex items-center gap-1">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -262,7 +385,9 @@ export default function PropertyDetailPage() {
                 className="bg-white rounded-2xl p-6 shadow-sm"
               >
                 <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">{t.propertyDetail.description}</h2>
-                <div className="text-[#6B6B6B] whitespace-pre-line leading-relaxed">{property.description}</div>
+                <div className="text-[#6B6B6B] whitespace-pre-line leading-relaxed">
+                  {getTranslated(property.description, property.descriptionTranslations)}
+                </div>
               </motion.div>
 
               {/* Features */}

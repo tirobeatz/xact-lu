@@ -27,6 +27,18 @@ const featureKeys = [
   "furnished",
 ] as const
 
+const languages = [
+  { code: "en", label: "English" },
+  { code: "fr", label: "Français" },
+  { code: "de", label: "Deutsch" },
+]
+
+interface Translations {
+  en: string
+  fr: string
+  de: string
+}
+
 export default function NewListingPage() {
   const { t } = useI18n()
   const { data: session, status } = useSession()
@@ -38,6 +50,8 @@ export default function NewListingPage() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const [activeLang, setActiveLang] = useState<"en" | "fr" | "de">("en")
+  const [isTranslating, setIsTranslating] = useState(false)
 
   const stepLabels = [
     t.dashboard.newListing.steps.basicInfo,
@@ -53,12 +67,12 @@ export default function NewListingPage() {
     listingType: "SALE",
     propertyType: "",
     price: "",
-    
+
     // Location
     location: "",
     address: "",
     zipCode: "",
-    
+
     // Details
     size: "",
     bedrooms: "",
@@ -67,13 +81,15 @@ export default function NewListingPage() {
     totalFloors: "",
     yearBuilt: "",
     energyClass: "",
-    
+
     // Features
     selectedFeatures: [] as string[],
-    
-    // Description
+
+    // Description with translations
     description: "",
-    
+    titleTranslations: { en: "", fr: "", de: "" } as Translations,
+    descriptionTranslations: { en: "", fr: "", de: "" } as Translations,
+
     // Contact
     contactName: "",
     contactEmail: "",
@@ -82,6 +98,92 @@ export default function NewListingPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
+
+  // Update translation field
+  const updateTranslation = (field: "title" | "description", lang: string, value: string) => {
+    const translationField = field === "title" ? "titleTranslations" : "descriptionTranslations"
+    setFormData((prev) => ({
+      ...prev,
+      [translationField]: {
+        ...prev[translationField],
+        [lang]: value,
+      },
+      // Keep main field in sync with English
+      ...(lang === "en" && { [field]: value }),
+    }))
+  }
+
+  // Auto-translate function
+  const handleAutoTranslate = async () => {
+    const currentTitle = formData.titleTranslations[activeLang]
+    const currentDesc = formData.descriptionTranslations[activeLang]
+
+    if (!currentTitle && !currentDesc) {
+      setError("Please enter a title or description in the current language first")
+      return
+    }
+
+    setIsTranslating(true)
+    setError(null)
+
+    try {
+      const targetLangs = languages.map(l => l.code).filter(l => l !== activeLang)
+
+      // Translate title
+      if (currentTitle) {
+        const titleRes = await fetch("/api/translate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            text: currentTitle,
+            sourceLang: activeLang,
+            targetLangs,
+          }),
+        })
+
+        if (titleRes.ok) {
+          const { translations, warning } = await titleRes.json()
+          setFormData((prev) => ({
+            ...prev,
+            titleTranslations: { ...prev.titleTranslations, ...translations },
+            title: activeLang === "en" ? currentTitle : (translations.en || prev.title),
+          }))
+          if (warning) {
+            setError(warning)
+          }
+        }
+      }
+
+      // Translate description
+      if (currentDesc) {
+        const descRes = await fetch("/api/translate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            text: currentDesc,
+            sourceLang: activeLang,
+            targetLangs,
+          }),
+        })
+
+        if (descRes.ok) {
+          const { translations, warning } = await descRes.json()
+          setFormData((prev) => ({
+            ...prev,
+            descriptionTranslations: { ...prev.descriptionTranslations, ...translations },
+            description: activeLang === "en" ? currentDesc : (translations.en || prev.description),
+          }))
+          if (warning) {
+            setError(warning)
+          }
+        }
+      }
+    } catch (err) {
+      setError("Translation failed. Please try again or enter manually.")
+    } finally {
+      setIsTranslating(false)
+    }
   }
 
   const toggleFeature = (feature: string) => {
@@ -182,8 +284,10 @@ export default function NewListingPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          title: formData.title,
-          description: formData.description,
+          title: formData.title || formData.titleTranslations.en,
+          description: formData.description || formData.descriptionTranslations.en,
+          titleTranslations: formData.titleTranslations,
+          descriptionTranslations: formData.descriptionTranslations,
           type: propertyTypeMap[formData.propertyType] || "APARTMENT",
           category: formData.propertyType === "commercial" ? "COMMERCIAL" : "RESIDENTIAL",
           listingType: formData.listingType,
@@ -222,7 +326,8 @@ export default function NewListingPage() {
   const isStepValid = () => {
     switch (step) {
       case 1:
-        return formData.title && formData.propertyType && formData.price && formData.listingType
+        const hasTitle = formData.title || formData.titleTranslations.en
+        return hasTitle && formData.propertyType && formData.price && formData.listingType
       case 2:
         return formData.location && formData.address
       case 3:
@@ -230,7 +335,8 @@ export default function NewListingPage() {
       case 4:
         return true // Photos optional for now until image upload is implemented
       case 5:
-        return formData.description && formData.contactName && formData.contactEmail && formData.contactPhone
+        const hasDescription = formData.description || formData.descriptionTranslations.en
+        return hasDescription && formData.contactName && formData.contactEmail && formData.contactPhone
       default:
         return true
     }
@@ -267,6 +373,7 @@ export default function NewListingPage() {
                   setSubmitted(false)
                   setStep(1)
                   setPhotos([])
+                  setActiveLang("en")
                   setFormData({
                     title: "",
                     listingType: "SALE",
@@ -284,6 +391,8 @@ export default function NewListingPage() {
                     energyClass: "",
                     selectedFeatures: [],
                     description: "",
+                    titleTranslations: { en: "", fr: "", de: "" },
+                    descriptionTranslations: { en: "", fr: "", de: "" },
                     contactName: "",
                     contactEmail: "",
                     contactPhone: "",
@@ -391,19 +500,42 @@ export default function NewListingPage() {
                     </div>
                   </div>
 
-                  {/* Title */}
-                  <div>
-                    <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                      {t.dashboard.newListing.step1.propertyTitle} *
-                    </label>
+                  {/* Title with Languages */}
+                  <div className="border border-[#E8E6E3] rounded-xl p-4 bg-[#FAFAF8]">
+                    <div className="flex items-center justify-between mb-3">
+                      <label className="text-sm font-medium text-[#1A1A1A]">
+                        {t.dashboard.newListing.step1.propertyTitle} *
+                      </label>
+                      <div className="flex gap-1">
+                        {languages.map((lang) => (
+                          <button
+                            key={lang.code}
+                            type="button"
+                            onClick={() => setActiveLang(lang.code as "en" | "fr" | "de")}
+                            className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors ${
+                              activeLang === lang.code
+                                ? "bg-[#B8926A] text-white"
+                                : "bg-white text-[#6B6B6B] hover:bg-[#E8E6E3] border border-[#E8E6E3]"
+                            }`}
+                          >
+                            {lang.label}
+                            {formData.titleTranslations[lang.code as keyof Translations] && (
+                              <span className="ml-1 w-1.5 h-1.5 bg-green-400 rounded-full inline-block" />
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                     <input
                       type="text"
-                      name="title"
-                      value={formData.title}
-                      onChange={handleChange}
+                      value={formData.titleTranslations[activeLang]}
+                      onChange={(e) => updateTranslation("title", activeLang, e.target.value)}
                       placeholder={t.dashboard.newListing.step1.propertyTitlePlaceholder}
                       className="w-full h-12 px-4 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] outline-none focus:border-[#B8926A] transition-colors placeholder:text-[#999]"
                     />
+                    <p className="text-xs text-[#6B6B6B] mt-2">
+                      💡 Enter in one language, click Auto-Translate in the Description step
+                    </p>
                   </div>
 
                   {/* Property Type */}
@@ -786,22 +918,65 @@ export default function NewListingPage() {
                 exit={{ opacity: 0, x: -20 }}
                 className="space-y-6"
               >
-                {/* Description */}
+                {/* Description with Translations */}
                 <div className="bg-white rounded-2xl border border-[#E8E6E3] p-6 md:p-8">
-                  <h2 className="text-xl font-semibold text-[#1A1A1A] mb-6">{t.dashboard.newListing.step5.title}</h2>
+                  <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-xl font-semibold text-[#1A1A1A]">{t.dashboard.newListing.step5.title}</h2>
+                    <button
+                      type="button"
+                      onClick={handleAutoTranslate}
+                      disabled={isTranslating}
+                      className="px-4 py-2 rounded-lg text-sm font-medium bg-[#1A1A1A] text-white hover:bg-[#333] disabled:opacity-50 flex items-center gap-2"
+                    >
+                      {isTranslating ? (
+                        <>
+                          <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                          </svg>
+                          Translating...
+                        </>
+                      ) : (
+                        <>🌐 Auto-Translate</>
+                      )}
+                    </button>
+                  </div>
+
+                  {/* Language Tabs */}
+                  <div className="flex gap-2 mb-4">
+                    {languages.map((lang) => (
+                      <button
+                        key={lang.code}
+                        type="button"
+                        onClick={() => setActiveLang(lang.code as "en" | "fr" | "de")}
+                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                          activeLang === lang.code
+                            ? "bg-[#B8926A] text-white"
+                            : "bg-[#F5F3EF] text-[#6B6B6B] hover:bg-[#E8E6E3]"
+                        }`}
+                      >
+                        {lang.label}
+                        {formData.descriptionTranslations[lang.code as keyof Translations] && (
+                          <span className="ml-1.5 w-2 h-2 bg-green-400 rounded-full inline-block" />
+                        )}
+                      </button>
+                    ))}
+                  </div>
 
                   <div>
                     <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-                      {t.dashboard.newListing.step5.description} *
+                      {t.dashboard.newListing.step5.description} ({languages.find(l => l.code === activeLang)?.label}) *
                     </label>
                     <textarea
-                      name="description"
-                      value={formData.description}
-                      onChange={handleChange}
+                      value={formData.descriptionTranslations[activeLang]}
+                      onChange={(e) => updateTranslation("description", activeLang, e.target.value)}
                       rows={6}
                       placeholder={t.dashboard.newListing.step5.descriptionPlaceholder}
                       className="w-full px-4 py-3 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] outline-none focus:border-[#B8926A] transition-colors resize-none placeholder:text-[#999]"
                     />
+                    <p className="text-xs text-[#6B6B6B] mt-2">
+                      💡 Enter in one language, then click "Auto-Translate" to fill the others
+                    </p>
                   </div>
                 </div>
 

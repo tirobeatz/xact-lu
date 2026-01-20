@@ -106,10 +106,18 @@ interface PropertyImage {
   preview?: string
 }
 
+interface Translations {
+  en: string
+  fr: string
+  de: string
+}
+
 interface PropertyFormData {
   title: string
   slug: string
   description: string
+  titleTranslations: Translations
+  descriptionTranslations: Translations
   type: string
   category: string
   status: string
@@ -150,6 +158,13 @@ interface PropertyFormProps {
   agents?: Agent[]
 }
 
+const defaultTranslations: Translations = { en: "", fr: "", de: "" }
+const languages = [
+  { code: "en", label: "English" },
+  { code: "fr", label: "Français" },
+  { code: "de", label: "Deutsch" },
+]
+
 export function PropertyForm({ initialData, propertyId, mode = "create", agents = [] }: PropertyFormProps) {
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -157,11 +172,15 @@ export function PropertyForm({ initialData, propertyId, mode = "create", agents 
   const [error, setError] = useState<string | null>(null)
   const [activeSection, setActiveSection] = useState("basic")
   const [dragActive, setDragActive] = useState(false)
+  const [activeLang, setActiveLang] = useState<"en" | "fr" | "de">("en")
+  const [isTranslating, setIsTranslating] = useState(false)
 
   const [formData, setFormData] = useState<PropertyFormData>({
     title: initialData?.title || "",
     slug: initialData?.slug || "",
     description: initialData?.description || "",
+    titleTranslations: initialData?.titleTranslations || { ...defaultTranslations },
+    descriptionTranslations: initialData?.descriptionTranslations || { ...defaultTranslations },
     type: initialData?.type || "",
     category: initialData?.category || "RESIDENTIAL",
     status: initialData?.status || "DRAFT",
@@ -223,6 +242,96 @@ export function PropertyForm({ initialData, propertyId, mode = "create", agents 
         ? prev.features.filter((f) => f !== feature)
         : [...prev.features, feature],
     }))
+  }
+
+  // Auto-translate function
+  const handleAutoTranslate = async () => {
+    const currentTitle = formData.titleTranslations[activeLang]
+    const currentDesc = formData.descriptionTranslations[activeLang]
+
+    if (!currentTitle && !currentDesc) {
+      setError("Please enter a title or description in the current language first")
+      return
+    }
+
+    setIsTranslating(true)
+    setError(null)
+
+    try {
+      const targetLangs = languages.map(l => l.code).filter(l => l !== activeLang)
+
+      // Translate title
+      if (currentTitle) {
+        const titleRes = await fetch("/api/translate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            text: currentTitle,
+            sourceLang: activeLang,
+            targetLangs,
+          }),
+        })
+
+        if (titleRes.ok) {
+          const { translations } = await titleRes.json()
+          setFormData((prev) => ({
+            ...prev,
+            titleTranslations: { ...prev.titleTranslations, ...translations },
+            // Also set the main title field if English
+            title: activeLang === "en" ? currentTitle : (translations.en || prev.title),
+          }))
+        }
+      }
+
+      // Translate description
+      if (currentDesc) {
+        const descRes = await fetch("/api/translate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            text: currentDesc,
+            sourceLang: activeLang,
+            targetLangs,
+          }),
+        })
+
+        if (descRes.ok) {
+          const { translations } = await descRes.json()
+          setFormData((prev) => ({
+            ...prev,
+            descriptionTranslations: { ...prev.descriptionTranslations, ...translations },
+            // Also set the main description field if English
+            description: activeLang === "en" ? currentDesc : (translations.en || prev.description),
+          }))
+        }
+      }
+    } catch (err) {
+      setError("Translation failed. Please try again.")
+    } finally {
+      setIsTranslating(false)
+    }
+  }
+
+  // Update translation field
+  const updateTranslation = (field: "title" | "description", lang: string, value: string) => {
+    const translationField = field === "title" ? "titleTranslations" : "descriptionTranslations"
+    setFormData((prev) => ({
+      ...prev,
+      [translationField]: {
+        ...prev[translationField],
+        [lang]: value,
+      },
+      // Keep main field in sync with English
+      ...(lang === "en" && { [field]: value }),
+    }))
+
+    // Auto-generate slug when English title changes
+    if (field === "title" && lang === "en" && mode === "create") {
+      setFormData((prev) => ({
+        ...prev,
+        slug: generateSlug(value),
+      }))
+    }
   }
 
   // Image handling
@@ -309,9 +418,11 @@ export function PropertyForm({ initialData, propertyId, mode = "create", agents 
 
   // Form validation
   const validateForm = (): string | null => {
-    if (!formData.title.trim()) return "Title is required"
+    const hasTitle = formData.title.trim() || formData.titleTranslations.en.trim()
+    const hasDescription = formData.description.trim() || formData.descriptionTranslations.en.trim()
+    if (!hasTitle) return "English title is required"
     if (!formData.slug.trim()) return "Slug is required"
-    if (!formData.description.trim()) return "Description is required"
+    if (!hasDescription) return "English description is required"
     if (!formData.type) return "Property type is required"
     if (!formData.category) return "Category is required"
     if (!formData.listingType) return "Listing type is required"
@@ -323,26 +434,55 @@ export function PropertyForm({ initialData, propertyId, mode = "create", agents 
     return null
   }
 
-  // Upload images to server (placeholder - integrate with your upload service)
+  // Upload images to server
   const uploadImages = async (): Promise<PropertyImage[]> => {
-    // For now, we'll use placeholder URLs
-    // In production, integrate with Uploadthing or your preferred service
     const uploadedImages: PropertyImage[] = []
 
-    for (const image of formData.images) {
-      if (image.file) {
-        // Placeholder: In production, upload to your service
-        // const formData = new FormData()
-        // formData.append('file', image.file)
-        // const response = await fetch('/api/upload', { method: 'POST', body: formData })
-        // const { url } = await response.json()
+    // Collect new files to upload
+    const filesToUpload: File[] = []
+    const fileIndexMap: number[] = [] // Track which images are new files
 
-        // For demo, use the preview URL or a placeholder
+    for (let i = 0; i < formData.images.length; i++) {
+      const image = formData.images[i]
+      if (image.file) {
+        filesToUpload.push(image.file)
+        fileIndexMap.push(i)
+      }
+    }
+
+    // Upload new files in batch
+    let uploadedUrls: string[] = []
+    if (filesToUpload.length > 0) {
+      const uploadFormData = new FormData()
+      filesToUpload.forEach((file) => {
+        uploadFormData.append("files", file)
+      })
+
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: uploadFormData,
+      })
+
+      if (!response.ok) {
+        throw new Error("Failed to upload images")
+      }
+
+      const result = await response.json()
+      uploadedUrls = result.urls
+    }
+
+    // Build final images array
+    let uploadIndex = 0
+    for (let i = 0; i < formData.images.length; i++) {
+      const image = formData.images[i]
+      if (image.file) {
+        // New image - use uploaded URL
         uploadedImages.push({
-          url: image.preview || `https://picsum.photos/800/600?random=${Math.random()}`,
+          url: uploadedUrls[uploadIndex] || "",
           alt: image.alt || formData.title,
           isFloorplan: image.isFloorplan,
         })
+        uploadIndex++
       } else {
         // Existing image (edit mode)
         uploadedImages.push({
@@ -374,9 +514,11 @@ export function PropertyForm({ initialData, propertyId, mode = "create", agents 
 
       // Prepare data for API
       const apiData = {
-        title: formData.title,
+        title: formData.title || formData.titleTranslations.en,
         slug: formData.slug,
-        description: formData.description,
+        description: formData.description || formData.descriptionTranslations.en,
+        titleTranslations: formData.titleTranslations,
+        descriptionTranslations: formData.descriptionTranslations,
         type: formData.type,
         category: formData.category,
         status: formData.status,
@@ -494,19 +636,81 @@ export function PropertyForm({ initialData, propertyId, mode = "create", agents 
             </div>
           </div>
 
-          {/* Title */}
-          <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-              Property Title *
-            </label>
-            <input
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              placeholder="e.g. Modern 3-Bedroom Apartment with Terrace"
-              className="w-full h-11 px-4 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] outline-none focus:border-[#B8926A] transition-colors"
-            />
+          {/* Language Tabs */}
+          <div className="border border-[#E8E6E3] rounded-xl p-4 bg-[#FAFAF8]">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex gap-2">
+                {languages.map((lang) => (
+                  <button
+                    key={lang.code}
+                    type="button"
+                    onClick={() => setActiveLang(lang.code as "en" | "fr" | "de")}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      activeLang === lang.code
+                        ? "bg-[#B8926A] text-white"
+                        : "bg-white text-[#6B6B6B] hover:bg-[#E8E6E3] border border-[#E8E6E3]"
+                    }`}
+                  >
+                    {lang.label}
+                    {formData.titleTranslations[lang.code as keyof Translations] && (
+                      <span className="ml-1.5 w-2 h-2 bg-green-400 rounded-full inline-block" />
+                    )}
+                  </button>
+                ))}
+              </div>
+              <button
+                type="button"
+                onClick={handleAutoTranslate}
+                disabled={isTranslating}
+                className="px-4 py-2 rounded-lg text-sm font-medium bg-[#1A1A1A] text-white hover:bg-[#333] disabled:opacity-50 flex items-center gap-2"
+              >
+                {isTranslating ? (
+                  <>
+                    <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Translating...
+                  </>
+                ) : (
+                  <>
+                    🌐 Auto-Translate
+                  </>
+                )}
+              </button>
+            </div>
+
+            {/* Title in current language */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
+                Property Title ({languages.find(l => l.code === activeLang)?.label}) *
+              </label>
+              <input
+                type="text"
+                value={formData.titleTranslations[activeLang]}
+                onChange={(e) => updateTranslation("title", activeLang, e.target.value)}
+                placeholder="e.g. Modern 3-Bedroom Apartment with Terrace"
+                className="w-full h-11 px-4 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] outline-none focus:border-[#B8926A] transition-colors"
+              />
+            </div>
+
+            {/* Description in current language */}
+            <div>
+              <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
+                Description ({languages.find(l => l.code === activeLang)?.label}) *
+              </label>
+              <textarea
+                value={formData.descriptionTranslations[activeLang]}
+                onChange={(e) => updateTranslation("description", activeLang, e.target.value)}
+                rows={5}
+                placeholder="Describe the property in detail..."
+                className="w-full px-4 py-3 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] outline-none focus:border-[#B8926A] transition-colors resize-none"
+              />
+            </div>
+
+            <p className="text-xs text-[#6B6B6B] mt-3">
+              💡 Enter the title and description in one language, then click "Auto-Translate" to fill other languages.
+            </p>
           </div>
 
           {/* Slug */}
@@ -602,20 +806,6 @@ export function PropertyForm({ initialData, propertyId, mode = "create", agents 
             </div>
           </div>
 
-          {/* Description */}
-          <div>
-            <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
-              Description *
-            </label>
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              rows={5}
-              placeholder="Describe the property in detail..."
-              className="w-full px-4 py-3 rounded-xl border border-[#E8E6E3] bg-white text-[#1A1A1A] outline-none focus:border-[#B8926A] transition-colors resize-none"
-            />
-          </div>
         </div>
       )}
 

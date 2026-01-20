@@ -87,6 +87,8 @@ export async function POST(request: NextRequest) {
     const {
       title,
       description,
+      titleTranslations,
+      descriptionTranslations,
       type,
       category,
       listingType,
@@ -128,6 +130,8 @@ export async function POST(request: NextRequest) {
         title,
         slug,
         description,
+        titleTranslations: titleTranslations || null,
+        descriptionTranslations: descriptionTranslations || null,
         type,
         category: category || "RESIDENTIAL",
         listingType,

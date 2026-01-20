@@ -114,6 +114,8 @@ model Property {
   title           String
   slug            String             @unique
   description     String
+  titleTranslations    Json?         // { en: "...", fr: "...", de: "..." }
+  descriptionTranslations Json?      // { en: "...", fr: "...", de: "..." }
   type            PropertyType
   category        PropertyCategory
   status          PropertyStatus     @default(DRAFT)

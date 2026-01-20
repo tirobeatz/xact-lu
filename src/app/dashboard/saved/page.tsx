@@ -8,10 +8,18 @@ import { Button } from "@/components/ui/button"
 import { useI18n } from "@/lib/i18n"
 import { motion } from "framer-motion"
 
+interface Translations {
+  en?: string
+  fr?: string
+  de?: string
+  [key: string]: string | undefined
+}
+
 interface SavedProperty {
   id: string
   propertyId: string
   title: string
+  titleTranslations?: Translations | null
   slug: string
   address: string
   price: number
@@ -24,7 +32,17 @@ interface SavedProperty {
 }
 
 export default function SavedPropertiesPage() {
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
+
+  // Helper to get translated text
+  const getTranslated = (defaultValue: string, translations?: Translations | null): string => {
+    if (!translations || typeof translations !== 'object') return defaultValue
+    const localeValue = translations[locale]
+    if (localeValue && localeValue.trim()) return localeValue
+    const enValue = translations.en
+    if (enValue && enValue.trim()) return enValue
+    return defaultValue
+  }
   const { data: session, status } = useSession()
   const router = useRouter()
   const [properties, setProperties] = useState<SavedProperty[]>([])
@@ -141,7 +159,7 @@ export default function SavedPropertiesPage() {
                 <div className="p-4">
                   <Link href={`/properties/${property.slug}`}>
                     <h3 className="font-semibold text-[#1A1A1A] mb-1 line-clamp-1 hover:text-[#B8926A] transition-colors">
-                      {property.title}
+                      {getTranslated(property.title, property.titleTranslations)}
                     </h3>
                   </Link>
                   <p className="text-sm text-[#6B6B6B] mb-3 flex items-center gap-1">

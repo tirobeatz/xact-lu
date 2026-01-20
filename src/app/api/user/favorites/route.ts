@@ -48,6 +48,7 @@ export async function GET(request: NextRequest) {
       id: fav.id,
       propertyId: fav.property.id,
       title: fav.property.title,
+      titleTranslations: fav.property.titleTranslations as Record<string, string> | null,
       slug: fav.property.slug,
       address: `${fav.property.address}, ${fav.property.city}`,
       price: Number(fav.property.price),
