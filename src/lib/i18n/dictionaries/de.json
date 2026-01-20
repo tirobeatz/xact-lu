@@ -69,7 +69,7 @@
     "badge": "Luxemburgs Premium-Immobilienplattform",
     "title": "Entdecken Sie Ihr",
     "titleHighlight": "Traumhaus.",
-    "subtitle": "Außergewöhnliche Immobilien in ganz Luxemburg. Kaufen, mieten oder inserieren Sie auf der Plattform, der Tausende vertrauen.",
+    "subtitle": "Außergewöhnliche Immobilien in ganz Luxemburg. Kaufen, mieten oder inserieren Sie auf einer Plattform für ein Premium-Erlebnis.",
     "stats": {
       "activeListings": "Aktive Inserate",
       "propertyValue": "Immobilienwert",
@@ -142,7 +142,7 @@
     },
     "cta": {
       "title": "Bereit, Ihr Traumhaus zu finden?",
-      "subtitle": "Schließen Sie sich Tausenden zufriedener Kunden an, die ihre perfekte Immobilie über Xact gefunden haben.",
+      "subtitle": "Starten Sie Ihre Immobiliensuche mit Luxemburgs neuester Premium-Plattform.",
       "browse": "Immobilien durchsuchen",
       "submit": "Immobilie inserieren"
     }
@@ -263,14 +263,14 @@
     "scrollToDiscover": "Scrollen Sie, um unsere Geschichte zu entdecken",
     "agencySnapshot": "Agentur-Überblick",
     "boutiqueTag": "Luxemburg • Boutique • Premium",
-    "since": "Seit 2014",
+    "since": "Gegründet 2025",
     "marketMomentum": "Marktdynamik",
     "ourPromise": "Unser Versprechen",
     "promiseText": "Schnelles Feedback, präzise Preise und keine Überraschungen.",
     "stats": {
       "yearsExperience": "Jahre Erfahrung",
-      "propertiesSold": "Verkaufte Immobilien",
-      "totalSalesVolume": "Gesamtverkaufsvolumen",
+      "propertiesSold": "Luxemburger Regionen",
+      "totalSalesVolume": "Persönlicher Service",
       "clientSatisfaction": "Kundenzufriedenheit"
     },
     "story": {
@@ -280,12 +280,12 @@
       "points": ["Preise, die Sinn machen", "Marketing, das funktioniert", "Verhandlung, die Sie schützt"]
     },
     "timeline": {
-      "title": "Zeitachse",
-      "subtitle": "Wie wir hierher kamen",
-      "2014": { "title": "Xact wird gegründet", "text": "Eine Boutique-Agentur mit modernem, kundenorientiertem Ansatz." },
-      "2017": { "title": "Erstes €50M-Ziel", "text": "Eine Erfolgsbilanz aufgebaut durch Empfehlungen und Vertrauen." },
-      "2020": { "title": "Digital-first Expansion", "text": "Bessere Fotografie, Touren und Marketing-Performance." },
-      "2024": { "title": "Premium-Servicemodell", "text": "Schärfere Positionierung und ein gehobenes Kauf-/Verkaufserlebnis." }
+      "title": "Unser Ansatz",
+      "subtitle": "Was uns antreibt",
+      "2014": { "title": "7+ Jahre im Immobilienbereich", "text": "Unser Team bringt fundierte Erfahrung vom Luxemburger Immobilienmarkt mit." },
+      "2017": { "title": "Lokale Expertise", "text": "Wir kennen jedes Viertel, jede Straße, jede Gelegenheit." },
+      "2020": { "title": "Modernes Marketing", "text": "Professionelle Fotografie, virtuelle Touren und digitale Strategien." },
+      "2024": { "title": "Premium-Service", "text": "Ein Boutique-Ansatz mit persönlicher Aufmerksamkeit für jeden Kunden." }
     },
     "values": {
       "label": "UNSERE WERTE",

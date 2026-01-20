@@ -14,6 +14,9 @@ interface Agent {
   phone: string | null
   image: string | null
   bio: string | null
+  role: string | null
+  showOnAbout: boolean
+  displayOrder: number
   isActive: boolean
   _count: {
     properties: number
@@ -33,6 +36,9 @@ export default function AdminAgentsPage() {
     phone: "",
     image: "",
     bio: "",
+    role: "",
+    showOnAbout: false,
+    displayOrder: 0,
   })
   const [saving, setSaving] = useState(false)
   const [uploadingImage, setUploadingImage] = useState(false)
@@ -117,7 +123,7 @@ export default function AdminAgentsPage() {
         fetchAgents()
         setShowModal(false)
         setEditingAgent(null)
-        setFormData({ name: "", email: "", phone: "", image: "", bio: "" })
+        setFormData({ name: "", email: "", phone: "", image: "", bio: "", role: "", showOnAbout: false, displayOrder: 0 })
       }
     } catch (error) {
       console.error("Failed to save agent:", error)
@@ -134,6 +140,9 @@ export default function AdminAgentsPage() {
       phone: agent.phone || "",
       image: agent.image || "",
       bio: agent.bio || "",
+      role: agent.role || "",
+      showOnAbout: agent.showOnAbout,
+      displayOrder: agent.displayOrder,
     })
     setShowModal(true)
   }
@@ -198,7 +207,7 @@ export default function AdminAgentsPage() {
             <Button
               onClick={() => {
                 setEditingAgent(null)
-                setFormData({ name: "", email: "", phone: "", image: "", bio: "" })
+                setFormData({ name: "", email: "", phone: "", image: "", bio: "", role: "", showOnAbout: false, displayOrder: 0 })
                 setShowModal(true)
               }}
               className="h-11 px-6 rounded-xl bg-[#B8926A] hover:bg-[#A6825C] text-white"
@@ -249,12 +258,20 @@ export default function AdminAgentsPage() {
                     </div>
                   )}
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
                       <h3 className="font-semibold text-[#1A1A1A] truncate">{agent.name}</h3>
                       <span className={`px-2 py-0.5 rounded-full text-xs ${agent.isActive ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600"}`}>
                         {agent.isActive ? "Active" : "Inactive"}
                       </span>
+                      {agent.showOnAbout && (
+                        <span className="px-2 py-0.5 rounded-full text-xs bg-[#B8926A]/10 text-[#B8926A]">
+                          On About Page
+                        </span>
+                      )}
                     </div>
+                    {agent.role && (
+                      <p className="text-sm text-[#B8926A] font-medium">{agent.role}</p>
+                    )}
                     <p className="text-sm text-[#6B6B6B] truncate">{agent.email}</p>
                     {agent.phone && (
                       <p className="text-sm text-[#6B6B6B]">{agent.phone}</p>
@@ -400,6 +417,20 @@ export default function AdminAgentsPage() {
                 />
               </div>
 
+              {/* Role */}
+              <div>
+                <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
+                  Role / Title
+                </label>
+                <input
+                  type="text"
+                  value={formData.role}
+                  onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                  placeholder="e.g. Founder & CEO, Senior Agent, Property Consultant"
+                  className="w-full h-11 px-4 rounded-xl border border-[#E8E6E3] bg-white outline-none focus:border-[#B8926A]"
+                />
+              </div>
+
               {/* Bio */}
               <div>
                 <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
@@ -412,6 +443,51 @@ export default function AdminAgentsPage() {
                   className="w-full px-4 py-3 rounded-xl border border-[#E8E6E3] bg-white outline-none focus:border-[#B8926A] resize-none"
                   placeholder="A short bio about this agent..."
                 />
+              </div>
+
+              {/* About Page Settings */}
+              <div className="p-4 bg-[#F5F3EF] rounded-xl space-y-4">
+                <h4 className="font-medium text-[#1A1A1A]">About Page Settings</h4>
+
+                {/* Show on About */}
+                <div className="flex items-center justify-between">
+                  <div>
+                    <label className="text-sm font-medium text-[#1A1A1A]">
+                      Show on About Page
+                    </label>
+                    <p className="text-xs text-[#6B6B6B]">Display this agent in the "Meet our experts" section</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setFormData({ ...formData, showOnAbout: !formData.showOnAbout })}
+                    className={`w-12 h-6 rounded-full flex items-center px-1 transition-colors ${
+                      formData.showOnAbout ? "bg-[#B8926A] justify-end" : "bg-[#E8E6E3] justify-start"
+                    }`}
+                  >
+                    <div className="w-4 h-4 bg-white rounded-full shadow" />
+                  </button>
+                </div>
+
+                {/* Display Order */}
+                {formData.showOnAbout && (
+                  <div>
+                    <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
+                      Display Order
+                    </label>
+                    <input
+                      type="number"
+                      value={formData.displayOrder ?? 0}
+                      onChange={(e) => {
+                        const val = e.target.value
+                        setFormData({ ...formData, displayOrder: val === '' ? 0 : (parseInt(val) || 0) })
+                      }}
+                      min="0"
+                      className="w-full h-11 px-4 rounded-xl border border-[#E8E6E3] bg-white outline-none focus:border-[#B8926A]"
+                      placeholder="0 = first, higher = later"
+                    />
+                    <p className="text-xs text-[#6B6B6B] mt-1">Lower numbers appear first</p>
+                  </div>
+                )}
               </div>
 
               {/* Actions */}

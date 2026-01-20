@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { name, email, phone, image, bio } = body
+    const { name, email, phone, image, bio, role, showOnAbout, displayOrder } = body
 
     if (!name || !email) {
       return NextResponse.json(
@@ -57,6 +57,9 @@ export async function POST(request: NextRequest) {
         phone,
         image,
         bio,
+        role,
+        showOnAbout: showOnAbout || false,
+        displayOrder: displayOrder || 0,
       },
     })
 

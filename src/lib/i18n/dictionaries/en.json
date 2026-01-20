@@ -69,7 +69,7 @@
     "badge": "Luxembourg's Premium Real Estate Platform",
     "title": "Discover your",
     "titleHighlight": "dream home.",
-    "subtitle": "Exceptional properties across Luxembourg. Buy, rent, or list with the platform trusted by thousands.",
+    "subtitle": "Exceptional properties across Luxembourg. Buy, rent, or list with a platform built for a premium experience.",
     "stats": {
       "activeListings": "Active Listings",
       "propertyValue": "Property Value",
@@ -142,7 +142,7 @@
     },
     "cta": {
       "title": "Ready to find your dream home?",
-      "subtitle": "Join thousands of happy clients who found their perfect property through Xact.",
+      "subtitle": "Start your property journey with Luxembourg's newest premium platform.",
       "browse": "Browse Properties",
       "submit": "Submit Your Property"
     }
@@ -263,14 +263,14 @@
     "scrollToDiscover": "Scroll to discover our story",
     "agencySnapshot": "Agency Snapshot",
     "boutiqueTag": "Luxembourg • Boutique • Premium",
-    "since": "Since 2014",
+    "since": "Est. 2025",
     "marketMomentum": "Market momentum",
     "ourPromise": "Our promise",
     "promiseText": "Fast feedback, sharp pricing, and zero surprises.",
     "stats": {
       "yearsExperience": "Years Experience",
-      "propertiesSold": "Properties Sold",
-      "totalSalesVolume": "Total Sales Volume",
+      "propertiesSold": "Luxembourg Areas",
+      "totalSalesVolume": "Personal Service",
       "clientSatisfaction": "Client Satisfaction"
     },
     "story": {
@@ -280,12 +280,12 @@
       "points": ["Pricing that makes sense", "Marketing that performs", "Negotiation that protects you"]
     },
     "timeline": {
-      "title": "Timeline",
-      "subtitle": "How we got here",
-      "2014": { "title": "Xact is founded", "text": "A boutique agency with a modern, client-first approach." },
-      "2017": { "title": "First €50M milestone", "text": "A track record built on referrals and trust." },
-      "2020": { "title": "Digital-first expansion", "text": "Better photography, tours, and marketing performance." },
-      "2024": { "title": "Premium service model", "text": "Sharper positioning and an elevated buying/selling experience." }
+      "title": "Our Approach",
+      "subtitle": "What drives us",
+      "2014": { "title": "7+ years in real estate", "text": "Our team brings deep experience from Luxembourg's property market." },
+      "2017": { "title": "Local expertise", "text": "We know every neighborhood, every street, every opportunity." },
+      "2020": { "title": "Modern marketing", "text": "Professional photography, virtual tours, and digital-first strategies." },
+      "2024": { "title": "Premium service", "text": "A boutique approach with personal attention to every client." }
     },
     "values": {
       "label": "OUR VALUES",

@@ -59,7 +59,7 @@ export async function PUT(
 
     const { id } = await params
     const body = await request.json()
-    const { name, email, phone, image, bio, isActive } = body
+    const { name, email, phone, image, bio, role, showOnAbout, displayOrder, isActive } = body
 
     const agent = await prisma.agent.update({
       where: { id },
@@ -69,6 +69,9 @@ export async function PUT(
         ...(phone !== undefined && { phone }),
         ...(image !== undefined && { image }),
         ...(bio !== undefined && { bio }),
+        ...(role !== undefined && { role }),
+        ...(showOnAbout !== undefined && { showOnAbout }),
+        ...(displayOrder !== undefined && { displayOrder }),
         ...(isActive !== undefined && { isActive }),
       },
     })

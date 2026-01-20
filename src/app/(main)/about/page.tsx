@@ -3,40 +3,23 @@
 import Link from "next/link"
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { useMemo, useRef } from "react"
+import { useMemo, useRef, useState, useEffect } from "react"
 import { useI18n } from "@/lib/i18n"
 
-const teamData = [
-  {
-    name: "Sophie Weber",
-    roleKey: "founderCeo" as const,
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=800&auto=format&fit=crop",
-    email: "sophie@xact.lu",
-  },
-  {
-    name: "Marc Schmit",
-    roleKey: "seniorAgent" as const,
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=800&auto=format&fit=crop",
-    email: "marc@xact.lu",
-  },
-  {
-    name: "Julie Hoffmann",
-    roleKey: "propertyConsultant" as const,
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=800&auto=format&fit=crop",
-    email: "julie@xact.lu",
-  },
-  {
-    name: "Thomas Muller",
-    roleKey: "salesManager" as const,
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=800&auto=format&fit=crop",
-    email: "thomas@xact.lu",
-  },
-]
+interface Agent {
+  id: string
+  name: string
+  email: string
+  phone: string | null
+  image: string | null
+  bio: string | null
+  role: string | null
+}
 
 const statsData = [
-  { value: "10+", labelKey: "yearsExperience" as const },
-  { value: "500+", labelKey: "propertiesSold" as const },
-  { value: "€250M+", labelKey: "totalSalesVolume" as const },
+  { value: "7+", labelKey: "yearsExperience" as const },
+  { value: "350+", labelKey: "propertiesSold" as const },
+  { value: "100%", labelKey: "totalSalesVolume" as const },
   { value: "98%", labelKey: "clientSatisfaction" as const },
 ]
 
@@ -79,6 +62,26 @@ function Reveal({
 export default function AboutPage() {
   const { t } = useI18n()
   const reduce = useReducedMotion()
+  const [agents, setAgents] = useState<Agent[]>([])
+  const [loadingAgents, setLoadingAgents] = useState(true)
+
+  // Fetch agents for the team section
+  useEffect(() => {
+    const fetchAgents = async () => {
+      try {
+        const res = await fetch("/api/agents/about")
+        if (res.ok) {
+          const data = await res.json()
+          setAgents(data)
+        }
+      } catch (error) {
+        console.error("Failed to fetch agents:", error)
+      } finally {
+        setLoadingAgents(false)
+      }
+    }
+    fetchAgents()
+  }, [])
 
   // Scroll progress bar
   const { scrollYProgress } = useScroll()
@@ -421,52 +424,74 @@ export default function AboutPage() {
             </p>
           </Reveal>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {teamData.map((m, i) => (
-              <motion.div
-                key={m.email}
-                initial={reduce ? { opacity: 1 } : { opacity: 0, y: 18 }}
-                whileInView={reduce ? { opacity: 1 } : { opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, ease: "easeOut", delay: i * 0.06 }}
-                className="group"
-              >
-                <div className="relative rounded-3xl overflow-hidden border border-white/10 bg-white/5">
-                  <div className="relative aspect-[3/4] overflow-hidden">
-                    <motion.div
-                      className="absolute inset-0 bg-cover bg-center"
-                      style={{ backgroundImage: `url('${m.image}')` }}
-                      whileHover={reduce ? undefined : { scale: 1.06 }}
-                      transition={{ duration: 0.6, ease: "easeOut" }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+          {loadingAgents ? (
+            <div className="flex justify-center py-12">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#B8926A]" />
+            </div>
+          ) : agents.length > 0 ? (
+            <div className={cx(
+              "grid gap-6",
+              agents.length === 1 && "max-w-sm mx-auto",
+              agents.length === 2 && "md:grid-cols-2 max-w-2xl mx-auto",
+              agents.length === 3 && "md:grid-cols-3 max-w-4xl mx-auto",
+              agents.length >= 4 && "md:grid-cols-2 lg:grid-cols-4"
+            )}>
+              {agents.map((agent, i) => (
+                <motion.div
+                  key={agent.id}
+                  initial={reduce ? { opacity: 1 } : { opacity: 0, y: 18 }}
+                  whileInView={reduce ? { opacity: 1 } : { opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, ease: "easeOut", delay: i * 0.06 }}
+                  className="group"
+                >
+                  <div className="relative rounded-3xl overflow-hidden border border-white/10 bg-white/5">
+                    <div className="relative aspect-[3/4] overflow-hidden">
+                      {agent.image ? (
+                        <motion.div
+                          className="absolute inset-0 bg-cover bg-center"
+                          style={{ backgroundImage: `url('${agent.image}')` }}
+                          whileHover={reduce ? undefined : { scale: 1.06 }}
+                          transition={{ duration: 0.6, ease: "easeOut" }}
+                        />
+                      ) : (
+                        <div className="absolute inset-0 bg-[#B8926A] flex items-center justify-center">
+                          <span className="text-6xl text-white font-semibold">{agent.name.charAt(0)}</span>
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
-                    <div className="absolute bottom-4 left-4 right-4 translate-y-2 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-                      <a
-                        href={`mailto:${m.email}`}
-                        className="flex items-center justify-center gap-2 bg-white/90 backdrop-blur-sm text-[#1A1A1A] py-2 rounded-xl text-sm font-medium hover:bg-white transition-colors"
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={1.5}
-                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                          />
-                        </svg>
-                        {t.about.team.contact}
-                      </a>
+                      <div className="absolute bottom-4 left-4 right-4 translate-y-2 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                        <a
+                          href={`mailto:${agent.email}`}
+                          className="flex items-center justify-center gap-2 bg-white/90 backdrop-blur-sm text-[#1A1A1A] py-2 rounded-xl text-sm font-medium hover:bg-white transition-colors"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={1.5}
+                              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                            />
+                          </svg>
+                          {t.about.team.contact}
+                        </a>
+                      </div>
+                    </div>
+
+                    <div className="p-5">
+                      <p className="text-white font-semibold">{agent.name}</p>
+                      <p className="text-white/60 text-sm mt-1">{agent.role || "Agent"}</p>
                     </div>
                   </div>
-
-                  <div className="p-5">
-                    <p className="text-white font-semibold">{m.name}</p>
-                    <p className="text-white/60 text-sm mt-1">{t.about.roles[m.roleKey]}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-white/60">Our team information is being updated. Please check back soon.</p>
+            </div>
+          )}
 
           <Reveal className="mt-12 text-center">
             <Link href="/contact">
