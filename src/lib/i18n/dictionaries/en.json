@@ -499,12 +499,19 @@
     "essentialOnly": "Essential Only",
     "customize": "Customize",
     "savePreferences": "Save Preferences",
-    "essential": "Essential",
-    "essentialDesc": "Required for the website to function properly",
-    "functional": "Functional",
-    "functionalDesc": "Enable personalized features and preferences",
-    "analytics": "Analytics",
-    "analyticsDesc": "Help us understand how visitors use our site"
+    "settings": "Cookie Settings",
+    "essential": {
+      "title": "Essential Cookies",
+      "description": "Required for the website to function. Cannot be disabled."
+    },
+    "functional": {
+      "title": "Functional Cookies",
+      "description": "Enable personalized features and remember your preferences."
+    },
+    "analytics": {
+      "title": "Analytics Cookies",
+      "description": "Help us understand how visitors interact with our website."
+    }
   },
   "dashboard": {
     "welcome": "Welcome,",

@@ -499,12 +499,19 @@
     "essentialOnly": "Essentiels uniquement",
     "customize": "Personnaliser",
     "savePreferences": "Enregistrer les préférences",
-    "essential": "Essentiels",
-    "essentialDesc": "Nécessaires au bon fonctionnement du site",
-    "functional": "Fonctionnels",
-    "functionalDesc": "Permettent des fonctionnalités personnalisées",
-    "analytics": "Analytiques",
-    "analyticsDesc": "Nous aident à comprendre comment les visiteurs utilisent notre site"
+    "settings": "Paramètres des cookies",
+    "essential": {
+      "title": "Cookies essentiels",
+      "description": "Nécessaires au bon fonctionnement du site. Ne peuvent pas être désactivés."
+    },
+    "functional": {
+      "title": "Cookies fonctionnels",
+      "description": "Permettent des fonctionnalités personnalisées et mémorisent vos préférences."
+    },
+    "analytics": {
+      "title": "Cookies analytiques",
+      "description": "Nous aident à comprendre comment les visiteurs interagissent avec notre site."
+    }
   },
   "dashboard": {
     "welcome": "Bienvenue,",
