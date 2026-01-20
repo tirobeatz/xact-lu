@@ -1,17 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { writeFile, mkdir } from "fs/promises";
-import { existsSync } from "fs";
-import path from "path";
 
-// POST /api/upload - Upload images
+// Supabase Storage upload
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+// POST /api/upload - Upload images to Supabase Storage
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
 
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
+      console.error("Supabase credentials not configured");
+      return NextResponse.json({ error: "Storage not configured" }, { status: 500 });
     }
 
     const formData = await request.formData();
@@ -40,29 +46,38 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Create uploads directory structure
-    const uploadDir = path.join(process.cwd(), "public", "uploads", session.user.id);
-    if (!existsSync(uploadDir)) {
-      await mkdir(uploadDir, { recursive: true });
-    }
-
     const uploadedUrls: string[] = [];
 
     for (const file of files) {
       const bytes = await file.arrayBuffer();
-      const buffer = Buffer.from(bytes);
 
       // Generate unique filename
       const timestamp = Date.now();
       const randomStr = Math.random().toString(36).substring(2, 8);
       const extension = file.name.split(".").pop() || "jpg";
-      const filename = `${timestamp}-${randomStr}.${extension}`;
+      const filename = `${session.user.id}/${timestamp}-${randomStr}.${extension}`;
 
-      const filepath = path.join(uploadDir, filename);
-      await writeFile(filepath, buffer);
+      // Upload to Supabase Storage
+      const uploadResponse = await fetch(
+        `${SUPABASE_URL}/storage/v1/object/property-images/${filename}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`,
+            "Content-Type": file.type,
+          },
+          body: bytes,
+        }
+      );
+
+      if (!uploadResponse.ok) {
+        const errorText = await uploadResponse.text();
+        console.error("Supabase upload error:", errorText);
+        throw new Error(`Failed to upload ${file.name}`);
+      }
 
       // Return the public URL
-      const publicUrl = `/uploads/${session.user.id}/${filename}`;
+      const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/property-images/${filename}`;
       uploadedUrls.push(publicUrl);
     }
 
