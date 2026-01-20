@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useMemo } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { useParams } from "next/navigation"
-import { motion } from "framer-motion"
+import { LazyMotion, domAnimation, m } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { FavoriteButton } from "@/components/favorite-button"
 import { useI18n } from "@/lib/i18n"
@@ -175,7 +175,7 @@ export default function PropertyDetailPage() {
   }
 
   return (
-    <>
+    <LazyMotion features={domAnimation}>
       {/* Full Screen Gallery Modal - Mobile Optimized */}
       {showGallery && (
         <div
@@ -272,7 +272,7 @@ export default function PropertyDetailPage() {
         <div className="container mx-auto px-4 py-4 md:py-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 md:gap-4 h-[300px] md:h-[500px]">
             {/* Main Image */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               onClick={() => openGallery(activeImage)}
@@ -293,7 +293,7 @@ export default function PropertyDetailPage() {
                   Click to view gallery
                 </span>
               </div>
-            </motion.div>
+            </m.div>
 
             {/* Thumbnails - Hidden on small mobile, shown on tablet+ */}
             <div className="hidden md:grid grid-cols-2 gap-2 md:gap-4">
@@ -347,7 +347,7 @@ export default function PropertyDetailPage() {
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-8">
               {/* Header */}
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="bg-white rounded-2xl p-6 shadow-sm"
@@ -429,10 +429,10 @@ export default function PropertyDetailPage() {
                     </div>
                   )}
                 </div>
-              </motion.div>
+              </m.div>
 
               {/* Description */}
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
@@ -442,11 +442,11 @@ export default function PropertyDetailPage() {
                 <div className="text-[#6B6B6B] whitespace-pre-line leading-relaxed">
                   {getTranslated(property.description, property.descriptionTranslations)}
                 </div>
-              </motion.div>
+              </m.div>
 
               {/* Features */}
               {property.features.length > 0 && (
-                <motion.div
+                <m.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
@@ -463,11 +463,11 @@ export default function PropertyDetailPage() {
                       </div>
                     ))}
                   </div>
-                </motion.div>
+                </m.div>
               )}
 
               {/* Details */}
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
@@ -510,14 +510,14 @@ export default function PropertyDetailPage() {
                     </div>
                   )}
                 </div>
-              </motion.div>
+              </m.div>
             </div>
 
             {/* Sidebar */}
             <div className="lg:col-span-1">
               <div className="sticky top-24 space-y-6">
                 {/* Agent Card */}
-                <motion.div
+                <m.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
@@ -572,11 +572,11 @@ export default function PropertyDetailPage() {
                   >
                     {t.propertyDetail.contactAgent}
                   </Button>
-                </motion.div>
+                </m.div>
 
                 {/* Contact Form */}
                 {showContact && (
-                  <motion.div
+                  <m.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
                     className="bg-white rounded-2xl p-6 shadow-sm"
@@ -615,7 +615,7 @@ export default function PropertyDetailPage() {
                         {t.propertyDetail.send}
                       </Button>
                     </form>
-                  </motion.div>
+                  </m.div>
                 )}
 
                 {/* Actions */}
@@ -714,6 +714,6 @@ export default function PropertyDetailPage() {
           </Button>
         </Link>
       </div>
-    </>
+    </LazyMotion>
   )
 }

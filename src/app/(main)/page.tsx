@@ -3,18 +3,19 @@
 import Link from "next/link"
 import Image from "next/image"
 import { useState, useEffect, useMemo, useCallback } from "react"
-import { motion } from "framer-motion"
+import { LazyMotion, domAnimation, m } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { locations } from "@/lib/locations"
 import { useI18n } from "@/lib/i18n"
 
+// Simplified animations for better performance
 const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
 }
 
 const stagger = {
-  visible: { transition: { staggerChildren: 0.1 } }
+  visible: { transition: { staggerChildren: 0.08 } }
 }
 
 // Format number consistently to avoid hydration mismatch
@@ -176,7 +177,7 @@ export default function HomePage() {
   ]
 
   return (
-    <>
+    <LazyMotion features={domAnimation}>
       {/* Hero Section */}
       <section className="relative min-h-[100vh] flex items-center justify-center overflow-hidden">
         {/* Background */}
@@ -188,38 +189,38 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-gradient-to-b from-[#1A1A1A]/80 via-[#1A1A1A]/60 to-[#1A1A1A]/90" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#1A1A1A]/70 to-transparent" />
 
-          {/* Animated gradient orbs */}
-          <div className="absolute top-20 right-20 w-72 h-72 bg-[#B8926A]/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-40 left-20 w-96 h-96 bg-[#B8926A]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1.5s" }} />
+          {/* Gradient orbs - static for performance */}
+          <div className="absolute top-20 right-20 w-72 h-72 bg-[#B8926A]/20 rounded-full blur-3xl hidden md:block" />
+          <div className="absolute bottom-40 left-20 w-64 h-64 bg-[#B8926A]/10 rounded-full blur-3xl hidden md:block" />
         </div>
 
         {/* Content */}
         <div className="container mx-auto px-4 relative z-10 pt-20">
-          <motion.div
+          <m.div
             initial="hidden"
             animate="visible"
             variants={stagger}
             className="max-w-4xl"
           >
-            <motion.div variants={fadeUp} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-sm text-white/90 mb-8">
+            <m.div variants={fadeUp} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-sm text-white/90 mb-8">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#B8926A] opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-[#B8926A]"></span>
               </span>
               {t.home.badge}
-            </motion.div>
+            </m.div>
 
-            <motion.h1 variants={fadeUp} className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-semibold text-white leading-[1.1] tracking-tight">
+            <m.h1 variants={fadeUp} className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-semibold text-white leading-[1.1] tracking-tight">
               {t.home.title}
               <span className="block bg-gradient-to-r from-[#B8926A] via-[#D4AF7A] to-[#B8926A] bg-clip-text text-transparent">{t.home.titleHighlight}</span>
-            </motion.h1>
+            </m.h1>
 
-            <motion.p variants={fadeUp} className="mt-4 md:mt-6 text-base md:text-xl text-white/60 max-w-xl leading-relaxed">
+            <m.p variants={fadeUp} className="mt-4 md:mt-6 text-base md:text-xl text-white/60 max-w-xl leading-relaxed">
               {t.home.subtitle}
-            </motion.p>
+            </m.p>
 
             {/* Search Bar */}
-            <motion.div variants={fadeUp} className="mt-6 md:mt-10 bg-white/95 backdrop-blur-sm rounded-2xl p-3 shadow-2xl max-w-3xl">
+            <m.div variants={fadeUp} className="mt-6 md:mt-10 bg-white/95 backdrop-blur-sm rounded-2xl p-3 shadow-2xl max-w-3xl">
               <form
                 onSubmit={(e) => {
                   e.preventDefault()
@@ -300,10 +301,10 @@ export default function HomePage() {
                   </select>
                 </div>
               </form>
-            </motion.div>
+            </m.div>
 
             {/* Stats */}
-            <motion.div variants={fadeUp} className="mt-10 md:mt-16 grid grid-cols-3 gap-4 md:flex md:flex-wrap md:gap-16">
+            <m.div variants={fadeUp} className="mt-10 md:mt-16 grid grid-cols-3 gap-4 md:flex md:flex-wrap md:gap-16">
               {[
                 { value: stats.activeListings, label: t.home.stats.activeListings },
                 { value: stats.propertyValue, label: t.home.stats.propertyValue },
@@ -317,19 +318,15 @@ export default function HomePage() {
                   </div>
                 </div>
               ))}
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ repeat: Infinity, duration: 2 }}
-            className="w-6 h-10 rounded-full border-2 border-white/30 flex items-start justify-center p-2"
-          >
+        {/* Scroll Indicator - CSS animation for performance */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:block">
+          <div className="w-6 h-10 rounded-full border-2 border-white/30 flex items-start justify-center p-2 animate-bounce">
             <div className="w-1 h-2 bg-white/50 rounded-full" />
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -337,13 +334,13 @@ export default function HomePage() {
       {(loading || displayProperties.length > 0) && (
         <section className="py-24 bg-white">
           <div className="container mx-auto px-4">
-            <motion.div
+            <m.div
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-100px" }}
               variants={stagger}
             >
-              <motion.div variants={fadeUp} className="flex justify-between items-end mb-12">
+              <m.div variants={fadeUp} className="flex justify-between items-end mb-12">
                 <div>
                   <span className="text-[#B8926A] font-medium text-sm tracking-wide">{t.home.featured.label}</span>
                   <h2 className="text-3xl md:text-4xl font-semibold text-[#1A1A1A] mt-2">
@@ -356,7 +353,7 @@ export default function HomePage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
                 </Link>
-              </motion.div>
+              </m.div>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {loading ? (
@@ -374,7 +371,7 @@ export default function HomePage() {
                   ))
                 ) : (
                   displayProperties.map((property) => (
-                    <motion.div key={property.id} variants={fadeUp}>
+                    <m.div key={property.id} variants={fadeUp}>
                       <Link href={`/properties/${property.slug}`} className="group block">
                         <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-5">
                           <div
@@ -399,11 +396,11 @@ export default function HomePage() {
                           <span>{property.area} {t.common.area}</span>
                         </div>
                       </Link>
-                    </motion.div>
+                    </m.div>
                   ))
                 )}
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </section>
       )}
@@ -411,22 +408,22 @@ export default function HomePage() {
       {/* Property Categories */}
       <section className="py-24 bg-[#FAFAF8]">
         <div className="container mx-auto px-4">
-          <motion.div
+          <m.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
             variants={stagger}
           >
-            <motion.div variants={fadeUp} className="text-center mb-16">
+            <m.div variants={fadeUp} className="text-center mb-16">
               <span className="text-[#B8926A] font-medium text-sm tracking-wide">{t.home.categories.label}</span>
               <h2 className="text-3xl md:text-5xl font-semibold text-[#1A1A1A] mt-3">
                 {t.home.categories.title}
               </h2>
-            </motion.div>
+            </m.div>
 
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
               {categoryItems.map((item) => (
-                <motion.div key={item.key} variants={fadeUp}>
+                <m.div key={item.key} variants={fadeUp}>
                   <Link
                     href={`/properties?propertyType=${item.key}`}
                     className="group block relative aspect-[3/4] rounded-2xl overflow-hidden"
@@ -441,10 +438,10 @@ export default function HomePage() {
                       <p className="text-white/60 text-sm mt-1">{item.count} {t.home.categories.properties}</p>
                     </div>
                   </Link>
-                </motion.div>
+                </m.div>
               ))}
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
@@ -455,18 +452,18 @@ export default function HomePage() {
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#B8926A]/5 rounded-full blur-3xl" />
 
         <div className="container mx-auto px-4 relative z-10">
-          <motion.div
+          <m.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
             variants={stagger}
           >
-            <motion.div variants={fadeUp} className="max-w-xl mb-16">
+            <m.div variants={fadeUp} className="max-w-xl mb-16">
               <span className="text-[#B8926A] font-medium text-sm tracking-wide">{t.home.services.label}</span>
               <h2 className="text-3xl md:text-4xl font-semibold text-white mt-3">
                 {t.home.services.title}
               </h2>
-            </motion.div>
+            </m.div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
@@ -477,7 +474,7 @@ export default function HomePage() {
                 { icon: "💬", title: t.home.services.directContact.title, desc: t.home.services.directContact.desc },
                 { icon: "🏢", title: t.home.services.agencyProfiles.title, desc: t.home.services.agencyProfiles.desc },
               ].map((service, i) => (
-                <motion.div
+                <m.div
                   key={i}
                   variants={fadeUp}
                   className="group p-6 rounded-2xl border border-white/10 hover:border-[#B8926A]/50 hover:bg-white/5 transition-all duration-300"
@@ -485,17 +482,17 @@ export default function HomePage() {
                   <span className="text-3xl mb-4 block">{service.icon}</span>
                   <h3 className="text-lg font-semibold text-white mb-2">{service.title}</h3>
                   <p className="text-white/50 text-sm">{service.desc}</p>
-                </motion.div>
+                </m.div>
               ))}
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
       {/* Free Estimation CTA */}
       <section className="py-24 bg-[#FAFAF8]">
         <div className="container mx-auto px-4">
-          <motion.div
+          <m.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
@@ -505,22 +502,22 @@ export default function HomePage() {
             <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.1%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E')]" />
 
             <div className="relative z-10">
-              <motion.span variants={fadeUp} className="inline-block px-4 py-1 bg-white/20 rounded-full text-white/90 text-sm mb-6">
+              <m.span variants={fadeUp} className="inline-block px-4 py-1 bg-white/20 rounded-full text-white/90 text-sm mb-6">
                 {t.home.estimation.badge}
-              </motion.span>
-              <motion.h2 variants={fadeUp} className="text-3xl md:text-5xl font-semibold text-white">
+              </m.span>
+              <m.h2 variants={fadeUp} className="text-3xl md:text-5xl font-semibold text-white">
                 {t.home.estimation.title}
-              </motion.h2>
-              <motion.p variants={fadeUp} className="text-white/80 mt-4 text-lg max-w-xl mx-auto">
+              </m.h2>
+              <m.p variants={fadeUp} className="text-white/80 mt-4 text-lg max-w-xl mx-auto">
                 {t.home.estimation.subtitle}
-              </motion.p>
-              <motion.div variants={fadeUp}>
+              </m.p>
+              <m.div variants={fadeUp}>
                 <Button className="mt-10 h-14 px-10 bg-white hover:bg-white/90 text-[#1A1A1A] rounded-xl text-lg font-medium shadow-lg" asChild>
                   <Link href="/estimate">{t.home.estimation.button}</Link>
                 </Button>
-              </motion.div>
+              </m.div>
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
@@ -529,13 +526,13 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23B8926A%22%20fill-opacity%3D%220.03%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E')] opacity-50" />
 
         <div className="container mx-auto px-4 relative z-10">
-          <motion.div
+          <m.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
             variants={stagger}
           >
-            <motion.div variants={fadeUp} className="text-center mb-16">
+            <m.div variants={fadeUp} className="text-center mb-16">
               <span className="text-[#B8926A] font-medium text-sm tracking-wide">{t.home.mortgage.label}</span>
               <h2 className="text-3xl md:text-5xl font-semibold text-[#1A1A1A] mt-3">
                 {t.home.mortgage.title}
@@ -543,9 +540,9 @@ export default function HomePage() {
               <p className="text-[#6B6B6B] mt-4 max-w-xl mx-auto">
                 {t.home.mortgage.subtitle}
               </p>
-            </motion.div>
+            </m.div>
 
-            <motion.div variants={fadeUp} className="max-w-5xl mx-auto">
+            <m.div variants={fadeUp} className="max-w-5xl mx-auto">
               <div className="bg-gradient-to-br from-[#1A1A1A] to-[#2a2a2a] rounded-3xl p-8 md:p-12 shadow-2xl">
                 <div className="grid md:grid-cols-2 gap-12">
                   {/* Sliders */}
@@ -682,38 +679,38 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
         </div>
       </section>
 
       {/* Final CTA */}
       <section className="py-24 bg-[#1A1A1A]">
         <div className="container mx-auto px-4">
-          <motion.div
+          <m.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={stagger}
             className="text-center max-w-3xl mx-auto"
           >
-            <motion.h2 variants={fadeUp} className="text-3xl md:text-5xl font-semibold text-white">
+            <m.h2 variants={fadeUp} className="text-3xl md:text-5xl font-semibold text-white">
               {t.home.cta.title}
-            </motion.h2>
-            <motion.p variants={fadeUp} className="text-white/60 mt-4 text-lg">
+            </m.h2>
+            <m.p variants={fadeUp} className="text-white/60 mt-4 text-lg">
               {t.home.cta.subtitle}
-            </motion.p>
-            <motion.div variants={fadeUp} className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+            </m.p>
+            <m.div variants={fadeUp} className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
               <Button className="h-14 px-8 bg-[#B8926A] hover:bg-[#A6825C] text-white rounded-xl text-lg font-medium" asChild>
                 <Link href="/properties">{t.home.cta.browse}</Link>
               </Button>
               <Button className="h-14 px-8 bg-transparent border border-white/20 hover:bg-white/10 text-white rounded-xl text-lg font-medium" asChild>
                 <Link href="/dashboard/listings/new">{t.home.cta.submit}</Link>
               </Button>
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
         </div>
       </section>
-    </>
+    </LazyMotion>
   )
 }

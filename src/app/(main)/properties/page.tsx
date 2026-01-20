@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense, useCallback } from "react"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
-import { motion } from "framer-motion"
+import { LazyMotion, domAnimation, m } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { FavoriteButton } from "@/components/favorite-button"
 import { locations } from "@/lib/locations"
@@ -39,8 +39,8 @@ const formatNumber = (num: number) => {
 }
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+  hidden: { opacity: 0, y: 15 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } }
 }
 
 function PropertiesContent() {
@@ -162,7 +162,7 @@ function PropertiesContent() {
   ].filter(Boolean).length
 
   return (
-    <>
+    <LazyMotion features={domAnimation}>
       {/* Hero Section */}
       <section className="relative bg-[#1A1A1A] pt-32 pb-16">
         <div className="absolute inset-0 overflow-hidden">
@@ -171,7 +171,7 @@ function PropertiesContent() {
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
-          <motion.div
+          <m.div
             initial="hidden"
             animate="visible"
             variants={fadeUp}
@@ -182,10 +182,10 @@ function PropertiesContent() {
             <p className="text-white/60 mt-3 text-lg">
               {total} {t.properties.available}
             </p>
-          </motion.div>
+          </m.div>
 
           {/* Search Bar */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
@@ -262,7 +262,7 @@ function PropertiesContent() {
 
             {/* Expanded Filters */}
             {showFilters && (
-              <motion.div
+              <m.div
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: "auto", opacity: 1 }}
                 className="mt-4 pt-4 border-t border-[#E8E6E3]"
@@ -352,9 +352,9 @@ function PropertiesContent() {
                     {t.search.resetFilters}
                   </Button>
                 </div>
-              </motion.div>
+              </m.div>
             )}
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
@@ -414,11 +414,11 @@ function PropertiesContent() {
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {properties.map((property, index) => (
-                <motion.div
+                <m.div
                   key={property.id}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05 }}
+                  transition={{ delay: index * 0.03, duration: 0.3 }}
                 >
                   <Link
                     href={`/properties/${property.slug}`}
@@ -505,7 +505,7 @@ function PropertiesContent() {
                       </div>
                     </div>
                   </Link>
-                </motion.div>
+                </m.div>
               ))}
             </div>
           )}
@@ -536,7 +536,7 @@ function PropertiesContent() {
           )}
         </div>
       </section>
-    </>
+    </LazyMotion>
   )
 }
 
