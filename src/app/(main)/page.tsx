@@ -1,7 +1,8 @@
 "use client"
 
 import Link from "next/link"
-import { useState, useEffect } from "react"
+import Image from "next/image"
+import { useState, useEffect, useMemo, useCallback } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { locations } from "@/lib/locations"
@@ -125,11 +126,43 @@ export default function HomePage() {
     fetchData()
   }, [])
 
-  // Calculate mortgage
-  const loanAmount = propertyPrice * (1 - downPayment / 100)
-  const monthlyRate = selectedBank.rate / 100 / 12
-  const numPayments = loanTerm * 12
-  const monthlyPayment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / (Math.pow(1 + monthlyRate, numPayments) - 1)
+  // Calculate mortgage - memoized for performance
+  const mortgageCalculation = useMemo(() => {
+    const loanAmount = propertyPrice * (1 - downPayment / 100)
+    const monthlyRate = selectedBank.rate / 100 / 12
+    const numPayments = loanTerm * 12
+    const monthlyPayment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / (Math.pow(1 + monthlyRate, numPayments) - 1)
+    const totalPayment = monthlyPayment * numPayments
+    const totalInterest = totalPayment - loanAmount
+
+    return {
+      loanAmount,
+      monthlyPayment,
+      numPayments,
+      totalPayment,
+      totalInterest
+    }
+  }, [propertyPrice, downPayment, loanTerm, selectedBank.rate])
+
+  const { loanAmount, monthlyPayment, numPayments } = mortgageCalculation
+
+  // Memoized callbacks for mortgage calculator
+  const handlePropertyPriceChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setPropertyPrice(Number(e.target.value))
+  }, [])
+
+  const handleDownPaymentChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setDownPayment(Number(e.target.value))
+  }, [])
+
+  const handleLoanTermChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setLoanTerm(Number(e.target.value))
+  }, [])
+
+  const handleBankChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+    const bank = banks.find(b => b.name === e.target.value)
+    if (bank) setSelectedBank(bank)
+  }, [])
 
   // Use only real properties from database
   const displayProperties = featuredProperties
@@ -529,7 +562,7 @@ export default function HomePage() {
                         max="3000000"
                         step="10000"
                         value={propertyPrice}
-                        onChange={(e) => setPropertyPrice(Number(e.target.value))}
+                        onChange={handlePropertyPriceChange}
                         className="w-full h-2 bg-white/10 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:bg-[#B8926A] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-lg"
                       />
                       <div className="flex justify-between mt-1 text-xs text-white/40">
@@ -550,7 +583,7 @@ export default function HomePage() {
                         max="50"
                         step="5"
                         value={downPayment}
-                        onChange={(e) => setDownPayment(Number(e.target.value))}
+                        onChange={handleDownPaymentChange}
                         className="w-full h-2 bg-white/10 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:bg-[#B8926A] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-lg"
                       />
                       <div className="flex justify-between mt-1 text-xs text-white/40">
@@ -571,7 +604,7 @@ export default function HomePage() {
                         max="30"
                         step="5"
                         value={loanTerm}
-                        onChange={(e) => setLoanTerm(Number(e.target.value))}
+                        onChange={handleLoanTermChange}
                         className="w-full h-2 bg-white/10 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:bg-[#B8926A] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-lg"
                       />
                       <div className="flex justify-between mt-1 text-xs text-white/40">
@@ -586,10 +619,7 @@ export default function HomePage() {
                       <div className="relative">
                         <select
                           value={selectedBank.name}
-                          onChange={(e) => {
-                            const bank = banks.find(b => b.name === e.target.value)
-                            if (bank) setSelectedBank(bank)
-                          }}
+                          onChange={handleBankChange}
                           className="w-full h-14 px-4 bg-white/10 border border-white/20 rounded-xl text-white outline-none cursor-pointer appearance-none hover:bg-white/15 transition-colors"
                         >
                           {banks.map((bank) => (

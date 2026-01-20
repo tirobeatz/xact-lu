@@ -76,8 +76,22 @@ export async function GET(request: NextRequest) {
         orderBy,
         skip: (page - 1) * limit,
         take: limit,
-        include: {
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          titleTranslations: true,
+          city: true,
+          address: true,
+          price: true,
+          type: true,
+          listingType: true,
+          bedrooms: true,
+          bathrooms: true,
+          livingArea: true,
+          isFeatured: true,
           images: {
+            select: { url: true },
             orderBy: { order: "asc" },
             take: 1,
           },
@@ -113,13 +127,18 @@ export async function GET(request: NextRequest) {
       agency: property.agency,
     }))
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       properties: transformedProperties,
       total,
       page,
       limit,
       totalPages: Math.ceil(total / limit),
     })
+
+    // Add cache headers for better performance (60 seconds cache)
+    response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=120')
+
+    return response
   } catch (error) {
     console.error("Failed to fetch properties:", error)
     return NextResponse.json(

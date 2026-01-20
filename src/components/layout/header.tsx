@@ -1,12 +1,12 @@
 "use client"
 
 import Link from "next/link"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback, memo } from "react"
 import { useSession, signOut } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import { useI18n, locales, localeNames, localeFlags, Locale } from "@/lib/i18n"
 
-export function Header() {
+function HeaderComponent() {
   const { data: session, status } = useSession()
   const { locale, setLocale, t } = useI18n()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -17,6 +17,32 @@ export function Header() {
 
   useEffect(() => {
     setMounted(true)
+  }, [])
+
+  // Memoized toggle handlers
+  const toggleLangMenu = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation()
+    setLangMenuOpen(prev => !prev)
+    setUserMenuOpen(false)
+  }, [])
+
+  const toggleUserMenu = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation()
+    setUserMenuOpen(prev => !prev)
+    setLangMenuOpen(false)
+  }, [])
+
+  const toggleMobileMenu = useCallback(() => {
+    setMobileMenuOpen(prev => !prev)
+  }, [])
+
+  const closeMobileMenu = useCallback(() => {
+    setMobileMenuOpen(false)
+  }, [])
+
+  const handleSignOut = useCallback(() => {
+    setMobileMenuOpen(false)
+    signOut({ callbackUrl: "/" })
   }, [])
 
   useEffect(() => {
@@ -487,3 +513,5 @@ export function Header() {
     </header>
   )
 }
+
+export const Header = memo(HeaderComponent)

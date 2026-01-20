@@ -44,7 +44,7 @@ export async function GET() {
       typeCounts[item.type] = item._count
     })
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       stats: {
         activeListings: `${totalProperties.toLocaleString()}+`,
         propertyValue: formattedValue,
@@ -60,6 +60,11 @@ export async function GET() {
       },
       totalAgencies,
     })
+
+    // Add cache headers for stats (5 minutes cache, stats don't change often)
+    response.headers.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=600')
+
+    return response
   } catch (error) {
     console.error("Failed to fetch stats:", error)
     return NextResponse.json(

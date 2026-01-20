@@ -1,7 +1,8 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback, useMemo } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { useParams } from "next/navigation"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
@@ -142,87 +143,102 @@ export default function PropertyDetailPage() {
     )
   }
 
-  // Gallery navigation
-  const openGallery = (index: number) => {
+  // Gallery navigation - memoized handlers
+  const openGallery = useCallback((index: number) => {
     setGalleryIndex(index)
     setShowGallery(true)
-  }
+  }, [])
 
-  const nextImage = () => {
+  const nextImage = useCallback(() => {
     setGalleryIndex((prev) => (prev + 1) % property.images.length)
-  }
+  }, [property.images.length])
 
-  const prevImage = () => {
+  const prevImage = useCallback(() => {
     setGalleryIndex((prev) => (prev - 1 + property.images.length) % property.images.length)
-  }
+  }, [property.images.length])
+
+  const closeGallery = useCallback(() => {
+    setShowGallery(false)
+  }, [])
 
   // Handle keyboard navigation
-  const handleKeyDown = (e: React.KeyboardEvent) => {
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === "ArrowRight") nextImage()
     else if (e.key === "ArrowLeft") prevImage()
-    else if (e.key === "Escape") setShowGallery(false)
-  }
+    else if (e.key === "Escape") closeGallery()
+  }, [nextImage, prevImage, closeGallery])
+
+  // Memoize price per sqm calculation
+  const pricePerSqm = useMemo(() => {
+    if (!property?.area) return null
+    return Math.round(property.price / property.area)
+  }, [property?.price, property?.area])
 
   return (
     <>
-      {/* Full Screen Gallery Modal */}
+      {/* Full Screen Gallery Modal - Mobile Optimized */}
       {showGallery && (
         <div
           className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
-          onClick={() => setShowGallery(false)}
+          onClick={closeGallery}
           onKeyDown={handleKeyDown}
           tabIndex={0}
         >
           {/* Close Button */}
           <button
-            onClick={() => setShowGallery(false)}
-            className="absolute top-4 right-4 z-10 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+            onClick={closeGallery}
+            className="absolute top-4 right-4 z-10 w-10 h-10 md:w-12 md:h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
           >
-            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
 
           {/* Image Counter */}
-          <div className="absolute top-4 left-4 px-4 py-2 bg-white/10 rounded-full text-white text-sm">
+          <div className="absolute top-4 left-4 px-3 py-1.5 md:px-4 md:py-2 bg-white/10 rounded-full text-white text-xs md:text-sm">
             {galleryIndex + 1} / {property.images.length}
           </div>
 
           {/* Previous Button */}
           <button
             onClick={(e) => { e.stopPropagation(); prevImage(); }}
-            className="absolute left-4 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+            className="absolute left-2 md:left-4 w-10 h-10 md:w-12 md:h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors z-10"
           >
-            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
 
-          {/* Main Image */}
+          {/* Main Image - Mobile optimized spacing */}
           <div
-            className="absolute inset-0 flex items-center justify-center"
-            style={{ top: '60px', bottom: '100px', left: '80px', right: '80px' }}
+            className="absolute inset-0 flex items-center justify-center p-4 md:p-0"
+            style={{ top: '50px', bottom: '80px', left: '0', right: '0' }}
             onClick={(e) => e.stopPropagation()}
           >
-            <img
-              src={property.images[galleryIndex]}
-              alt={`Property image ${galleryIndex + 1}`}
-              className="w-full h-full object-contain"
-            />
+            <div className="relative w-full h-full md:mx-20">
+              <Image
+                src={property.images[galleryIndex]}
+                alt={`Property image ${galleryIndex + 1}`}
+                fill
+                className="object-contain"
+                sizes="100vw"
+                priority
+              />
+            </div>
           </div>
 
           {/* Next Button */}
           <button
             onClick={(e) => { e.stopPropagation(); nextImage(); }}
-            className="absolute right-4 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+            className="absolute right-2 md:right-4 w-10 h-10 md:w-12 md:h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors z-10"
           >
-            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </button>
 
-          {/* Thumbnail Strip */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 max-w-[90vw] overflow-x-auto py-2 px-4">
+          {/* Thumbnail Strip - Hidden on mobile for more image space */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 hidden md:flex gap-2 max-w-[90vw] overflow-x-auto py-2 px-4">
             {property.images.map((image, index) => (
               <button
                 key={index}
@@ -231,28 +247,47 @@ export default function PropertyDetailPage() {
                   galleryIndex === index ? "ring-2 ring-[#B8926A] opacity-100" : "opacity-50 hover:opacity-80"
                 }`}
               >
-                <img src={image} alt={`Thumbnail ${index + 1}`} className="w-full h-full object-cover" />
+                <Image src={image} alt={`Thumbnail ${index + 1}`} width={64} height={64} className="w-full h-full object-cover" />
               </button>
+            ))}
+          </div>
+
+          {/* Mobile dot indicators */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex md:hidden gap-1.5">
+            {property.images.map((_, index) => (
+              <button
+                key={index}
+                onClick={(e) => { e.stopPropagation(); setGalleryIndex(index); }}
+                className={`w-2 h-2 rounded-full transition-all ${
+                  galleryIndex === index ? "bg-[#B8926A] w-4" : "bg-white/50"
+                }`}
+              />
             ))}
           </div>
         </div>
       )}
 
-      {/* Image Gallery */}
+      {/* Image Gallery - Mobile Optimized */}
       <section className="pt-16 bg-[#1A1A1A]">
-        <div className="container mx-auto px-4 py-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-[500px]">
+        <div className="container mx-auto px-4 py-4 md:py-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 md:gap-4 h-[300px] md:h-[500px]">
             {/* Main Image */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               onClick={() => openGallery(activeImage)}
-              className="relative rounded-2xl overflow-hidden cursor-pointer group"
+              className="relative rounded-xl md:rounded-2xl overflow-hidden cursor-pointer group"
             >
-              <div
-                className="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover:scale-105"
-                style={{ backgroundImage: `url('${property.images[activeImage] || property.images[0]}')` }}
-              />
+              <div className="relative w-full h-full">
+                <Image
+                  src={property.images[activeImage] || property.images[0]}
+                  alt={getTranslated(property.title, property.titleTranslations)}
+                  fill
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  priority
+                />
+              </div>
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
                 <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 px-4 py-2 rounded-full text-sm font-medium text-[#1A1A1A]">
                   Click to view gallery
@@ -260,20 +295,25 @@ export default function PropertyDetailPage() {
               </div>
             </motion.div>
 
-            {/* Thumbnails */}
-            <div className="grid grid-cols-2 gap-4">
+            {/* Thumbnails - Hidden on small mobile, shown on tablet+ */}
+            <div className="hidden md:grid grid-cols-2 gap-2 md:gap-4">
               {property.images.slice(0, 4).map((image, index) => (
                 <div
                   key={index}
                   onClick={() => index === 3 && property.images.length > 4 ? openGallery(3) : setActiveImage(index)}
-                  className={`relative rounded-xl overflow-hidden cursor-pointer transition-all ${
+                  className={`relative rounded-lg md:rounded-xl overflow-hidden cursor-pointer transition-all ${
                     activeImage === index ? "ring-2 ring-[#B8926A]" : "opacity-80 hover:opacity-100"
                   }`}
                 >
-                  <div
-                    className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url('${image}')` }}
-                  />
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={image}
+                      alt={`Property image ${index + 1}`}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 1024px) 50vw, 25vw"
+                    />
+                  </div>
                   {index === 3 && property.images.length > 4 && (
                     <div className="absolute inset-0 bg-black/50 hover:bg-black/40 transition-colors flex items-center justify-center">
                       <span className="text-white font-semibold">+{property.images.length - 4} more</span>
@@ -282,6 +322,20 @@ export default function PropertyDetailPage() {
                 </div>
               ))}
             </div>
+          </div>
+
+          {/* Mobile Image Counter / Gallery Link */}
+          <div className="md:hidden mt-3 flex items-center justify-between">
+            <span className="text-white/70 text-sm">{property.images.length} photos</span>
+            <button
+              onClick={() => openGallery(0)}
+              className="text-[#B8926A] text-sm font-medium flex items-center gap-1"
+            >
+              View all
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
           </div>
         </div>
       </section>
@@ -344,9 +398,9 @@ export default function PropertyDetailPage() {
                       )}
                     </p>
 
-                    {property.area && (
+                    {pricePerSqm && (
                       <p className="text-[#6B6B6B] text-sm mt-1">
-                        €{formatNumber(Math.round(property.price / property.area))}/m²
+                        €{formatNumber(pricePerSqm)}/m²
                       </p>
                     )}
                   </div>

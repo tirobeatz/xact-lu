@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback, memo } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 
@@ -12,7 +12,7 @@ interface FavoriteButtonProps {
   label?: string
 }
 
-export function FavoriteButton({
+const FavoriteButton = memo(function FavoriteButton({
   propertyId,
   className = "",
   size = "md",
@@ -24,13 +24,7 @@ export function FavoriteButton({
   const [isFavorite, setIsFavorite] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  useEffect(() => {
-    if (session?.user) {
-      checkFavoriteStatus()
-    }
-  }, [session, propertyId])
-
-  const checkFavoriteStatus = async () => {
+  const checkFavoriteStatus = useCallback(async () => {
     try {
       const res = await fetch(`/api/user/favorites?propertyId=${propertyId}`)
       if (res.ok) {
@@ -40,9 +34,15 @@ export function FavoriteButton({
     } catch (error) {
       console.error("Failed to check favorite status:", error)
     }
-  }
+  }, [propertyId])
 
-  const toggleFavorite = async (e: React.MouseEvent) => {
+  useEffect(() => {
+    if (session?.user) {
+      checkFavoriteStatus()
+    }
+  }, [session, checkFavoriteStatus])
+
+  const toggleFavorite = useCallback(async (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
 
@@ -67,7 +67,7 @@ export function FavoriteButton({
     } finally {
       setLoading(false)
     }
-  }
+  }, [session, router, isFavorite, propertyId])
 
   const iconSize = size === "sm" ? "w-4 h-4" : "w-5 h-5"
 
@@ -123,4 +123,7 @@ export function FavoriteButton({
       </svg>
     </button>
   )
-}
+})
+
+export { FavoriteButton }
+export default FavoriteButton
