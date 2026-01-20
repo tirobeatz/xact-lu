@@ -472,18 +472,22 @@
   "legal": {
     "privacy": {
       "title": "Privacy Policy",
+      "subtitle": "How we handle your data",
       "lastUpdated": "Last updated"
     },
     "terms": {
       "title": "Terms of Service",
+      "subtitle": "Rules for using our platform",
       "lastUpdated": "Last updated"
     },
     "cookies": {
       "title": "Cookie Policy",
+      "subtitle": "How we use cookies",
       "lastUpdated": "Last updated"
     },
     "imprint": {
       "title": "Legal Notice",
+      "subtitle": "Company Information",
       "lastUpdated": "Last updated"
     }
   },

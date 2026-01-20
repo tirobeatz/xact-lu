@@ -472,18 +472,22 @@
   "legal": {
     "privacy": {
       "title": "Datenschutzerklärung",
+      "subtitle": "Wie wir mit Ihren Daten umgehen",
       "lastUpdated": "Zuletzt aktualisiert"
     },
     "terms": {
       "title": "Nutzungsbedingungen",
+      "subtitle": "Regeln für die Nutzung unserer Plattform",
       "lastUpdated": "Zuletzt aktualisiert"
     },
     "cookies": {
       "title": "Cookie-Richtlinie",
+      "subtitle": "Wie wir Cookies verwenden",
       "lastUpdated": "Zuletzt aktualisiert"
     },
     "imprint": {
       "title": "Impressum",
+      "subtitle": "Unternehmensinformationen",
       "lastUpdated": "Zuletzt aktualisiert"
     }
   },
