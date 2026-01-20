@@ -11,7 +11,7 @@ import { useI18n } from "@/lib/i18n"
 // Simplified animations for better performance
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" as const } }
 }
 
 const stagger = {
