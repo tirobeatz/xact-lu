@@ -94,6 +94,37 @@ export default function PropertyDetailPage() {
     message: "",
   })
 
+  // Gallery navigation - memoized handlers (must be before any early returns)
+  const openGallery = useCallback((index: number) => {
+    setGalleryIndex(index)
+    setShowGallery(true)
+  }, [])
+
+  const nextImage = useCallback(() => {
+    setGalleryIndex((prev) => (prev + 1) % (property?.images?.length || 1))
+  }, [property?.images?.length])
+
+  const prevImage = useCallback(() => {
+    setGalleryIndex((prev) => (prev - 1 + (property?.images?.length || 1)) % (property?.images?.length || 1))
+  }, [property?.images?.length])
+
+  const closeGallery = useCallback(() => {
+    setShowGallery(false)
+  }, [])
+
+  // Handle keyboard navigation
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === "ArrowRight") nextImage()
+    else if (e.key === "ArrowLeft") prevImage()
+    else if (e.key === "Escape") closeGallery()
+  }, [nextImage, prevImage, closeGallery])
+
+  // Memoize price per sqm calculation
+  const pricePerSqm = useMemo(() => {
+    if (!property?.area) return null
+    return Math.round(property.price / property.area)
+  }, [property?.price, property?.area])
+
   useEffect(() => {
     async function fetchProperty() {
       try {
@@ -142,37 +173,6 @@ export default function PropertyDetailPage() {
       </div>
     )
   }
-
-  // Gallery navigation - memoized handlers
-  const openGallery = useCallback((index: number) => {
-    setGalleryIndex(index)
-    setShowGallery(true)
-  }, [])
-
-  const nextImage = useCallback(() => {
-    setGalleryIndex((prev) => (prev + 1) % property.images.length)
-  }, [property.images.length])
-
-  const prevImage = useCallback(() => {
-    setGalleryIndex((prev) => (prev - 1 + property.images.length) % property.images.length)
-  }, [property.images.length])
-
-  const closeGallery = useCallback(() => {
-    setShowGallery(false)
-  }, [])
-
-  // Handle keyboard navigation
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === "ArrowRight") nextImage()
-    else if (e.key === "ArrowLeft") prevImage()
-    else if (e.key === "Escape") closeGallery()
-  }, [nextImage, prevImage, closeGallery])
-
-  // Memoize price per sqm calculation
-  const pricePerSqm = useMemo(() => {
-    if (!property?.area) return null
-    return Math.round(property.price / property.area)
-  }, [property?.price, property?.area])
 
   return (
     <>
