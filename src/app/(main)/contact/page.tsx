@@ -340,7 +340,7 @@ export default function ContactPage() {
                     disabled={loading}
                     className="w-full h-12 rounded-xl bg-[#B8926A] hover:bg-[#A6825C] text-white text-base disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {loading ? t.common.sending || "Sending..." : t.contact.sendButton}
+                    {loading ? "Sending..." : t.contact.sendButton}
                   </Button>
 
                   <p className="text-center text-sm text-[#6B6B6B]">

@@ -737,7 +737,7 @@ export default function EstimatePage() {
                       disabled={loading}
                       className="h-14 px-10 rounded-xl bg-[#B8926A] hover:bg-[#A6825C] text-white text-lg w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      {loading ? t.common.sending || "Submitting..." : t.estimate.form.submit}
+                      {loading ? "Submitting..." : t.estimate.form.submit}
                     </Button>
                     <p className="text-[#6B6B6B] text-sm mt-4">
                       {t.estimate.form.submitNote}

@@ -641,7 +641,7 @@ export default function PropertyDetailPage() {
                         })
                       } else {
                         navigator.clipboard.writeText(window.location.href)
-                        setToastMessage(t.common.linkCopied || "Link copied to clipboard!")
+                        setToastMessage("Link copied to clipboard!")
                         setShowToast(true)
                         setTimeout(() => setShowToast(false), 3000)
                       }
