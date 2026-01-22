@@ -58,8 +58,36 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { propertyId, fromName, fromEmail, fromPhone, content } = body;
 
+    // Validate required fields
     if (!propertyId || !fromName || !fromEmail || !content) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(fromEmail)) {
+      return NextResponse.json({ error: "Invalid email format" }, { status: 400 });
+    }
+
+    // Validate field lengths to prevent abuse
+    if (fromName.length > 100 || fromEmail.length > 255 || content.length > 5000) {
+      return NextResponse.json({ error: "Field length exceeded" }, { status: 400 });
+    }
+
+    if (fromPhone && fromPhone.length > 30) {
+      return NextResponse.json({ error: "Phone number too long" }, { status: 400 });
+    }
+
+    // Basic spam protection - check for recent messages from same email
+    const recentMessage = await prisma.message.findFirst({
+      where: {
+        fromEmail,
+        createdAt: { gte: new Date(Date.now() - 60000) }, // Last minute
+      },
+    });
+
+    if (recentMessage) {
+      return NextResponse.json({ error: "Please wait before sending another message" }, { status: 429 });
     }
 
     // Get property to find owner

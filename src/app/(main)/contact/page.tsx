@@ -33,6 +33,8 @@ export default function ContactPage() {
   const { t } = useI18n()
   const reduce = useReducedMotion()
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -91,10 +93,30 @@ export default function ContactPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log(formData)
-    setSubmitted(true)
+    setLoading(true)
+    setError("")
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to send message")
+      }
+
+      setSubmitted(true)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong")
+    } finally {
+      setLoading(false)
+    }
   }
 
   if (submitted) {
@@ -307,11 +329,18 @@ export default function ContactPage() {
                     />
                   </div>
 
+                  {error && (
+                    <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm">
+                      {error}
+                    </div>
+                  )}
+
                   <Button
                     type="submit"
-                    className="w-full h-12 rounded-xl bg-[#B8926A] hover:bg-[#A6825C] text-white text-base"
+                    disabled={loading}
+                    className="w-full h-12 rounded-xl bg-[#B8926A] hover:bg-[#A6825C] text-white text-base disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {t.contact.sendButton}
+                    {loading ? t.common.sending || "Sending..." : t.contact.sendButton}
                   </Button>
 
                   <p className="text-center text-sm text-[#6B6B6B]">

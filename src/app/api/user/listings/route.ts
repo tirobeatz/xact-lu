@@ -108,6 +108,59 @@ export async function POST(request: NextRequest) {
       images,
     } = body;
 
+    // Validate required fields
+    if (!title || !type || !listingType || !price || !address || !city) {
+      return NextResponse.json(
+        { error: "Missing required fields: title, type, listingType, price, address, and city are required" },
+        { status: 400 }
+      );
+    }
+
+    // Validate field lengths
+    if (title.length > 200) {
+      return NextResponse.json({ error: "Title is too long (max 200 characters)" }, { status: 400 });
+    }
+
+    if (description && description.length > 10000) {
+      return NextResponse.json({ error: "Description is too long (max 10000 characters)" }, { status: 400 });
+    }
+
+    if (address.length > 300 || city.length > 100) {
+      return NextResponse.json({ error: "Address or city is too long" }, { status: 400 });
+    }
+
+    // Validate type and listingType enums
+    const validTypes = ["APARTMENT", "HOUSE", "VILLA", "PENTHOUSE", "STUDIO", "DUPLEX", "OFFICE", "LAND", "COMMERCIAL"];
+    const validListingTypes = ["SALE", "RENT"];
+
+    if (!validTypes.includes(type)) {
+      return NextResponse.json({ error: "Invalid property type" }, { status: 400 });
+    }
+
+    if (!validListingTypes.includes(listingType)) {
+      return NextResponse.json({ error: "Invalid listing type" }, { status: 400 });
+    }
+
+    // Validate price is a positive number
+    const priceNum = Number(price);
+    if (isNaN(priceNum) || priceNum <= 0 || priceNum > 1000000000) {
+      return NextResponse.json({ error: "Invalid price" }, { status: 400 });
+    }
+
+    // Validate numeric fields if provided
+    if (bedrooms !== undefined && (isNaN(Number(bedrooms)) || Number(bedrooms) < 0 || Number(bedrooms) > 100)) {
+      return NextResponse.json({ error: "Invalid bedroom count" }, { status: 400 });
+    }
+
+    if (bathrooms !== undefined && (isNaN(Number(bathrooms)) || Number(bathrooms) < 0 || Number(bathrooms) > 100)) {
+      return NextResponse.json({ error: "Invalid bathroom count" }, { status: 400 });
+    }
+
+    // Validate images array
+    if (images && (!Array.isArray(images) || images.length > 50)) {
+      return NextResponse.json({ error: "Invalid images (max 50 images)" }, { status: 400 });
+    }
+
     // Generate slug from title
     const baseSlug = title
       .toLowerCase()

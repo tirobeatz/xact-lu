@@ -229,6 +229,43 @@ model SiteSettings {
   updatedAt       DateTime @updatedAt
 }
 
+model ContactSubmission {
+  id          String   @id @default(cuid())
+  name        String
+  email       String
+  phone       String?
+  inquiryType String   @default("general")
+  message     String
+  isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@index([email, createdAt])
+}
+
+model EstimateRequest {
+  id           String   @id @default(cuid())
+  name         String
+  email        String
+  phone        String?
+  propertyType String
+  address      String
+  city         String
+  postalCode   String?
+  livingArea   Decimal? @db.Decimal(10, 2)
+  landArea     Decimal? @db.Decimal(10, 2)
+  bedrooms     Int?
+  bathrooms    Int?
+  yearBuilt    Int?
+  condition    String?
+  features     String[]
+  description  String?
+  images       String[]
+  isProcessed  Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  @@index([email, createdAt])
+}
+
 enum UserRole {
   USER
   AGENT

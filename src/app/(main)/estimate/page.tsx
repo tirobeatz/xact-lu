@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { motion, useReducedMotion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { locations } from "@/lib/locations"
@@ -48,9 +48,28 @@ export default function EstimatePage() {
   const { t } = useI18n()
   const reduce = useReducedMotion()
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
   const [photos, setPhotos] = useState<File[]>([])
+  const [photoUrls, setPhotoUrls] = useState<string[]>([])
   const [dragActive, setDragActive] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // Clean up object URLs when photos change or component unmounts
+  useEffect(() => {
+    // Revoke old URLs
+    photoUrls.forEach(url => URL.revokeObjectURL(url))
+
+    // Create new URLs
+    const newUrls = photos.map(file => URL.createObjectURL(file))
+    setPhotoUrls(newUrls)
+
+    // Cleanup on unmount
+    return () => {
+      newUrls.forEach(url => URL.revokeObjectURL(url))
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [photos])
 
   const benefits = [
     { icon: "📈", title: t.estimate.benefits.trueValue.title, desc: t.estimate.benefits.trueValue.desc },
@@ -144,11 +163,70 @@ export default function EstimatePage() {
     setPhotos(prev => prev.filter((_, i) => i !== index))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Here you would send formData + photos to your backend
-    console.log({ ...formData, photos })
-    setSubmitted(true)
+    setLoading(true)
+    setError("")
+
+    try {
+      // Upload photos first if any
+      let uploadedImageUrls: string[] = []
+
+      if (photos.length > 0) {
+        const uploadPromises = photos.map(async (photo) => {
+          const uploadFormData = new FormData()
+          uploadFormData.append("file", photo)
+          uploadFormData.append("folder", "estimates")
+
+          const uploadRes = await fetch("/api/upload", {
+            method: "POST",
+            body: uploadFormData,
+          })
+
+          if (uploadRes.ok) {
+            const data = await uploadRes.json()
+            return data.url
+          }
+          return null
+        })
+
+        const results = await Promise.all(uploadPromises)
+        uploadedImageUrls = results.filter(Boolean) as string[]
+      }
+
+      // Submit estimate request
+      const res = await fetch("/api/estimate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          propertyType: formData.propertyType,
+          address: formData.address,
+          city: formData.location,
+          livingArea: formData.size,
+          bedrooms: formData.bedrooms,
+          bathrooms: formData.bathrooms,
+          condition: formData.condition,
+          features: [formData.parking, formData.outdoor].filter(Boolean),
+          description: formData.extras,
+          images: uploadedImageUrls,
+        }),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to submit request")
+      }
+
+      setSubmitted(true)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong")
+    } finally {
+      setLoading(false)
+    }
   }
 
   if (submitted) {
@@ -548,7 +626,7 @@ export default function EstimatePage() {
                         {photos.map((photo, index) => (
                           <div key={index} className="relative group aspect-square rounded-xl overflow-hidden bg-[#F5F3EF]">
                             <img
-                              src={URL.createObjectURL(photo)}
+                              src={photoUrls[index] || ""}
                               alt={`Upload ${index + 1}`}
                               className="w-full h-full object-cover"
                             />
@@ -649,11 +727,17 @@ export default function EstimatePage() {
                 {/* Submit */}
                 <Reveal delay={0.3}>
                   <div className="text-center">
+                    {error && (
+                      <div className="mb-4 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm">
+                        {error}
+                      </div>
+                    )}
                     <Button
                       type="submit"
-                      className="h-14 px-10 rounded-xl bg-[#B8926A] hover:bg-[#A6825C] text-white text-lg w-full sm:w-auto"
+                      disabled={loading}
+                      className="h-14 px-10 rounded-xl bg-[#B8926A] hover:bg-[#A6825C] text-white text-lg w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      {t.estimate.form.submit}
+                      {loading ? t.common.sending || "Submitting..." : t.estimate.form.submit}
                     </Button>
                     <p className="text-[#6B6B6B] text-sm mt-4">
                       {t.estimate.form.submitNote}

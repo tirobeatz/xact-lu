@@ -87,6 +87,8 @@ export default function PropertyDetailPage() {
   const [showGallery, setShowGallery] = useState(false)
   const [galleryIndex, setGalleryIndex] = useState(0)
   const [showContact, setShowContact] = useState(false)
+  const [showToast, setShowToast] = useState(false)
+  const [toastMessage, setToastMessage] = useState("")
   const [contactForm, setContactForm] = useState({
     name: "",
     email: "",
@@ -639,7 +641,9 @@ export default function PropertyDetailPage() {
                         })
                       } else {
                         navigator.clipboard.writeText(window.location.href)
-                        alert("Link copied to clipboard!")
+                        setToastMessage(t.common.linkCopied || "Link copied to clipboard!")
+                        setShowToast(true)
+                        setTimeout(() => setShowToast(false), 3000)
                       }
                     }}
                   >
@@ -714,6 +718,18 @@ export default function PropertyDetailPage() {
           </Button>
         </Link>
       </div>
+
+      {/* Toast Notification */}
+      {showToast && (
+        <div className="fixed bottom-6 right-6 z-50 animate-in fade-in slide-in-from-bottom-4 duration-300">
+          <div className="bg-[#1A1A1A] text-white px-6 py-3 rounded-xl shadow-lg flex items-center gap-3">
+            <svg className="w-5 h-5 text-[#B8926A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+            {toastMessage}
+          </div>
+        </div>
+      )}
     </LazyMotion>
   )
 }
