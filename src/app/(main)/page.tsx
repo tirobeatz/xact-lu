@@ -335,9 +335,9 @@ export default function HomePage() {
         <section className="py-24 bg-white">
           <div className="container mx-auto px-4">
             <m.div
+              key={loading ? "loading" : "loaded"}
               initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
+              animate="visible"
               variants={stagger}
             >
               <m.div variants={fadeUp} className="flex justify-between items-end mb-12">
