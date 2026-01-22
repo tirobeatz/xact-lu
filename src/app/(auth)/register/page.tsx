@@ -141,11 +141,11 @@ export default function RegisterPage() {
               <input type="checkbox" className="w-4 h-4 mt-1 rounded border-[#E8E6E3]" required />
               <span className="text-sm text-[#6B6B6B]">
                 {t.auth.agreeToTerms}{" "}
-                <Link href="/terms" className="text-[#B8926A] hover:underline">
+                <Link href="/legal/terms" className="text-[#B8926A] hover:underline">
                   {t.auth.termsOfService}
                 </Link>{" "}
                 {t.auth.and}{" "}
-                <Link href="/privacy" className="text-[#B8926A] hover:underline">
+                <Link href="/legal/privacy" className="text-[#B8926A] hover:underline">
                   {t.auth.privacyPolicy}
                 </Link>
               </span>

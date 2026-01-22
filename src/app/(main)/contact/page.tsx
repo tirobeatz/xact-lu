@@ -316,7 +316,7 @@ export default function ContactPage() {
 
                   <p className="text-center text-sm text-[#6B6B6B]">
                     {t.contact.privacyNote}{" "}
-                    <Link href="/privacy" className="text-[#B8926A] hover:underline">
+                    <Link href="/legal/privacy" className="text-[#B8926A] hover:underline">
                       {t.footer.privacyPolicy}
                     </Link>
                   </p>
