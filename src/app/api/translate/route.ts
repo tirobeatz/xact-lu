@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
+import { checkRateLimit, getClientIp, RATE_LIMITS } from "@/lib/rate-limit"
 
 // MyMemory Translation API - free, no API key needed, 5000 chars/day limit
 // https://mymemory.translated.net/doc/spec.php
@@ -112,6 +113,16 @@ async function translateWithMyMemory(text: string, sourceLang: string, targetLan
 
 export async function POST(request: NextRequest) {
   try {
+    // Apply rate limiting
+    const ip = getClientIp(request)
+    const rateLimit = checkRateLimit(`translate:${ip}`, RATE_LIMITS.translate)
+    if (!rateLimit.success) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429, headers: { "Retry-After": String(rateLimit.resetIn) } }
+      )
+    }
+
     const session = await getServerSession(authOptions)
 
     // Allow any logged-in user to translate

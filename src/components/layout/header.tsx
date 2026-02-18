@@ -173,6 +173,9 @@ function HeaderComponent() {
                   setLangMenuOpen(!langMenuOpen)
                   setUserMenuOpen(false)
                 }}
+                aria-label="Select language"
+                aria-expanded={langMenuOpen}
+                aria-haspopup="listbox"
                 className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition-colors ${
                   scrolled
                     ? "text-[#6B6B6B] hover:text-[#1A1A1A] hover:bg-[#F5F3EF]"
@@ -190,7 +193,7 @@ function HeaderComponent() {
 
               {/* Language Dropdown */}
               {langMenuOpen && (
-                <div className="absolute top-full right-0 mt-2 w-44 bg-white rounded-xl shadow-xl border border-[#E8E6E3] overflow-hidden">
+                <div className="absolute top-full right-0 mt-2 w-44 bg-white rounded-xl shadow-xl border border-[#E8E6E3] overflow-hidden" role="listbox" aria-label="Available languages">
                   {locales.map((loc) => (
                     <button
                       key={loc}
@@ -198,6 +201,8 @@ function HeaderComponent() {
                         setLocale(loc)
                         setLangMenuOpen(false)
                       }}
+                      role="option"
+                      aria-selected={locale === loc}
                       className={`w-full px-4 py-2.5 text-left text-sm flex items-center justify-between hover:bg-[#F5F3EF] transition-colors ${
                         locale === loc ? "bg-[#F5F3EF]" : ""
                       }`}
@@ -229,6 +234,9 @@ function HeaderComponent() {
                     setUserMenuOpen(!userMenuOpen)
                     setLangMenuOpen(false)
                   }}
+                  aria-label="User menu"
+                  aria-expanded={userMenuOpen}
+                  aria-haspopup="menu"
                   className="flex items-center gap-2"
                 >
                   <div className={`w-9 h-9 rounded-full flex items-center justify-center font-medium text-sm transition-colors ${
@@ -242,7 +250,7 @@ function HeaderComponent() {
 
                 {/* User Dropdown */}
                 {userMenuOpen && (
-                  <div className="absolute top-full right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-[#E8E6E3] overflow-hidden">
+                  <div className="absolute top-full right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-[#E8E6E3] overflow-hidden" role="menu" aria-label="Account menu">
                     <div className="px-4 py-3 border-b border-[#E8E6E3]">
                       <p className="text-sm font-medium text-[#1A1A1A]">{session.user?.name || "User"}</p>
                       <p className="text-xs text-[#6B6B6B] truncate">{session.user?.email}</p>
@@ -250,6 +258,7 @@ function HeaderComponent() {
                     <div className="py-1">
                       <Link
                         href="/dashboard"
+                        role="menuitem"
                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#1A1A1A] hover:bg-[#F5F3EF] transition-colors"
                       >
                         <svg className="w-4 h-4 text-[#6B6B6B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -259,6 +268,7 @@ function HeaderComponent() {
                       </Link>
                       <Link
                         href="/dashboard/listings"
+                        role="menuitem"
                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#1A1A1A] hover:bg-[#F5F3EF] transition-colors"
                       >
                         <svg className="w-4 h-4 text-[#6B6B6B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -268,6 +278,7 @@ function HeaderComponent() {
                       </Link>
                       <Link
                         href="/dashboard/saved"
+                        role="menuitem"
                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#1A1A1A] hover:bg-[#F5F3EF] transition-colors"
                       >
                         <svg className="w-4 h-4 text-[#6B6B6B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -277,6 +288,7 @@ function HeaderComponent() {
                       </Link>
                       <Link
                         href="/dashboard/profile"
+                        role="menuitem"
                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#1A1A1A] hover:bg-[#F5F3EF] transition-colors"
                       >
                         <svg className="w-4 h-4 text-[#6B6B6B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -343,6 +355,8 @@ function HeaderComponent() {
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileMenuOpen}
               className={`p-2 rounded-lg transition-colors ${
                 scrolled
                   ? "text-[#1A1A1A] hover:bg-[#F5F3EF]"
@@ -406,7 +420,7 @@ function HeaderComponent() {
               </div>
             )}
 
-            <nav className="space-y-1">
+            <nav className="space-y-1" aria-label="Mobile navigation">
               <p className="px-3 py-2 text-xs font-medium text-[#6B6B6B] uppercase tracking-wider">{t.home.categories.label}</p>
               <Link href="/properties" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-3 px-3 py-2.5 text-[#1A1A1A] hover:bg-[#F5F3EF] rounded-xl transition-colors">
                 <svg className="w-5 h-5 text-[#B8926A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">

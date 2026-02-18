@@ -24,12 +24,14 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     if (savedLocale && locales.includes(savedLocale)) {
       setLocaleState(savedLocale)
       setDictionary(getDictionary(savedLocale))
+      document.documentElement.lang = savedLocale
     } else {
       // Try to detect browser language
       const browserLang = navigator.language.split("-")[0] as Locale
       if (locales.includes(browserLang)) {
         setLocaleState(browserLang)
         setDictionary(getDictionary(browserLang))
+        document.documentElement.lang = browserLang
       }
     }
   }, [])
@@ -38,6 +40,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     setLocaleState(newLocale)
     setDictionary(getDictionary(newLocale))
     localStorage.setItem(LOCALE_STORAGE_KEY, newLocale)
+    document.documentElement.lang = newLocale
   }
 
   return (

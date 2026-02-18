@@ -1,14 +1,31 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { checkRateLimit, getClientIp, RATE_LIMITS } from "@/lib/rate-limit";
+import { sanitizeInput, sanitizeEmail } from "@/lib/sanitize";
 
 // POST /api/contact - Handle contact form submissions
 export async function POST(request: NextRequest) {
   try {
+    // Apply rate limiting
+    const ip = getClientIp(request)
+    const rateLimit = checkRateLimit(`contact:${ip}`, RATE_LIMITS.contact)
+    if (!rateLimit.success) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429, headers: { "Retry-After": String(rateLimit.resetIn) } }
+      )
+    }
+
     const body = await request.json();
     const { name, email, phone, inquiryType, message } = body;
 
+    // Sanitize inputs
+    const sanitizedName = sanitizeInput(name);
+    const sanitizedEmail = sanitizeEmail(email);
+    const sanitizedMessage = sanitizeInput(message);
+
     // Validate required fields
-    if (!name || !email || !message) {
+    if (!sanitizedName || !sanitizedEmail || !sanitizedMessage) {
       return NextResponse.json(
         { error: "Name, email, and message are required" },
         { status: 400 }
@@ -17,12 +34,12 @@ export async function POST(request: NextRequest) {
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!emailRegex.test(sanitizedEmail)) {
       return NextResponse.json({ error: "Invalid email format" }, { status: 400 });
     }
 
     // Validate field lengths
-    if (name.length > 100 || email.length > 255 || message.length > 5000) {
+    if (sanitizedName.length > 100 || sanitizedEmail.length > 255 || sanitizedMessage.length > 5000) {
       return NextResponse.json({ error: "Field length exceeded" }, { status: 400 });
     }
 
@@ -33,7 +50,7 @@ export async function POST(request: NextRequest) {
     // Rate limiting - check for recent submissions from same email
     const recentSubmission = await prisma.contactSubmission.findFirst({
       where: {
-        email,
+        email: sanitizedEmail,
         createdAt: { gte: new Date(Date.now() - 300000) }, // Last 5 minutes
       },
     });
@@ -48,11 +65,11 @@ export async function POST(request: NextRequest) {
     // Save to database
     const submission = await prisma.contactSubmission.create({
       data: {
-        name,
-        email,
+        name: sanitizedName,
+        email: sanitizedEmail,
         phone: phone || null,
         inquiryType: inquiryType || "general",
-        message,
+        message: sanitizedMessage,
       },
     });
 

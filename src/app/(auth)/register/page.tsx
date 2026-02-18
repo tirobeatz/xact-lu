@@ -40,14 +40,25 @@ export default function RegisterPage() {
         body: JSON.stringify({ name, email, password }),
       })
 
+      // Handle non-JSON responses (e.g., server error pages)
+      const contentType = res.headers.get("content-type")
+      if (!contentType?.includes("application/json")) {
+        setError(t.auth.somethingWentWrong)
+        console.error("Registration: Non-JSON response", res.status, res.statusText)
+        return
+      }
+
       const data = await res.json()
 
       if (!res.ok) {
-        setError(data.error || t.auth.somethingWentWrong)
+        // In development, show detailed error if available
+        const detail = data.details ? ` (${data.details})` : ""
+        setError((data.error || t.auth.somethingWentWrong) + detail)
       } else {
         router.push("/login?registered=true")
       }
     } catch (err) {
+      console.error("Registration fetch error:", err)
       setError(t.auth.somethingWentWrong)
     } finally {
       setLoading(false)

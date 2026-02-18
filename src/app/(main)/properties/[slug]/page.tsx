@@ -89,6 +89,7 @@ export default function PropertyDetailPage() {
   const [showContact, setShowContact] = useState(false)
   const [showToast, setShowToast] = useState(false)
   const [toastMessage, setToastMessage] = useState("")
+  const [contactLoading, setContactLoading] = useState(false)
   const [contactForm, setContactForm] = useState({
     name: "",
     email: "",
@@ -120,6 +121,47 @@ export default function PropertyDetailPage() {
     else if (e.key === "ArrowLeft") prevImage()
     else if (e.key === "Escape") closeGallery()
   }, [nextImage, prevImage, closeGallery])
+
+  // Handle contact form submission
+  const handleContactSubmit = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault()
+    setContactLoading(true)
+
+    try {
+      const response = await fetch("/api/user/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          propertyId: property?.id,
+          fromName: contactForm.name,
+          fromEmail: contactForm.email,
+          fromPhone: contactForm.phone,
+          content: contactForm.message,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        setToastMessage(data.error || "Failed to send message")
+        setShowToast(true)
+        setTimeout(() => setShowToast(false), 3000)
+        return
+      }
+
+      setToastMessage("Message sent successfully!")
+      setShowToast(true)
+      setTimeout(() => setShowToast(false), 3000)
+      setContactForm({ name: "", email: "", phone: "", message: "" })
+      setShowContact(false)
+    } catch (error) {
+      setToastMessage(error instanceof Error ? error.message : "An error occurred")
+      setShowToast(true)
+      setTimeout(() => setShowToast(false), 3000)
+    } finally {
+      setContactLoading(false)
+    }
+  }, [property?.id, contactForm])
 
   // Memoize price per sqm calculation
   const pricePerSqm = useMemo(() => {
@@ -584,7 +626,7 @@ export default function PropertyDetailPage() {
                     className="bg-white rounded-2xl p-6 shadow-sm"
                   >
                     <h3 className="font-semibold text-[#1A1A1A] mb-4">{t.propertyDetail.sendMessage}</h3>
-                    <form className="space-y-4">
+                    <form className="space-y-4" onSubmit={handleContactSubmit}>
                       <input
                         type="text"
                         placeholder={t.propertyDetail.yourName}
@@ -613,8 +655,19 @@ export default function PropertyDetailPage() {
                         onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
                         className="w-full px-4 py-3 rounded-xl border border-[#E8E6E3] outline-none focus:border-[#B8926A] resize-none"
                       />
-                      <Button className="w-full h-12 bg-[#B8926A] hover:bg-[#A6825C] text-white rounded-xl">
-                        {t.propertyDetail.send}
+                      <Button
+                        type="submit"
+                        disabled={contactLoading}
+                        className="w-full h-12 bg-[#B8926A] hover:bg-[#A6825C] text-white rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {contactLoading ? (
+                          <span className="flex items-center justify-center gap-2">
+                            <span className="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                            {"Sending..."}
+                          </span>
+                        ) : (
+                          t.propertyDetail.send
+                        )}
                       </Button>
                     </form>
                   </m.div>

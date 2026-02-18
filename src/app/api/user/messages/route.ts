@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { checkRateLimit, getClientIp, RATE_LIMITS } from "@/lib/rate-limit";
+import { sanitizeInput, sanitizeEmail } from "@/lib/sanitize";
 
 // GET /api/user/messages - Get messages for current user
 export async function GET() {
@@ -55,22 +57,37 @@ export async function GET() {
 // POST /api/user/messages - Send a message (for public contact forms)
 export async function POST(request: NextRequest) {
   try {
+    // Apply rate limiting
+    const ip = getClientIp(request)
+    const rateLimit = checkRateLimit(`message:${ip}`, RATE_LIMITS.message)
+    if (!rateLimit.success) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429, headers: { "Retry-After": String(rateLimit.resetIn) } }
+      )
+    }
+
     const body = await request.json();
     const { propertyId, fromName, fromEmail, fromPhone, content } = body;
 
+    // Sanitize inputs
+    const sanitizedFromName = sanitizeInput(fromName);
+    const sanitizedFromEmail = sanitizeEmail(fromEmail);
+    const sanitizedContent = sanitizeInput(content);
+
     // Validate required fields
-    if (!propertyId || !fromName || !fromEmail || !content) {
+    if (!propertyId || !sanitizedFromName || !sanitizedFromEmail || !sanitizedContent) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(fromEmail)) {
+    if (!emailRegex.test(sanitizedFromEmail)) {
       return NextResponse.json({ error: "Invalid email format" }, { status: 400 });
     }
 
     // Validate field lengths to prevent abuse
-    if (fromName.length > 100 || fromEmail.length > 255 || content.length > 5000) {
+    if (sanitizedFromName.length > 100 || sanitizedFromEmail.length > 255 || sanitizedContent.length > 5000) {
       return NextResponse.json({ error: "Field length exceeded" }, { status: 400 });
     }
 
@@ -81,7 +98,7 @@ export async function POST(request: NextRequest) {
     // Basic spam protection - check for recent messages from same email
     const recentMessage = await prisma.message.findFirst({
       where: {
-        fromEmail,
+        fromEmail: sanitizedFromEmail,
         createdAt: { gte: new Date(Date.now() - 60000) }, // Last minute
       },
     });
@@ -102,9 +119,9 @@ export async function POST(request: NextRequest) {
 
     const message = await prisma.message.create({
       data: {
-        content,
-        fromName,
-        fromEmail,
+        content: sanitizedContent,
+        fromName: sanitizedFromName,
+        fromEmail: sanitizedFromEmail,
         fromPhone: fromPhone || null,
         propertyId,
         toUserId: property.ownerId,

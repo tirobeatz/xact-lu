@@ -1,9 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { checkRateLimit, getClientIp, RATE_LIMITS } from "@/lib/rate-limit";
+import { sanitizeInput, sanitizeEmail } from "@/lib/sanitize";
 
 // POST /api/estimate - Handle property estimation requests
 export async function POST(request: NextRequest) {
   try {
+    // Apply rate limiting
+    const ip = getClientIp(request)
+    const rateLimit = checkRateLimit(`estimate:${ip}`, RATE_LIMITS.estimate)
+    if (!rateLimit.success) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429, headers: { "Retry-After": String(rateLimit.resetIn) } }
+      )
+    }
+
     const body = await request.json();
     const {
       name,
@@ -24,8 +36,15 @@ export async function POST(request: NextRequest) {
       images,
     } = body;
 
+    // Sanitize string inputs
+    const sanitizedName = sanitizeInput(name);
+    const sanitizedEmail = sanitizeEmail(email);
+    const sanitizedAddress = sanitizeInput(address);
+    const sanitizedCity = sanitizeInput(city);
+    const sanitizedDescription = description ? sanitizeInput(description) : null;
+
     // Validate required fields
-    if (!name || !email || !propertyType || !address || !city) {
+    if (!sanitizedName || !sanitizedEmail || !propertyType || !sanitizedAddress || !sanitizedCity) {
       return NextResponse.json(
         { error: "Name, email, property type, address, and city are required" },
         { status: 400 }
@@ -34,19 +53,19 @@ export async function POST(request: NextRequest) {
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!emailRegex.test(sanitizedEmail)) {
       return NextResponse.json({ error: "Invalid email format" }, { status: 400 });
     }
 
     // Validate field lengths
-    if (name.length > 100 || email.length > 255 || address.length > 300) {
+    if (sanitizedName.length > 100 || sanitizedEmail.length > 255 || sanitizedAddress.length > 300) {
       return NextResponse.json({ error: "Field length exceeded" }, { status: 400 });
     }
 
     // Rate limiting - check for recent submissions from same email
     const recentSubmission = await prisma.estimateRequest.findFirst({
       where: {
-        email,
+        email: sanitizedEmail,
         createdAt: { gte: new Date(Date.now() - 3600000) }, // Last hour
       },
     });
@@ -61,12 +80,12 @@ export async function POST(request: NextRequest) {
     // Save to database
     const estimateRequest = await prisma.estimateRequest.create({
       data: {
-        name,
-        email,
+        name: sanitizedName,
+        email: sanitizedEmail,
         phone: phone || null,
         propertyType,
-        address,
-        city,
+        address: sanitizedAddress,
+        city: sanitizedCity,
         postalCode: postalCode || null,
         livingArea: livingArea ? parseFloat(livingArea) : null,
         landArea: landArea ? parseFloat(landArea) : null,
@@ -75,7 +94,7 @@ export async function POST(request: NextRequest) {
         yearBuilt: yearBuilt ? parseInt(yearBuilt) : null,
         condition: condition || null,
         features: features || [],
-        description: description || null,
+        description: sanitizedDescription,
         images: images || [],
       },
     });
