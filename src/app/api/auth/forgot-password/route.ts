@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma"
 import { checkRateLimit, getClientIp, RATE_LIMITS } from "@/lib/rate-limit"
 import { sanitizeEmail } from "@/lib/sanitize"
 import { sendPasswordResetEmail } from "@/lib/email"
-import { crypto } from "node:crypto"
+import { randomBytes } from "node:crypto"
 
 export async function POST(req: Request) {
   try {
@@ -49,7 +49,7 @@ export async function POST(req: Request) {
     // But only create token if user exists
     if (user) {
       // Generate secure random token
-      const token = crypto.randomBytes(32).toString("hex")
+      const token = randomBytes(32).toString("hex")
       const expires = new Date(Date.now() + 60 * 60 * 1000) // 1 hour from now
 
       // Store token in VerificationToken table
