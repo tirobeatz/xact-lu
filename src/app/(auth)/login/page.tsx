@@ -6,17 +6,31 @@ import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { useI18n } from "@/lib/i18n"
+import { useToast } from "@/hooks/use-toast"
+import { useEffect } from "react"
 
 function LoginForm() {
   const { t } = useI18n()
   const router = useRouter()
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard"
+  const registered = searchParams.get("registered")
+  const { toast } = useToast()
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (registered === "true") {
+      toast({
+        title: t.auth.accountCreated || "Account created",
+        description: t.auth.pleaseSignIn || "Please sign in with your credentials.",
+        variant: "success",
+      })
+    }
+  }, [registered])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
