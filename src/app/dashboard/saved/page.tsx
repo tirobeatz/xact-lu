@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { useI18n } from "@/lib/i18n"
@@ -131,10 +132,12 @@ export default function SavedPropertiesPage() {
                 {/* Image */}
                 <Link href={`/properties/${property.slug}`}>
                   <div className="relative aspect-[4/3]">
-                    <img
+                    <Image
                       src={property.image}
                       alt={property.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute top-3 left-3">
                       <span className="px-2 py-1 rounded-md text-xs font-medium bg-[#1A1A1A] text-white">

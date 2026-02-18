@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { useI18n } from "@/lib/i18n"
@@ -174,10 +175,12 @@ export default function ListingsPage() {
               >
                 {/* Image */}
                 <div className="relative aspect-[4/3]">
-                  <img
+                  <Image
                     src={listing.image}
                     alt={listing.title}
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover"
                   />
                   <div className="absolute top-3 left-3 flex gap-2">
                     <span className={`px-2 py-1 rounded-md text-xs font-medium ${getStatusColor(listing.status)}`}>

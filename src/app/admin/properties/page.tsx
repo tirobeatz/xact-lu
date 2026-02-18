@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
+import Image from "next/image"
 import { PropertyStatus } from "@prisma/client"
 import { PropertyActions } from "@/components/admin/property-actions"
 
@@ -146,12 +147,14 @@ export default async function AdminPropertiesPage({ searchParams }: Props) {
                   <tr key={property.id} className="hover:bg-[#FAFAF8] transition-colors">
                     <td className="px-4 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-lg bg-[#E8E6E3] overflow-hidden flex-shrink-0">
+                        <div className="relative w-12 h-12 rounded-lg bg-[#E8E6E3] overflow-hidden flex-shrink-0">
                           {property.images[0] ? (
-                            <img
+                            <Image
                               src={property.images[0].url}
                               alt={property.title}
-                              className="w-full h-full object-cover"
+                              fill
+                              sizes="48px"
+                              className="object-cover"
                             />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center text-[#6B6B6B]">

@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, use } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { locations } from "@/lib/locations"
@@ -755,10 +756,12 @@ export default function EditListingPage({ params }: PageProps) {
                             index === 0 ? "ring-2 ring-[#B8926A]" : ""
                           }`}
                         >
-                          <img
+                          <Image
                             src={photo.url}
                             alt={`Photo ${index + 1}`}
-                            className="w-full h-full object-cover"
+                            fill
+                            sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
+                            className="object-cover"
                           />
                           {index === 0 && (
                             <div className="absolute top-2 left-2 px-2 py-1 bg-[#B8926A] text-white text-xs rounded-md">

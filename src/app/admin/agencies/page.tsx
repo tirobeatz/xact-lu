@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
+import Image from "next/image"
 import { AgencyActions } from "@/components/admin/agency-actions"
 
 interface Props {
@@ -151,12 +152,14 @@ export default async function AdminAgenciesPage({ searchParams }: Props) {
                   <tr key={agency.id} className="hover:bg-[#FAFAF8] transition-colors">
                     <td className="px-4 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-[#B8926A]/10 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                        <div className="relative w-10 h-10 rounded-xl bg-[#B8926A]/10 flex items-center justify-center flex-shrink-0 overflow-hidden">
                           {agency.logo ? (
-                            <img
+                            <Image
                               src={agency.logo}
                               alt={agency.name}
-                              className="w-full h-full object-cover"
+                              fill
+                              sizes="40px"
+                              className="object-cover"
                             />
                           ) : (
                             <svg

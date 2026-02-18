@@ -33,6 +33,12 @@ export default function RegisterPage() {
       return
     }
 
+    if (!/[A-Za-z]/.test(password) || !/[0-9]/.test(password)) {
+      setError(t.auth.passwordNeedsLetterAndNumber || "Password must contain at least one letter and one number")
+      setLoading(false)
+      return
+    }
+
     try {
       const res = await fetch("/api/auth/register", {
         method: "POST",
