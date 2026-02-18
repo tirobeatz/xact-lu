@@ -1,12 +1,12 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { useI18n } from "@/lib/i18n"
 
-export default function ResetPasswordPage() {
+function ResetPasswordForm() {
   const { t } = useI18n()
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -214,5 +214,21 @@ export default function ResetPasswordPage() {
         )}
       </div>
     </div>
+  )
+}
+
+function ResetPasswordLoading() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-[#FAFAF8]">
+      <div className="w-8 h-8 border-2 border-[#B8926A] border-t-transparent rounded-full animate-spin" />
+    </div>
+  )
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<ResetPasswordLoading />}>
+      <ResetPasswordForm />
+    </Suspense>
   )
 }
