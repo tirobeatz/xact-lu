@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { locations } from "@/lib/locations"
 import { useI18n } from "@/lib/i18n"
 import { formatNumber } from "@/lib/format"
-import { getTranslated } from "@/lib/i18n/get-translated"
+import { getTranslated, type Translations } from "@/lib/i18n/get-translated"
 
 // Simplified animations for better performance
 const fadeUp = {
