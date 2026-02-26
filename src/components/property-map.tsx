@@ -34,7 +34,7 @@ export default function PropertyMap({ latitude, longitude, title, address }: Pro
 
     // Custom marker icon matching brand colors
     const icon = L.divIcon({
-      className: "custom-marker",
+      className: "xact-pin-marker",
       html: `<div style="
         width: 36px;
         height: 36px;
@@ -77,10 +77,19 @@ export default function PropertyMap({ latitude, longitude, title, address }: Pro
   }, [latitude, longitude, title, address])
 
   return (
-    <div
-      ref={mapRef}
-      className="w-full h-[300px] md:h-[400px] rounded-xl overflow-hidden z-0"
-      style={{ isolation: "isolate" }}
-    />
+    <>
+      <style>{`
+        .xact-pin-marker {
+          background: none !important;
+          border: none !important;
+          box-shadow: none !important;
+        }
+      `}</style>
+      <div
+        ref={mapRef}
+        className="w-full h-[300px] md:h-[400px] rounded-xl overflow-hidden z-0"
+        style={{ isolation: "isolate" }}
+      />
+    </>
   )
 }

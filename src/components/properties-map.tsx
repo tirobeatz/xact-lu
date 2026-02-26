@@ -24,6 +24,21 @@ interface PropertiesMapProps {
   formatPrice: (price: number) => string
 }
 
+/** Compact price for map badges: €750K, €1.2M, €2,500/mo */
+function compactPrice(price: number, isRent?: boolean): string {
+  if (isRent) {
+    return `€${price.toLocaleString("en-US")}/mo`
+  }
+  if (price >= 1_000_000) {
+    const m = price / 1_000_000
+    return `€${m % 1 === 0 ? m.toFixed(0) : m.toFixed(1)}M`
+  }
+  if (price >= 1_000) {
+    return `€${Math.round(price / 1_000)}K`
+  }
+  return `€${price}`
+}
+
 export default function PropertiesMap({ properties, formatPrice }: PropertiesMapProps) {
   const mapRef = useRef<HTMLDivElement>(null)
   const mapInstanceRef = useRef<L.Map | null>(null)
@@ -64,24 +79,32 @@ export default function PropertiesMap({ properties, formatPrice }: PropertiesMap
     // Add markers for each property
     const markers: L.Marker[] = []
     mappableProperties.forEach((property) => {
+      const isRent = property.listingType === "RENT"
+      const label = compactPrice(property.price, isRent)
+
       const icon = L.divIcon({
-        className: "custom-listing-marker",
-        html: `<div style="
-          background: ${property.listingType === "RENT" ? "#3B82F6" : "#B8926A"};
+        className: "xact-price-marker",
+        html: `<div class="xact-price-badge" style="
+          background: ${isRent ? "#3B82F6" : "#B8926A"};
           color: white;
-          padding: 4px 10px;
+          padding: 5px 12px;
           border-radius: 20px;
-          font-size: 12px;
-          font-weight: 600;
+          font-size: 13px;
+          font-weight: 700;
           white-space: nowrap;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+          box-shadow: 0 2px 10px rgba(0,0,0,0.25);
           border: 2px solid white;
           cursor: pointer;
-          font-family: system-ui, sans-serif;
-        ">${formatPrice(property.price)}</div>`,
+          font-family: system-ui, -apple-system, sans-serif;
+          line-height: 1.2;
+          display: inline-block;
+          text-align: center;
+          letter-spacing: -0.01em;
+          pointer-events: auto;
+        ">${label}</div>`,
         iconSize: [0, 0],
-        iconAnchor: [40, 15],
-        popupAnchor: [0, -15],
+        iconAnchor: [0, 0],
+        popupAnchor: [0, -4],
       })
 
       const marker = L.marker(
@@ -90,11 +113,11 @@ export default function PropertiesMap({ properties, formatPrice }: PropertiesMap
       ).addTo(map)
 
       const popupContent = `
-        <a href="/properties/${property.slug}" style="text-decoration: none; color: inherit; display: block; width: 220px; font-family: system-ui, sans-serif;">
+        <a href="/properties/${property.slug}" style="text-decoration: none; color: inherit; display: block; width: 220px; font-family: system-ui, -apple-system, sans-serif;">
           <img src="${property.image}" alt="${property.title}" style="width: 100%; height: 130px; object-fit: cover; border-radius: 8px; margin-bottom: 8px;" />
           <div style="font-size: 14px; font-weight: 600; color: #1A1A1A; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${property.title}</div>
           <div style="font-size: 12px; color: #6B6B6B; margin-bottom: 4px;">${property.location}</div>
-          <div style="font-size: 14px; font-weight: 700; color: #B8926A;">${formatPrice(property.price)}${property.listingType === "RENT" ? "/mo" : ""}</div>
+          <div style="font-size: 14px; font-weight: 700; color: #B8926A;">${formatPrice(property.price)}${isRent ? "/mo" : ""}</div>
           <div style="font-size: 11px; color: #6B6B6B; margin-top: 4px;">${(property.beds || 0) > 0 ? property.beds + " beds · " : ""}${property.area || 0} m²</div>
         </a>
       `
@@ -126,10 +149,38 @@ export default function PropertiesMap({ properties, formatPrice }: PropertiesMap
   }, [properties, formatPrice])
 
   return (
-    <div
-      ref={mapRef}
-      className="w-full h-[500px] md:h-[600px] rounded-2xl overflow-hidden z-0"
-      style={{ isolation: "isolate" }}
-    />
+    <>
+      <style>{`
+        .xact-price-marker {
+          background: none !important;
+          border: none !important;
+          box-shadow: none !important;
+        }
+        .xact-price-badge {
+          transform: translate(-50%, -50%);
+          transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .xact-price-badge:hover {
+          transform: translate(-50%, -50%) scale(1.08);
+          box-shadow: 0 4px 14px rgba(0,0,0,0.35) !important;
+        }
+        .property-popup .leaflet-popup-content-wrapper {
+          border-radius: 12px;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        .property-popup .leaflet-popup-content {
+          margin: 12px;
+          line-height: 1.4;
+        }
+        .property-popup .leaflet-popup-tip {
+          box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+      `}</style>
+      <div
+        ref={mapRef}
+        className="w-full h-[500px] md:h-[600px] rounded-2xl overflow-hidden z-0"
+        style={{ isolation: "isolate" }}
+      />
+    </>
   )
 }
