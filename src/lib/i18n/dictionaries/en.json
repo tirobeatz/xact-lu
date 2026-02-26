@@ -140,6 +140,12 @@
       "disclaimer": "* Rates are indicative. Contact banks directly for accurate quotes.",
       "years": "years"
     },
+    "map": {
+      "label": "EXPLORE ON MAP",
+      "title": "Find Properties by Location",
+      "subtitle": "Browse all available properties on the map. Click a marker to see details.",
+      "viewAll": "View all on map"
+    },
     "cta": {
       "title": "Ready to find your dream home?",
       "subtitle": "Start your property journey with Luxembourg's newest premium platform.",

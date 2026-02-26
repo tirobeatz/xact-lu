@@ -2,13 +2,16 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { useState, useEffect, useMemo, useCallback } from "react"
+import { useState, useEffect, useMemo, useCallback, lazy, Suspense } from "react"
 import { LazyMotion, domAnimation, m } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { locations } from "@/lib/locations"
 import { useI18n } from "@/lib/i18n"
 import { formatNumber } from "@/lib/format"
 import { getTranslated, type Translations } from "@/lib/i18n/get-translated"
+
+// Lazy load map to avoid SSR issues with Leaflet
+const PropertiesMap = lazy(() => import("@/components/properties-map"))
 
 // Simplified animations for better performance
 const fadeUp = {
@@ -41,8 +44,12 @@ interface FeaturedProperty {
   beds: number
   baths: number
   area: number
+  latitude?: number | null
+  longitude?: number | null
   image: string
   tag: string
+  listingType?: string
+  type?: string
 }
 
 interface Stats {
@@ -71,6 +78,7 @@ export default function HomePage() {
 
   // Data states
   const [featuredProperties, setFeaturedProperties] = useState<FeaturedProperty[]>([])
+  const [mapProperties, setMapProperties] = useState<FeaturedProperty[]>([])
   const [stats, setStats] = useState<Stats>({ activeListings: "0+", propertyValue: "€0", satisfiedClients: "98%" })
   const [categories, setCategories] = useState<Categories>({
     Apartments: 0, Houses: 0, Villas: 0, Land: 0, Commercial: 0, Studios: 0
@@ -81,15 +89,21 @@ export default function HomePage() {
   useEffect(() => {
     async function fetchData() {
       try {
-        // Fetch featured properties and stats in parallel
-        const [propertiesRes, statsRes] = await Promise.all([
+        // Fetch featured properties, all properties for map, and stats in parallel
+        const [propertiesRes, allPropertiesRes, statsRes] = await Promise.all([
           fetch("/api/properties?featured=true&limit=3"),
+          fetch("/api/properties?limit=100"),
           fetch("/api/stats"),
         ])
 
         if (propertiesRes.ok) {
           const propertiesData = await propertiesRes.json()
           setFeaturedProperties(propertiesData.properties)
+        }
+
+        if (allPropertiesRes.ok) {
+          const allData = await allPropertiesRes.json()
+          setMapProperties(allData.properties)
         }
 
         if (statsRes.ok) {
@@ -427,6 +441,57 @@ export default function HomePage() {
         </div>
       </section>
 
+
+      {/* Map Section */}
+      {mapProperties.length > 0 && (
+        <section className="py-24 bg-white">
+          <div className="container mx-auto px-4">
+            <m.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={stagger}
+            >
+              <m.div variants={fadeUp} className="flex justify-between items-end mb-12">
+                <div>
+                  <span className="text-[#B8926A] font-medium text-sm tracking-wide">
+                    {(t.home as any).map?.label || "EXPLORE ON MAP"}
+                  </span>
+                  <h2 className="text-3xl md:text-4xl font-semibold text-[#1A1A1A] mt-2">
+                    {(t.home as any).map?.title || "Find Properties by Location"}
+                  </h2>
+                  <p className="text-[#6B6B6B] mt-3 max-w-lg">
+                    {(t.home as any).map?.subtitle || "Browse all available properties on the map. Click a marker to see details."}
+                  </p>
+                </div>
+                <Link href="/properties" className="hidden md:flex items-center gap-2 text-sm text-[#1A1A1A] hover:text-[#B8926A] transition-colors">
+                  {(t.home as any).map?.viewAll || "View all on map"}
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </Link>
+              </m.div>
+
+              <m.div variants={fadeUp}>
+                <Suspense
+                  fallback={
+                    <div className="w-full h-[500px] md:h-[600px] rounded-2xl bg-[#F5F3EF] animate-pulse flex items-center justify-center">
+                      <svg className="w-10 h-10 text-[#B8926A] opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                      </svg>
+                    </div>
+                  }
+                >
+                  <PropertiesMap
+                    properties={mapProperties}
+                    formatPrice={(price) => `€${formatNumber(price)}`}
+                  />
+                </Suspense>
+              </m.div>
+            </m.div>
+          </div>
+        </section>
+      )}
 
       {/* Services */}
       <section className="py-24 bg-[#1A1A1A] relative overflow-hidden">

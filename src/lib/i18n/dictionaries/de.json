@@ -140,6 +140,12 @@
       "disclaimer": "* Zinssätze sind Richtwerte. Kontaktieren Sie die Banken direkt für genaue Angebote.",
       "years": "Jahre"
     },
+    "map": {
+      "label": "AUF DER KARTE ENTDECKEN",
+      "title": "Immobilien nach Standort finden",
+      "subtitle": "Durchsuchen Sie alle verfügbaren Immobilien auf der Karte. Klicken Sie auf eine Markierung für Details.",
+      "viewAll": "Alle auf der Karte anzeigen"
+    },
     "cta": {
       "title": "Bereit, Ihr Traumhaus zu finden?",
       "subtitle": "Starten Sie Ihre Immobiliensuche mit Luxemburgs neuester Premium-Plattform.",

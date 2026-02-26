@@ -140,6 +140,12 @@
       "disclaimer": "* Les taux sont indicatifs. Contactez directement les banques pour des offres précises.",
       "years": "ans"
     },
+    "map": {
+      "label": "EXPLORER SUR LA CARTE",
+      "title": "Trouver des biens par emplacement",
+      "subtitle": "Parcourez tous les biens disponibles sur la carte. Cliquez sur un marqueur pour voir les détails.",
+      "viewAll": "Voir tout sur la carte"
+    },
     "cta": {
       "title": "Prêt à trouver votre maison de rêve ?",
       "subtitle": "Commencez votre recherche immobilière avec la nouvelle plateforme premium du Luxembourg.",
