@@ -55,7 +55,9 @@ export function PropertyActions({ property }: { property: Property }) {
         router.refresh()
       }
     } catch (error) {
-      console.error("Failed to update status:", error)
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to update status:", error)
+      }
     } finally {
       setLoading(false)
       setMenuOpen(false)
@@ -75,7 +77,9 @@ export function PropertyActions({ property }: { property: Property }) {
         router.refresh()
       }
     } catch (error) {
-      console.error("Failed to toggle featured:", error)
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to toggle featured:", error)
+      }
     } finally {
       setLoading(false)
       setMenuOpen(false)
@@ -97,7 +101,9 @@ export function PropertyActions({ property }: { property: Property }) {
         router.refresh()
       }
     } catch (error) {
-      console.error("Failed to delete property:", error)
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to delete property:", error)
+      }
     } finally {
       setLoading(false)
       setMenuOpen(false)

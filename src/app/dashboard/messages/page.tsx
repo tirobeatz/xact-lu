@@ -76,7 +76,9 @@ export default function MessagesPage() {
         })
         setMessages(prev => prev.map(m => m.id === message.id ? { ...m, isRead: true } : m))
       } catch (err) {
-        console.error("Failed to mark message as read:", err)
+        if (process.env.NODE_ENV === "development") {
+          console.error("Failed to mark message as read:", err)
+        }
       }
     }
   }

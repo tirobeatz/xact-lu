@@ -42,8 +42,10 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
+    icon: [
+      { url: "/xact-logo.svg", type: "image/svg+xml" },
+    ],
+    apple: "/xact-logo.svg",
   },
 }
 

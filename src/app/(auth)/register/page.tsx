@@ -50,7 +50,9 @@ export default function RegisterPage() {
       const contentType = res.headers.get("content-type")
       if (!contentType?.includes("application/json")) {
         setError(t.auth.somethingWentWrong)
-        console.error("Registration: Non-JSON response", res.status, res.statusText)
+        if (process.env.NODE_ENV === "development") {
+          console.error("Registration: Non-JSON response", res.status, res.statusText)
+        }
         return
       }
 
@@ -64,7 +66,9 @@ export default function RegisterPage() {
         router.push("/login?registered=true")
       }
     } catch (err) {
-      console.error("Registration fetch error:", err)
+      if (process.env.NODE_ENV === "development") {
+        console.error("Registration fetch error:", err)
+      }
       setError(t.auth.somethingWentWrong)
     } finally {
       setLoading(false)

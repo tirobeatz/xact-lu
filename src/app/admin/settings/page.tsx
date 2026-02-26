@@ -41,7 +41,9 @@ export default function AdminSettingsPage() {
         if (data.logo) setLogoPreview(data.logo)
       }
     } catch (error) {
-      console.error("Failed to fetch settings:", error)
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to fetch settings:", error)
+      }
     } finally {
       setLoading(false)
     }
@@ -72,7 +74,9 @@ export default function AdminSettingsPage() {
         setSettings(prev => ({ ...prev, logo: data.url }))
       }
     } catch (error) {
-      console.error("Failed to upload logo:", error)
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to upload logo:", error)
+      }
     }
   }
 

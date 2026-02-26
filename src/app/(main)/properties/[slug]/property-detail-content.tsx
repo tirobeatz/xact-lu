@@ -7,6 +7,8 @@ import { LazyMotion, domAnimation, m } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { FavoriteButton } from "@/components/favorite-button"
 import { useI18n } from "@/lib/i18n"
+import { formatNumber } from "@/lib/format"
+import { getTranslated } from "@/lib/i18n/get-translated"
 
 interface Translations {
   en?: string
@@ -65,20 +67,8 @@ interface PropertyDetailContentProps {
   similarProperties: SimilarProperty[]
 }
 
-const formatNumber = (num: number) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-
 export default function PropertyDetailContent({ property, similarProperties }: PropertyDetailContentProps) {
   const { t, locale } = useI18n()
-
-  // Helper to get translated content
-  const getTranslated = (defaultValue: string, translations?: Translations | null): string => {
-    if (!translations || typeof translations !== 'object') return defaultValue
-    const localeValue = translations[locale]
-    if (localeValue && localeValue.trim()) return localeValue
-    const enValue = translations.en
-    if (enValue && enValue.trim()) return enValue
-    return defaultValue
-  }
 
   const [activeImage, setActiveImage] = useState(0)
   const [showGallery, setShowGallery] = useState(false)
@@ -278,7 +268,7 @@ export default function PropertyDetailContent({ property, similarProperties }: P
               <div className="relative w-full h-full">
                 <Image
                   src={property.images[activeImage] || property.images[0]}
-                  alt={getTranslated(property.title, property.titleTranslations)}
+                  alt={getTranslated(locale, property.title, property.titleTranslations)}
                   fill
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -365,7 +355,7 @@ export default function PropertyDetailContent({ property, similarProperties }: P
                     </div>
 
                     <h1 className="text-2xl md:text-3xl font-semibold text-[#1A1A1A]">
-                      {getTranslated(property.title, property.titleTranslations)}
+                      {getTranslated(locale, property.title, property.titleTranslations)}
                     </h1>
 
                     <p className="text-[#6B6B6B] mt-1 flex items-center gap-1">
@@ -437,7 +427,7 @@ export default function PropertyDetailContent({ property, similarProperties }: P
               >
                 <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">{t.propertyDetail.description}</h2>
                 <div className="text-[#6B6B6B] whitespace-pre-line leading-relaxed">
-                  {getTranslated(property.description, property.descriptionTranslations)}
+                  {getTranslated(locale, property.description, property.descriptionTranslations)}
                 </div>
               </m.div>
 

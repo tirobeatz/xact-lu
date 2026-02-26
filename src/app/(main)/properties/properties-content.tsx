@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button"
 import { FavoriteButton } from "@/components/favorite-button"
 import { locations } from "@/lib/locations"
 import { useI18n } from "@/lib/i18n"
+import { formatNumber } from "@/lib/format"
+import { getTranslated } from "@/lib/i18n/get-translated"
 
 interface Translations {
   en?: string
@@ -40,10 +42,6 @@ interface PropertiesContentProps {
 
 const propertyTypes = ["All", "Apartment", "House", "Villa", "Penthouse", "Studio", "Duplex", "Office"]
 
-const formatNumber = (num: number) => {
-  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-}
-
 const fadeUp = {
   hidden: { opacity: 0, y: 15 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" as const } }
@@ -52,15 +50,6 @@ const fadeUp = {
 function PropertiesContentInner({ initialProperties, initialTotal, initialTotalPages }: PropertiesContentProps) {
   const { t, locale } = useI18n()
 
-  // Helper to get translated text
-  const getTranslated = (defaultValue: string, translations?: Translations | null): string => {
-    if (!translations || typeof translations !== 'object') return defaultValue
-    const localeValue = translations[locale]
-    if (localeValue && localeValue.trim()) return localeValue
-    const enValue = translations.en
-    if (enValue && enValue.trim()) return enValue
-    return defaultValue
-  }
   const searchParams = useSearchParams()
 
   // Get URL params
@@ -147,7 +136,9 @@ function PropertiesContentInner({ initialProperties, initialTotal, initialTotalP
         setTotalPages(data.totalPages)
       }
     } catch (error) {
-      console.error("Failed to fetch properties:", error)
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to fetch properties:", error)
+      }
     } finally {
       setLoading(false)
     }
@@ -486,7 +477,7 @@ function PropertiesContentInner({ initialProperties, initialTotal, initialTotalP
                       <div className="flex items-start justify-between gap-2">
                         <div>
                           <h3 className="font-semibold text-[#1A1A1A] group-hover:text-[#B8926A] transition-colors line-clamp-1">
-                            {getTranslated(property.title, property.titleTranslations)}
+                            {getTranslated(locale, property.title, property.titleTranslations)}
                           </h3>
                           <p className="text-sm text-[#6B6B6B] mt-1 flex items-center gap-1">
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

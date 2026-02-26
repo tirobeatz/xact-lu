@@ -27,7 +27,9 @@ export default function ForgotPasswordPage() {
       const contentType = res.headers.get("content-type")
       if (!contentType?.includes("application/json")) {
         setError(t.auth.somethingWentWrong)
-        console.error("Forgot password: Non-JSON response", res.status, res.statusText)
+        if (process.env.NODE_ENV === "development") {
+          console.error("Forgot password: Non-JSON response", res.status, res.statusText)
+        }
         return
       }
 
@@ -39,7 +41,9 @@ export default function ForgotPasswordPage() {
         setSubmitted(true)
       }
     } catch (err) {
-      console.error("Forgot password fetch error:", err)
+      if (process.env.NODE_ENV === "development") {
+        console.error("Forgot password fetch error:", err)
+      }
       setError(t.auth.somethingWentWrong)
     } finally {
       setLoading(false)

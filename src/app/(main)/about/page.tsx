@@ -75,7 +75,9 @@ export default function AboutPage() {
           setAgents(data)
         }
       } catch (error) {
-        console.error("Failed to fetch agents:", error)
+        if (process.env.NODE_ENV === "development") {
+          console.error("Failed to fetch agents:", error)
+        }
       } finally {
         setLoadingAgents(false)
       }

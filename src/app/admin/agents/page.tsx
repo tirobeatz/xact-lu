@@ -61,7 +61,9 @@ export default function AdminAgentsPage() {
         setAgents(data)
       }
     } catch (error) {
-      console.error("Failed to fetch agents:", error)
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to fetch agents:", error)
+      }
     } finally {
       setLoading(false)
     }
@@ -97,7 +99,9 @@ export default function AdminAgentsPage() {
         setFormData({ ...formData, image: data.urls[0] })
       }
     } catch (error) {
-      console.error("Failed to upload image:", error)
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to upload image:", error)
+      }
     } finally {
       setUploadingImage(false)
     }
@@ -126,7 +130,9 @@ export default function AdminAgentsPage() {
         setFormData({ name: "", email: "", phone: "", image: "", bio: "", role: "", showOnAbout: false, displayOrder: 0 })
       }
     } catch (error) {
-      console.error("Failed to save agent:", error)
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to save agent:", error)
+      }
     } finally {
       setSaving(false)
     }
@@ -158,7 +164,9 @@ export default function AdminAgentsPage() {
         fetchAgents()
       }
     } catch (error) {
-      console.error("Failed to delete agent:", error)
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to delete agent:", error)
+      }
     }
   }
 
@@ -173,7 +181,9 @@ export default function AdminAgentsPage() {
         fetchAgents()
       }
     } catch (error) {
-      console.error("Failed to toggle agent status:", error)
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to toggle agent status:", error)
+      }
     }
   }
 

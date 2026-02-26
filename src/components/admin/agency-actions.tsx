@@ -28,7 +28,9 @@ export function AgencyActions({ agency }: { agency: Agency }) {
         router.refresh()
       }
     } catch (error) {
-      console.error("Failed to update verification:", error)
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to update verification:", error)
+      }
     } finally {
       setLoading(false)
       setMenuOpen(false)
@@ -54,7 +56,9 @@ export function AgencyActions({ agency }: { agency: Agency }) {
         router.refresh()
       }
     } catch (error) {
-      console.error("Failed to delete agency:", error)
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to delete agency:", error)
+      }
     } finally {
       setLoading(false)
       setMenuOpen(false)

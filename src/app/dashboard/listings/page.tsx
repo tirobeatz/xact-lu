@@ -101,7 +101,9 @@ export default function ListingsPage() {
         setListings(listings.filter(l => l.id !== id))
       }
     } catch (err) {
-      console.error("Failed to delete listing:", err)
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to delete listing:", err)
+      }
     }
   }
 

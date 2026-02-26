@@ -32,7 +32,9 @@ const FavoriteButton = memo(function FavoriteButton({
         setIsFavorite(data.isFavorite)
       }
     } catch (error) {
-      console.error("Failed to check favorite status:", error)
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to check favorite status:", error)
+      }
     }
   }, [propertyId])
 
@@ -63,7 +65,9 @@ const FavoriteButton = memo(function FavoriteButton({
         setIsFavorite(!isFavorite)
       }
     } catch (error) {
-      console.error("Failed to toggle favorite:", error)
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to toggle favorite:", error)
+      }
     } finally {
       setLoading(false)
     }

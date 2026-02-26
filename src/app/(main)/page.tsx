@@ -7,6 +7,8 @@ import { LazyMotion, domAnimation, m } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { locations } from "@/lib/locations"
 import { useI18n } from "@/lib/i18n"
+import { formatNumber } from "@/lib/format"
+import { getTranslated } from "@/lib/i18n/get-translated"
 
 // Simplified animations for better performance
 const fadeUp = {
@@ -16,11 +18,6 @@ const fadeUp = {
 
 const stagger = {
   visible: { transition: { staggerChildren: 0.08 } }
-}
-
-// Format number consistently to avoid hydration mismatch
-const formatNumber = (num: number) => {
-  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 }
 
 // Luxembourg banks for mortgage
@@ -33,13 +30,6 @@ const banks = [
   { name: "Raiffeisen", rate: 3.3 },
   { name: "BIL", rate: 3.4 },
 ]
-
-interface Translations {
-  en?: string
-  fr?: string
-  de?: string
-  [key: string]: string | undefined
-}
 
 interface FeaturedProperty {
   id: string
@@ -72,16 +62,6 @@ interface Categories {
 
 export default function HomePage() {
   const { t, locale } = useI18n()
-
-  // Helper to get translated text
-  const getTranslated = (defaultValue: string, translations?: Translations | null): string => {
-    if (!translations || typeof translations !== 'object') return defaultValue
-    const localeValue = translations[locale]
-    if (localeValue && localeValue.trim()) return localeValue
-    const enValue = translations.en
-    if (enValue && enValue.trim()) return enValue
-    return defaultValue
-  }
 
   // Mortgage calculator state
   const [propertyPrice, setPropertyPrice] = useState(750000)
@@ -118,7 +98,9 @@ export default function HomePage() {
           setCategories(statsData.categories)
         }
       } catch (error) {
-        console.error("Failed to fetch homepage data:", error)
+        if (process.env.NODE_ENV === "development") {
+          console.error("Failed to fetch homepage data:", error)
+        }
       } finally {
         setLoading(false)
       }
@@ -388,7 +370,7 @@ export default function HomePage() {
                           </div>
                         </div>
                         <h3 className="text-xl font-semibold text-[#1A1A1A] group-hover:text-[#B8926A] transition-colors">
-                          {getTranslated(property.title, property.titleTranslations)}
+                          {getTranslated(locale, property.title, property.titleTranslations)}
                         </h3>
                         <div className="flex gap-4 mt-3 text-sm text-[#6B6B6B]">
                           <span>{property.beds} {t.common.beds}</span>

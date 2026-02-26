@@ -29,7 +29,9 @@ export function UserActions({ user }: { user: User }) {
         router.refresh()
       }
     } catch (error) {
-      console.error("Failed to update role:", error)
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to update role:", error)
+      }
     } finally {
       setLoading(false)
       setMenuOpen(false)
@@ -49,7 +51,9 @@ export function UserActions({ user }: { user: User }) {
         router.refresh()
       }
     } catch (error) {
-      console.error("Failed to update verification:", error)
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to update verification:", error)
+      }
     } finally {
       setLoading(false)
       setMenuOpen(false)
@@ -75,7 +79,9 @@ export function UserActions({ user }: { user: User }) {
         router.refresh()
       }
     } catch (error) {
-      console.error("Failed to delete user:", error)
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to delete user:", error)
+      }
     } finally {
       setLoading(false)
       setMenuOpen(false)

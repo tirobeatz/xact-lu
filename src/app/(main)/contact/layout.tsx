@@ -1,8 +1,8 @@
-import { Metadata } from "next"
+import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Contact Us",
-  description: "Get in touch with Xact Real Estate Luxembourg. Contact our team for property inquiries, valuations, and real estate services.",
+  description: "Get in touch with Xact Real Estate. Visit our Luxembourg City office, call us, or send a message. We respond within 24 hours.",
 }
 
 export default function ContactLayout({ children }: { children: React.ReactNode }) {

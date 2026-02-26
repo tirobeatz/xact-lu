@@ -59,7 +59,9 @@ function ResetPasswordForm() {
       const contentType = res.headers.get("content-type")
       if (!contentType?.includes("application/json")) {
         setError(t.auth.somethingWentWrong)
-        console.error("Reset password: Non-JSON response", res.status, res.statusText)
+        if (process.env.NODE_ENV === "development") {
+          console.error("Reset password: Non-JSON response", res.status, res.statusText)
+        }
         return
       }
 
@@ -74,7 +76,9 @@ function ResetPasswordForm() {
         }, 3000)
       }
     } catch (err) {
-      console.error("Reset password fetch error:", err)
+      if (process.env.NODE_ENV === "development") {
+        console.error("Reset password fetch error:", err)
+      }
       setError(t.auth.somethingWentWrong)
     } finally {
       setLoading(false)

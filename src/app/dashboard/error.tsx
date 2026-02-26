@@ -11,7 +11,9 @@ interface ErrorProps {
 
 export default function DashboardError({ error, reset }: ErrorProps) {
   useEffect(() => {
-    console.error("Dashboard error:", error)
+    if (process.env.NODE_ENV === "development") {
+      console.error("Dashboard error:", error)
+    }
   }, [error])
 
   return (
