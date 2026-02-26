@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
+import { geocodeAddress } from "@/lib/geocode"
 
 export async function PUT(
   request: NextRequest,
@@ -29,6 +30,9 @@ export async function PUT(
       { status: 400 }
     )
   }
+
+  // Auto-geocode address to get lat/lng for maps
+  const geo = await geocodeAddress(data.address, data.city, data.postalCode)
 
   // Delete existing images and recreate
   await prisma.propertyImage.deleteMany({
@@ -63,6 +67,8 @@ export async function PUT(
       city: data.city,
       postalCode: data.postalCode,
       neighborhood: data.neighborhood,
+      latitude: geo?.latitude ?? null,
+      longitude: geo?.longitude ?? null,
       features: data.features,
       isFeatured: data.isFeatured,
       agentId: data.agentId || null,

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
+import { geocodeAddress } from "@/lib/geocode"
 
 export async function POST(request: NextRequest) {
   const session = await getSession()
@@ -22,6 +23,9 @@ export async function POST(request: NextRequest) {
       { status: 400 }
     )
   }
+
+  // Auto-geocode address to get lat/lng for maps
+  const geo = await geocodeAddress(data.address, data.city, data.postalCode)
 
   const property = await prisma.property.create({
     data: {
@@ -50,6 +54,8 @@ export async function POST(request: NextRequest) {
       city: data.city,
       postalCode: data.postalCode,
       neighborhood: data.neighborhood,
+      latitude: geo?.latitude ?? null,
+      longitude: geo?.longitude ?? null,
       features: data.features,
       isFeatured: data.isFeatured,
       ownerId: session.user.id,
