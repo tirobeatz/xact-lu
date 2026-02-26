@@ -44,4 +44,5 @@ next-env.d.ts
 
 # sensitive files
 pw.txt
-*.env.local
+*.env.local*.xlsx
+.~lock.*
