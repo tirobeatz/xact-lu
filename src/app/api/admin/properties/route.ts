@@ -58,6 +58,7 @@ export async function POST(request: NextRequest) {
       longitude: geo?.longitude ?? null,
       features: data.features,
       isFeatured: data.isFeatured,
+      agentId: data.agentId || null,
       ownerId: session.user.id,
       publishedAt: data.status === "PUBLISHED" ? new Date() : null,
       images: {

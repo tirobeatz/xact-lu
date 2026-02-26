@@ -1,6 +1,22 @@
+import { prisma } from "@/lib/prisma"
 import { PropertyForm } from "@/components/admin/property-form"
 
-export default function NewPropertyPage() {
+async function getAgents() {
+  return prisma.agent.findMany({
+    where: { isActive: true },
+    orderBy: { name: "asc" },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      image: true,
+    },
+  })
+}
+
+export default async function NewPropertyPage() {
+  const agents = await getAgents()
+
   return (
     <div>
       <div className="mb-8">
@@ -8,7 +24,7 @@ export default function NewPropertyPage() {
         <p className="text-[#6B6B6B] mt-1">Create a new property listing</p>
       </div>
 
-      <PropertyForm />
+      <PropertyForm agents={agents} />
     </div>
   )
 }
