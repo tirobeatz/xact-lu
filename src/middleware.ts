@@ -16,7 +16,7 @@ function addSecurityHeaders(response: NextResponse): NextResponse {
       "script-src 'self' 'unsafe-inline'",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
-      "img-src 'self' data: blob: https://*.supabase.co https://images.unsplash.com https://randomuser.me https://*.tile.openstreetmap.org",
+      "img-src 'self' data: blob: https://*.supabase.co https://images.unsplash.com https://randomuser.me https://*.basemaps.cartocdn.com",
       "connect-src 'self' https://*.supabase.co https://api.mymemory.translated.net https://accounts.google.com",
       "form-action 'self'",
       "frame-src 'self' https://accounts.google.com",
