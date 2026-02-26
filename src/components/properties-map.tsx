@@ -15,8 +15,8 @@ interface MapProperty {
   beds: number
   area: number
   image: string
-  latitude: number | null
-  longitude: number | null
+  latitude?: number | null
+  longitude?: number | null
 }
 
 interface PropertiesMapProps {
