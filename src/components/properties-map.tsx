@@ -10,10 +10,10 @@ interface MapProperty {
   slug: string
   location: string
   price: number
-  type: string
-  listingType: string
-  beds: number
-  area: number
+  type?: string
+  listingType?: string
+  beds?: number
+  area?: number
   image: string
   latitude?: number | null
   longitude?: number | null
@@ -95,7 +95,7 @@ export default function PropertiesMap({ properties, formatPrice }: PropertiesMap
           <div style="font-size: 14px; font-weight: 600; color: #1A1A1A; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${property.title}</div>
           <div style="font-size: 12px; color: #6B6B6B; margin-bottom: 4px;">${property.location}</div>
           <div style="font-size: 14px; font-weight: 700; color: #B8926A;">${formatPrice(property.price)}${property.listingType === "RENT" ? "/mo" : ""}</div>
-          <div style="font-size: 11px; color: #6B6B6B; margin-top: 4px;">${property.beds > 0 ? property.beds + " beds · " : ""}${property.area} m²</div>
+          <div style="font-size: 11px; color: #6B6B6B; margin-top: 4px;">${(property.beds || 0) > 0 ? property.beds + " beds · " : ""}${property.area || 0} m²</div>
         </a>
       `
 
