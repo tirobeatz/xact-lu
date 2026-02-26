@@ -134,6 +134,8 @@ async function getPropertyData(slug: string) {
     energyClass: property.energyClass || undefined,
     floor: property.floor || undefined,
     totalFloors: property.totalFloors || undefined,
+    latitude: property.latitude ? Number(property.latitude) : null,
+    longitude: property.longitude ? Number(property.longitude) : null,
     features: property.features || [],
     images: property.images.length > 0
       ? property.images.map((img) => img.url)
@@ -171,6 +173,91 @@ async function getPropertyData(slug: string) {
   return { property: transformedProperty, similarProperties: transformedSimilar }
 }
 
+// Build JSON-LD structured data for Google rich results
+function buildJsonLd(property: Property) {
+  const jsonLd: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "RealEstateListing",
+    name: property.title,
+    description: property.description,
+    url: `https://xact.lu/properties/${property.slug}`,
+    datePosted: new Date().toISOString(),
+    offers: {
+      "@type": "Offer",
+      price: property.price,
+      priceCurrency: "EUR",
+      availability: "https://schema.org/InStock",
+    },
+  }
+
+  // Add images
+  if (property.images.length > 0 && !property.images[0].includes("placeholder")) {
+    jsonLd.image = property.images.map((img) =>
+      img.startsWith("http") ? img : `https://xact.lu${img}`
+    )
+  }
+
+  // Add geo coordinates
+  if (property.latitude && property.longitude) {
+    jsonLd.geo = {
+      "@type": "GeoCoordinates",
+      latitude: property.latitude,
+      longitude: property.longitude,
+    }
+  }
+
+  // Add address
+  jsonLd.address = {
+    "@type": "PostalAddress",
+    streetAddress: property.address.split(",")[0]?.trim() || property.address,
+    addressLocality: property.location,
+    addressCountry: "LU",
+  }
+
+  // Add property details via additionalProperty
+  const additionalProperties = []
+  if (property.beds > 0) {
+    additionalProperties.push({
+      "@type": "PropertyValue",
+      name: "numberOfBedrooms",
+      value: property.beds,
+    })
+  }
+  if (property.baths > 0) {
+    additionalProperties.push({
+      "@type": "PropertyValue",
+      name: "numberOfBathrooms",
+      value: property.baths,
+    })
+  }
+  if (property.area > 0) {
+    additionalProperties.push({
+      "@type": "PropertyValue",
+      name: "floorSize",
+      value: `${property.area} m²`,
+    })
+  }
+  if (property.energyClass) {
+    additionalProperties.push({
+      "@type": "PropertyValue",
+      name: "energyClass",
+      value: property.energyClass,
+    })
+  }
+  if (property.yearBuilt) {
+    additionalProperties.push({
+      "@type": "PropertyValue",
+      name: "yearBuilt",
+      value: property.yearBuilt,
+    })
+  }
+  if (additionalProperties.length > 0) {
+    jsonLd.additionalProperty = additionalProperties
+  }
+
+  return jsonLd
+}
+
 export default async function PropertyDetailPage({ params }: Props) {
   const { slug } = await params
   const data = await getPropertyData(slug)
@@ -179,10 +266,18 @@ export default async function PropertyDetailPage({ params }: Props) {
     notFound()
   }
 
+  const jsonLd = buildJsonLd(data.property)
+
   return (
-    <PropertyDetailContent
-      property={data.property}
-      similarProperties={data.similarProperties}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <PropertyDetailContent
+        property={data.property}
+        similarProperties={data.similarProperties}
+      />
+    </>
   )
 }

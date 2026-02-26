@@ -23,6 +23,8 @@ async function getInitialProperties() {
           bedrooms: true,
           bathrooms: true,
           livingArea: true,
+          latitude: true,
+          longitude: true,
           isFeatured: true,
           images: {
             select: { url: true },
@@ -46,6 +48,8 @@ async function getInitialProperties() {
       beds: property.bedrooms || 0,
       baths: property.bathrooms || 0,
       area: property.livingArea ? Number(property.livingArea) : 0,
+      latitude: property.latitude ? Number(property.latitude) : null,
+      longitude: property.longitude ? Number(property.longitude) : null,
       image: property.images[0]?.url || "/placeholder-property.svg",
       tag: property.isFeatured ? "Featured" : property.listingType === "RENT" ? "Rental" : "For Sale",
     }))

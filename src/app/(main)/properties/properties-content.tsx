@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, Suspense, useCallback } from "react"
+import { useState, useEffect, Suspense, useCallback, lazy } from "react"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { LazyMotion, domAnimation, m } from "framer-motion"
@@ -10,6 +10,9 @@ import { locations } from "@/lib/locations"
 import { useI18n } from "@/lib/i18n"
 import { formatNumber } from "@/lib/format"
 import { getTranslated } from "@/lib/i18n/get-translated"
+
+// Lazy load map to avoid SSR issues with Leaflet
+const PropertiesMap = lazy(() => import("@/components/properties-map"))
 
 interface Translations {
   en?: string
@@ -30,6 +33,8 @@ export interface Property {
   beds: number
   baths: number
   area: number
+  latitude?: number | null
+  longitude?: number | null
   image: string
   tag: string
 }
@@ -69,6 +74,7 @@ function PropertiesContentInner({ initialProperties, initialTotal, initialTotalP
   const [minArea, setMinArea] = useState(0)
   const [sortBy, setSortBy] = useState("newest")
   const [showFilters, setShowFilters] = useState(false)
+  const [viewMode, setViewMode] = useState<"grid" | "map">("grid")
 
   // Data states — use server-fetched initial data
   const [properties, setProperties] = useState<Property[]>(initialProperties)
@@ -373,24 +379,71 @@ function PropertiesContentInner({ initialProperties, initialTotal, initialTotalP
       {/* Properties Grid */}
       <section className="py-12 bg-[#FAFAF8]">
         <div className="container mx-auto px-4">
-          {/* Results Count */}
+          {/* Results Count + View Toggle */}
           <div className="flex items-center justify-between mb-8">
             <p className="text-[#6B6B6B]">
               {t.properties.showing} <span className="font-semibold text-[#1A1A1A]">{properties.length}</span> {t.properties.of} {total}
             </p>
-            <select
-              value={sortBy}
-              onChange={(e) => { setSortBy(e.target.value); setHasUserInteracted(true) }}
-              className="h-10 px-4 rounded-lg border border-[#E8E6E3] bg-white text-[#1A1A1A] text-sm outline-none md:hidden"
-            >
-              <option value="newest">{t.search.newest}</option>
-              <option value="price-low">{t.search.priceLow}</option>
-              <option value="price-high">{t.search.priceHigh}</option>
-            </select>
+            <div className="flex items-center gap-3">
+              {/* View Mode Toggle */}
+              <div className="flex bg-[#F5F3EF] rounded-lg p-1">
+                <button
+                  onClick={() => setViewMode("grid")}
+                  className={`p-2 rounded-md transition-colors ${
+                    viewMode === "grid" ? "bg-white shadow-sm text-[#1A1A1A]" : "text-[#6B6B6B] hover:text-[#1A1A1A]"
+                  }`}
+                  aria-label="Grid view"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                  </svg>
+                </button>
+                <button
+                  onClick={() => setViewMode("map")}
+                  className={`p-2 rounded-md transition-colors ${
+                    viewMode === "map" ? "bg-white shadow-sm text-[#1A1A1A]" : "text-[#6B6B6B] hover:text-[#1A1A1A]"
+                  }`}
+                  aria-label="Map view"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                  </svg>
+                </button>
+              </div>
+              <select
+                value={sortBy}
+                onChange={(e) => { setSortBy(e.target.value); setHasUserInteracted(true) }}
+                className="h-10 px-4 rounded-lg border border-[#E8E6E3] bg-white text-[#1A1A1A] text-sm outline-none md:hidden"
+              >
+                <option value="newest">{t.search.newest}</option>
+                <option value="price-low">{t.search.priceLow}</option>
+                <option value="price-high">{t.search.priceHigh}</option>
+              </select>
+            </div>
           </div>
 
-          {/* Loading State */}
-          {loading ? (
+          {/* Map View */}
+          {viewMode === "map" && !loading && (
+            <div className="mb-8">
+              <Suspense
+                fallback={
+                  <div className="w-full h-[500px] md:h-[600px] rounded-2xl bg-[#F5F3EF] animate-pulse flex items-center justify-center">
+                    <svg className="w-10 h-10 text-[#B8926A] opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                    </svg>
+                  </div>
+                }
+              >
+                <PropertiesMap
+                  properties={properties}
+                  formatPrice={(price) => `€${formatNumber(price)}`}
+                />
+              </Suspense>
+            </div>
+          )}
+
+          {/* Grid/Loading State (hidden in map view) */}
+          {viewMode !== "grid" ? null : loading ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[...Array(6)].map((_, i) => (
                 <div key={i} className="bg-white rounded-2xl overflow-hidden shadow-sm animate-pulse">
@@ -522,8 +575,8 @@ function PropertiesContentInner({ initialProperties, initialTotal, initialTotalP
             </div>
           )}
 
-          {/* Pagination */}
-          {!loading && totalPages > 1 && (
+          {/* Pagination (grid view only) */}
+          {viewMode === "grid" && !loading && totalPages > 1 && (
             <div className="text-center mt-12 flex items-center justify-center gap-4">
               <Button
                 variant="outline"
