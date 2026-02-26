@@ -1,21 +1,21 @@
-"use client"
+import type { Metadata } from "next"
 
-import { useI18n } from "@/lib/i18n"
-import Link from "next/link"
+export const metadata: Metadata = {
+  title: "Terms of Service | Xact Real Estate",
+  description: "Read the terms and conditions for using the Xact Real Estate platform for property listings, searches, and brokerage services in Luxembourg.",
+}
 
 export default function TermsOfServicePage() {
-  const { t } = useI18n()
-
   return (
     <div className="min-h-screen bg-[#FAFAF8]">
       {/* Header */}
       <div className="bg-[#1A1A1A] pt-28 pb-12">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl md:text-4xl font-semibold text-white">
-            {t.legal?.terms?.title || "Terms of Service"}
+            Terms of Service
           </h1>
           <p className="text-white/60 mt-2">
-            {t.legal?.terms?.lastUpdated || "Last updated"}: January 2026
+            Last updated: January 2026
           </p>
         </div>
       </div>
@@ -29,7 +29,7 @@ export default function TermsOfServicePage() {
               <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">1. Agreement to Terms</h2>
               <p className="text-[#6B6B6B] leading-relaxed">
                 By accessing or using the Xact Real Estate website (xact.lu) and services, you agree to be
-                bound by these Terms of Service ("Terms"). If you do not agree to these Terms, please do not
+                bound by these Terms of Service (&quot;Terms&quot;). If you do not agree to these Terms, please do not
                 use our services.
               </p>
               <p className="text-[#6B6B6B] leading-relaxed mt-4">
@@ -99,7 +99,7 @@ export default function TermsOfServicePage() {
                 <li>Harass, abuse, or harm other users</li>
                 <li>Spam or send unsolicited communications</li>
                 <li>Scrape or collect data without authorization</li>
-                <li>Interfere with the platform's operation or security</li>
+                <li>Interfere with the platform&apos;s operation or security</li>
                 <li>Circumvent any access restrictions or security measures</li>
                 <li>Use the platform to discriminate against any person</li>
                 <li>Violate any intellectual property rights</li>
@@ -109,7 +109,7 @@ export default function TermsOfServicePage() {
             <section className="mb-8">
               <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">6. Fees and Commissions</h2>
               <p className="text-[#6B6B6B] leading-relaxed">
-                Xact's brokerage services are subject to commission fees as communicated during the listing
+                Xact&apos;s brokerage services are subject to commission fees as communicated during the listing
                 process. Current fee structures are available upon request. Commission is only payable upon
                 successful completion of a transaction. All fees are subject to Luxembourg VAT where applicable.
               </p>
@@ -131,7 +131,7 @@ export default function TermsOfServicePage() {
             <section className="mb-8">
               <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">8. Disclaimer of Warranties</h2>
               <p className="text-[#6B6B6B] leading-relaxed">
-                The platform is provided "as is" without warranties of any kind. Xact does not guarantee:
+                The platform is provided &quot;as is&quot; without warranties of any kind. Xact does not guarantee:
               </p>
               <ul className="list-disc list-inside text-[#6B6B6B] space-y-2 mt-4">
                 <li>The accuracy or completeness of property listings</li>
@@ -183,7 +183,7 @@ export default function TermsOfServicePage() {
               <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">12. Changes to Terms</h2>
               <p className="text-[#6B6B6B] leading-relaxed">
                 We may modify these Terms at any time. We will notify users of material changes by posting
-                the updated Terms on our website and updating the "Last Updated" date. Continued use of
+                the updated Terms on our website and updating the &quot;Last Updated&quot; date. Continued use of
                 the platform after changes constitutes acceptance of the new Terms.
               </p>
             </section>

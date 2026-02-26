@@ -1,21 +1,22 @@
-"use client"
-
-import { useI18n } from "@/lib/i18n"
 import Link from "next/link"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Cookie Policy | Xact Real Estate",
+  description: "Learn about how Xact Real Estate uses cookies on our website, including essential, functional, and analytics cookies.",
+}
 
 export default function CookiePolicyPage() {
-  const { t } = useI18n()
-
   return (
     <div className="min-h-screen bg-[#FAFAF8]">
       {/* Header */}
       <div className="bg-[#1A1A1A] pt-28 pb-12">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl md:text-4xl font-semibold text-white">
-            {t.legal?.cookies?.title || "Cookie Policy"}
+            Cookie Policy
           </h1>
           <p className="text-white/60 mt-2">
-            {t.legal?.cookies?.lastUpdated || "Last updated"}: January 2026
+            Last updated: January 2026
           </p>
         </div>
       </div>
@@ -184,7 +185,7 @@ export default function CookiePolicyPage() {
                 <li>Block all cookies</li>
                 <li>Accept only first-party cookies</li>
                 <li>Delete cookies when you close the browser</li>
-                <li>Browse in "incognito" or "private" mode</li>
+                <li>Browse in &quot;incognito&quot; or &quot;private&quot; mode</li>
               </ul>
 
               <div className="bg-[#F5F3EF] p-4 rounded-lg mt-4">
@@ -228,7 +229,7 @@ export default function CookiePolicyPage() {
               <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">7. Changes to This Policy</h2>
               <p className="text-[#6B6B6B] leading-relaxed">
                 We may update this Cookie Policy from time to time. Any changes will be posted on this page
-                with an updated "Last Updated" date. We encourage you to review this policy periodically.
+                with an updated &quot;Last Updated&quot; date. We encourage you to review this policy periodically.
               </p>
             </section>
 

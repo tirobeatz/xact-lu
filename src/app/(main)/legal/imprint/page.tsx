@@ -1,20 +1,21 @@
-"use client"
+import type { Metadata } from "next"
 
-import { useI18n } from "@/lib/i18n"
+export const metadata: Metadata = {
+  title: "Legal Notice (Imprint) | Xact Real Estate",
+  description: "Legal notice and company information for Xact Real Estate S.à r.l., a registered real estate agency in Luxembourg.",
+}
 
 export default function ImprintPage() {
-  const { t } = useI18n()
-
   return (
     <div className="min-h-screen bg-[#FAFAF8]">
       {/* Header */}
       <div className="bg-[#1A1A1A] pt-28 pb-12">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl md:text-4xl font-semibold text-white">
-            {t.legal?.imprint?.title || "Legal Notice (Mentions Légales)"}
+            Legal Notice (Mentions Légales)
           </h1>
           <p className="text-white/60 mt-2">
-            {t.legal?.imprint?.subtitle || "Company Information"}
+            Company Information
           </p>
         </div>
       </div>
@@ -49,7 +50,7 @@ export default function ImprintPage() {
                 </div>
                 <div className="bg-[#F5F3EF] p-4 rounded-lg">
                   <p className="text-sm text-[#6B6B6B]">Share Capital</p>
-                  <p className="font-semibold text-[#1A1A1A]">€[Amount]</p>
+                  <p className="font-semibold text-[#1A1A1A]">&euro;[Amount]</p>
                 </div>
                 <div className="bg-[#F5F3EF] p-4 rounded-lg">
                   <p className="text-sm text-[#6B6B6B]">Authorization Number</p>
@@ -99,7 +100,7 @@ export default function ImprintPage() {
               </p>
               <div className="bg-[#F5F3EF] p-4 rounded-lg mt-4 text-[#6B6B6B]">
                 <p><strong>Supervising Authority:</strong></p>
-                <p>Ministère de l'Économie</p>
+                <p>Ministère de l&apos;Économie</p>
                 <p>Direction générale PME, Entrepreneuriat et Marché intérieur</p>
                 <p>19-21, boulevard Royal</p>
                 <p>L-2449 Luxembourg</p>
@@ -133,7 +134,7 @@ export default function ImprintPage() {
               <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">Dispute Resolution</h2>
               <p className="text-[#6B6B6B] leading-relaxed">
                 In accordance with EU Regulation No 524/2013, consumers may submit complaints through the
-                European Commission's Online Dispute Resolution (ODR) platform:
+                European Commission&apos;s Online Dispute Resolution (ODR) platform:
               </p>
               <p className="mt-4">
                 <a
@@ -158,7 +159,7 @@ export default function ImprintPage() {
                 international intellectual property laws.
               </p>
               <p className="text-[#6B6B6B] leading-relaxed mt-4">
-                © {new Date().getFullYear()} Xact Real Estate S.à r.l. All rights reserved.
+                &copy; 2026 Xact Real Estate S.à r.l. All rights reserved.
               </p>
             </section>
 

@@ -1,21 +1,22 @@
-"use client"
-
-import { useI18n } from "@/lib/i18n"
 import Link from "next/link"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Privacy Policy | Xact Real Estate",
+  description: "Learn how Xact Real Estate collects, uses, and protects your personal data in compliance with GDPR and Luxembourg data protection laws.",
+}
 
 export default function PrivacyPolicyPage() {
-  const { t } = useI18n()
-
   return (
     <div className="min-h-screen bg-[#FAFAF8]">
       {/* Header */}
       <div className="bg-[#1A1A1A] pt-28 pb-12">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl md:text-4xl font-semibold text-white">
-            {t.legal?.privacy?.title || "Privacy Policy"}
+            Privacy Policy
           </h1>
           <p className="text-white/60 mt-2">
-            {t.legal?.privacy?.lastUpdated || "Last updated"}: January 2026
+            Last updated: January 2026
           </p>
         </div>
       </div>
@@ -28,12 +29,12 @@ export default function PrivacyPolicyPage() {
             <section className="mb-8">
               <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">1. Introduction</h2>
               <p className="text-[#6B6B6B] leading-relaxed">
-                Xact Real Estate S.à r.l. ("Xact", "we", "us", or "our") is committed to protecting your privacy.
+                Xact Real Estate S.à r.l. (&quot;Xact&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) is committed to protecting your privacy.
                 This Privacy Policy explains how we collect, use, disclose, and safeguard your information when
                 you visit our website xact.lu and use our services.
               </p>
               <p className="text-[#6B6B6B] leading-relaxed mt-4">
-                We comply with the General Data Protection Regulation (GDPR) (EU) 2016/679 and Luxembourg's
+                We comply with the General Data Protection Regulation (GDPR) (EU) 2016/679 and Luxembourg&apos;s
                 data protection laws.
               </p>
             </section>
@@ -173,12 +174,12 @@ export default function PrivacyPolicyPage() {
               <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">11. Changes to This Policy</h2>
               <p className="text-[#6B6B6B] leading-relaxed">
                 We may update this Privacy Policy from time to time. We will notify you of any material changes
-                by posting the new policy on this page and updating the "Last Updated" date.
+                by posting the new policy on this page and updating the &quot;Last Updated&quot; date.
               </p>
             </section>
 
             <section className="mb-8">
-              <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">12. Contact Us & Complaints</h2>
+              <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">12. Contact Us &amp; Complaints</h2>
               <p className="text-[#6B6B6B] leading-relaxed">
                 If you have questions about this Privacy Policy or wish to exercise your rights, please contact us:
               </p>
