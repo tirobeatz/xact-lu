@@ -15,6 +15,8 @@ function LoginForm() {
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard"
   const registered = searchParams.get("registered")
+  const verified = searchParams.get("verified")
+  const verifyError = searchParams.get("error")
   const { toast } = useToast()
 
   const [email, setEmail] = useState("")
@@ -26,11 +28,32 @@ function LoginForm() {
     if (registered === "true") {
       toast({
         title: t.auth.accountCreated || "Account created",
-        description: t.auth.pleaseSignIn || "Please sign in with your credentials.",
+        description: t.auth.checkEmailForVerification || "Please check your email to verify your account, then sign in.",
         variant: "success",
       })
     }
-  }, [registered])
+    if (verified === "true") {
+      toast({
+        title: t.auth.emailVerified || "Email verified",
+        description: t.auth.emailVerifiedDesc || "Your email has been verified. You can now sign in.",
+        variant: "success",
+      })
+    }
+    if (verifyError === "verification-link-expired") {
+      toast({
+        title: t.auth.verificationExpired || "Link expired",
+        description: t.auth.verificationExpiredDesc || "Your verification link has expired. Please sign in and request a new one.",
+        variant: "error",
+      })
+    }
+    if (verifyError === "invalid-verification-link") {
+      toast({
+        title: t.auth.verificationInvalid || "Invalid link",
+        description: t.auth.verificationInvalidDesc || "This verification link is invalid. Please request a new one.",
+        variant: "error",
+      })
+    }
+  }, [registered, verified, verifyError])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

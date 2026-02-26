@@ -2,8 +2,10 @@ import { NextResponse } from "next/server"
 import bcrypt from "bcryptjs"
 import { prisma } from "@/lib/prisma"
 import { Prisma } from "@prisma/client"
+import { randomBytes } from "node:crypto"
 import { checkRateLimit, getClientIp, RATE_LIMITS } from "@/lib/rate-limit"
 import { sanitizeInput, sanitizeEmail } from "@/lib/sanitize"
+import { sendVerificationEmail } from "@/lib/email"
 
 export async function POST(req: Request) {
   try {
@@ -88,6 +90,26 @@ export async function POST(req: Request) {
         password: hashedPassword,
       },
     })
+
+    // Send verification email
+    try {
+      const token = randomBytes(32).toString("hex")
+      const expires = new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours
+
+      await prisma.verificationToken.create({
+        data: {
+          identifier: sanitizedEmail,
+          token,
+          expires,
+        },
+      })
+
+      const verifyUrl = `${process.env.NEXTAUTH_URL || "http://localhost:3000"}/api/auth/verify-email?token=${token}&email=${encodeURIComponent(sanitizedEmail)}`
+      await sendVerificationEmail(sanitizedEmail, verifyUrl)
+    } catch (emailError) {
+      // Don't fail registration if email sending fails
+      console.error("Verification email error:", emailError)
+    }
 
     return NextResponse.json(
       { message: "User created successfully", userId: user.id },

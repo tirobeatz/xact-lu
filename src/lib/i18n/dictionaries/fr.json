@@ -269,7 +269,18 @@
     "passwordResetSuccess": "Mot de passe réinitialisé avec succès",
     "passwordResetSuccessDescription": "Votre mot de passe a été réinitialisé. Vous serez redirigé vers la page de connexion dans quelques instants.",
     "invalidOrExpiredToken": "Lien de réinitialisation invalide ou expiré",
-    "requestNewReset": "Demander une nouvelle réinitialisation du mot de passe"
+    "requestNewReset": "Demander une nouvelle réinitialisation du mot de passe",
+    "checkEmailForVerification": "Veuillez vérifier votre email pour confirmer votre compte, puis connectez-vous.",
+    "emailVerified": "Email vérifié",
+    "emailVerifiedDesc": "Votre email a été vérifié. Vous pouvez maintenant vous connecter.",
+    "verificationExpired": "Lien expiré",
+    "verificationExpiredDesc": "Votre lien de vérification a expiré. Veuillez vous connecter et en demander un nouveau.",
+    "verificationInvalid": "Lien invalide",
+    "verificationInvalidDesc": "Ce lien de vérification est invalide. Veuillez en demander un nouveau.",
+    "verifyEmailBanner": "Veuillez vérifier votre adresse email.",
+    "resendVerification": "Renvoyer l'email de vérification",
+    "verificationSent": "Email de vérification envoyé",
+    "verificationSentDesc": "Vérifiez votre boîte de réception pour le lien de vérification."
   },
   "about": {
     "badge": "À PROPOS DE XACT",

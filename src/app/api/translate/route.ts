@@ -36,7 +36,6 @@ async function translateChunk(text: string, sourceLang: string, targetLang: stri
 
       // Check for quota exceeded
       if (data.responseStatus === 429 || data.responseDetails?.includes("LIMIT")) {
-        console.warn("MyMemory daily limit reached")
         return text
       }
     }
@@ -51,14 +50,11 @@ async function translateChunk(text: string, sourceLang: string, targetLang: stri
 async function translateWithMyMemory(text: string, sourceLang: string, targetLang: string): Promise<string> {
   if (!text || text.trim() === "") return ""
 
-  console.log(`MyMemory translation: ${sourceLang} -> ${targetLang}, length: ${text.length} chars`)
-
   // MyMemory has 500 char limit per request for anonymous users
   const MAX_CHUNK_SIZE = 450
 
   if (text.length <= MAX_CHUNK_SIZE) {
     const result = await translateChunk(text, sourceLang, targetLang)
-    console.log(`Translation successful: "${text.substring(0, 30)}..." -> "${result.substring(0, 30)}..."`)
     return result
   }
 
@@ -95,8 +91,6 @@ async function translateWithMyMemory(text: string, sourceLang: string, targetLan
     chunks.push(currentChunk.trim())
   }
 
-  console.log(`Splitting into ${chunks.length} chunks for translation`)
-
   // Translate each chunk
   const translatedChunks: string[] = []
   for (const chunk of chunks) {
@@ -107,7 +101,6 @@ async function translateWithMyMemory(text: string, sourceLang: string, targetLan
   }
 
   const result = translatedChunks.join(" ")
-  console.log(`Translation successful: "${text.substring(0, 30)}..." -> "${result.substring(0, 30)}..."`)
   return result
 }
 
@@ -140,8 +133,6 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    console.log(`Translation request: "${text.substring(0, 50)}..." from ${sourceLang} to ${targetLangs.join(", ")}`)
-
     const translations: Record<string, string> = {
       [sourceLang]: text, // Include original text
     }
@@ -161,10 +152,6 @@ export async function POST(request: NextRequest) {
     const translationSucceeded = Object.entries(translations).some(
       ([lang, translatedText]) => lang !== sourceLang && translatedText !== text
     )
-
-    if (!translationSucceeded) {
-      console.warn("Translation may have failed - all translations are same as source")
-    }
 
     return NextResponse.json({
       translations,

@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation"
 import { getSession } from "@/lib/auth"
 import Link from "next/link"
+import { EmailVerificationBanner } from "@/components/email-verification-banner"
 
 export default async function DashboardLayout({
   children,
@@ -62,6 +63,11 @@ export default async function DashboardLayout({
           </div>
         </div>
       </header>
+
+      {/* Email Verification Banner */}
+      <div className="container mx-auto px-4 mt-4">
+        <EmailVerificationBanner />
+      </div>
 
       {/* Content */}
       {children}

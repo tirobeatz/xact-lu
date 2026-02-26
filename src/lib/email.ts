@@ -10,8 +10,10 @@ interface EmailOptions {
 
 async function sendEmail(options: EmailOptions): Promise<void> {
   if (!resend) {
-    console.log("[DEV] Email would be sent to:", options.to)
-    console.log("[DEV] Subject:", options.subject)
+    if (process.env.NODE_ENV === "development") {
+      console.log("[DEV] Email would be sent to:", options.to)
+      console.log("[DEV] Subject:", options.subject)
+    }
     return
   }
 
@@ -26,6 +28,56 @@ async function sendEmail(options: EmailOptions): Promise<void> {
     console.error("Failed to send email:", error)
     throw error
   }
+}
+
+export async function sendVerificationEmail(email: string, verifyUrl: string): Promise<void> {
+  const html = `
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <style>
+      body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+      .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+      .header { background-color: #1A1A1A; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
+      .content { background-color: #FAFAF8; padding: 30px; }
+      .button { display: inline-block; background-color: #B8926A; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; margin: 20px 0; font-weight: 500; }
+      .footer { background-color: #E8E6E3; color: #6B6B6B; padding: 20px; text-align: center; font-size: 12px; border-radius: 0 0 8px 8px; }
+      .divider { border-top: 1px solid #E8E6E3; margin: 20px 0; }
+      h2 { color: #1A1A1A; margin-top: 0; }
+      p { color: #6B6B6B; line-height: 1.6; }
+      .code { background-color: #E8E6E3; padding: 10px 15px; border-radius: 4px; font-family: monospace; font-size: 12px; word-break: break-all; margin: 10px 0; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1 style="margin: 0;">Xact Real Estate</h1>
+      </div>
+      <div class="content">
+        <h2>Verify Your Email</h2>
+        <p>Hello,</p>
+        <p>Thank you for creating an account with Xact Real Estate. Please click the button below to verify your email address. This link will expire in 24 hours.</p>
+        <a href="${verifyUrl}" class="button">Verify Email</a>
+        <p style="font-size: 14px; color: #6B6B6B;">Or copy and paste this URL into your browser:</p>
+        <div class="code">${verifyUrl}</div>
+        <div class="divider"></div>
+        <p style="font-size: 14px;">If you didn't create an account, you can safely ignore this email.</p>
+      </div>
+      <div class="footer">
+        <p>&copy; 2025 Xact Real Estate. All rights reserved.</p>
+        <p><a href="https://xact.lu" style="color: #B8926A; text-decoration: none;">Visit our website</a></p>
+      </div>
+    </div>
+  </body>
+</html>
+  `.trim()
+
+  await sendEmail({
+    to: email,
+    subject: "Verify Your Email - Xact Real Estate",
+    html,
+  })
 }
 
 export async function sendPasswordResetEmail(email: string, resetToken: string, resetUrl: string): Promise<void> {

@@ -269,7 +269,18 @@
     "passwordResetSuccess": "Passwort erfolgreich zurückgesetzt",
     "passwordResetSuccessDescription": "Ihr Passwort wurde zurückgesetzt. Sie werden in Kürze zur Anmeldeseite weitergeleitet.",
     "invalidOrExpiredToken": "Ungültiger oder abgelaufener Reset-Link",
-    "requestNewReset": "Neues Passwort-Zurücksetzen anfordern"
+    "requestNewReset": "Neues Passwort-Zurücksetzen anfordern",
+    "checkEmailForVerification": "Bitte überprüfen Sie Ihre E-Mail, um Ihr Konto zu bestätigen, und melden Sie sich dann an.",
+    "emailVerified": "E-Mail verifiziert",
+    "emailVerifiedDesc": "Ihre E-Mail wurde verifiziert. Sie können sich jetzt anmelden.",
+    "verificationExpired": "Link abgelaufen",
+    "verificationExpiredDesc": "Ihr Bestätigungslink ist abgelaufen. Bitte melden Sie sich an und fordern Sie einen neuen an.",
+    "verificationInvalid": "Ungültiger Link",
+    "verificationInvalidDesc": "Dieser Bestätigungslink ist ungültig. Bitte fordern Sie einen neuen an.",
+    "verifyEmailBanner": "Bitte verifizieren Sie Ihre E-Mail-Adresse.",
+    "resendVerification": "Bestätigungs-E-Mail erneut senden",
+    "verificationSent": "Bestätigungs-E-Mail gesendet",
+    "verificationSentDesc": "Überprüfen Sie Ihren Posteingang für den Bestätigungslink."
   },
   "about": {
     "badge": "ÜBER XACT",
@@ -277,7 +288,13 @@
     "heroPremium": "erstklassig",
     "heroNotPainful": ", nicht kompliziert.",
     "heroSubtitle": "Xact ist eine Boutique-Agentur in Luxemburg für Menschen, die Klarheit, Schnelligkeit und Vertrauen wollen — ob Sie kaufen, verkaufen oder investieren.",
-    "heroWords": ["vertrauenswürdig", "modern", "präzise", "persönlich", "Luxemburg"],
+    "heroWords": [
+      "vertrauenswürdig",
+      "modern",
+      "präzise",
+      "persönlich",
+      "Luxemburg"
+    ],
     "exploreListings": "Inserate entdecken",
     "talkToTeam": "Mit uns sprechen",
     "scrollToDiscover": "Scrollen Sie, um unsere Geschichte zu entdecken",
@@ -297,24 +314,52 @@
       "label": "UNSERE GESCHICHTE",
       "title": "Auf Handwerk gebaut, nicht auf Hype",
       "description": "Immobilien kaufen oder verkaufen sollte sich sicher und klar anfühlen. Wir kombinieren lokale Expertise mit modernem Marketing für ein erstklassiges Erlebnis vom ersten Anruf bis zur Unterschrift.",
-      "points": ["Preise, die Sinn machen", "Marketing, das funktioniert", "Verhandlung, die Sie schützt"]
+      "points": [
+        "Preise, die Sinn machen",
+        "Marketing, das funktioniert",
+        "Verhandlung, die Sie schützt"
+      ]
     },
     "timeline": {
       "title": "Unser Ansatz",
       "subtitle": "Was uns antreibt",
-      "2014": { "title": "7+ Jahre im Immobilienbereich", "text": "Unser Team bringt fundierte Erfahrung vom Luxemburger Immobilienmarkt mit." },
-      "2017": { "title": "Lokale Expertise", "text": "Wir kennen jedes Viertel, jede Straße, jede Gelegenheit." },
-      "2020": { "title": "Modernes Marketing", "text": "Professionelle Fotografie, virtuelle Touren und digitale Strategien." },
-      "2024": { "title": "Premium-Service", "text": "Ein Boutique-Ansatz mit persönlicher Aufmerksamkeit für jeden Kunden." }
+      "2014": {
+        "title": "7+ Jahre im Immobilienbereich",
+        "text": "Unser Team bringt fundierte Erfahrung vom Luxemburger Immobilienmarkt mit."
+      },
+      "2017": {
+        "title": "Lokale Expertise",
+        "text": "Wir kennen jedes Viertel, jede Straße, jede Gelegenheit."
+      },
+      "2020": {
+        "title": "Modernes Marketing",
+        "text": "Professionelle Fotografie, virtuelle Touren und digitale Strategien."
+      },
+      "2024": {
+        "title": "Premium-Service",
+        "text": "Ein Boutique-Ansatz mit persönlicher Aufmerksamkeit für jeden Kunden."
+      }
     },
     "values": {
       "label": "UNSERE WERTE",
       "title": "Was uns auszeichnet",
       "subtitle": "Wir sind bewusst Boutique — weniger Kunden, mehr Aufmerksamkeit, bessere Ergebnisse.",
-      "trustTransparency": { "title": "Vertrauen & Transparenz", "desc": "Klare Kommunikation und ehrliche Beratung — immer." },
-      "clientFocused": { "title": "Kundenorientiert", "desc": "Wir hören zuerst zu, dann erstellen wir einen Plan, der zu Ihren Zielen passt." },
-      "qualityOverQuantity": { "title": "Qualität vor Quantität", "desc": "Kuratierte Inserate und ernsthafte Käufer — kein Lärm, nur Ergebnisse." },
-      "localExpertise": { "title": "Lokale Expertise", "desc": "Luxemburg-Wissen, auf das Sie sich verlassen können, von Preisen bis Papierkram." }
+      "trustTransparency": {
+        "title": "Vertrauen & Transparenz",
+        "desc": "Klare Kommunikation und ehrliche Beratung — immer."
+      },
+      "clientFocused": {
+        "title": "Kundenorientiert",
+        "desc": "Wir hören zuerst zu, dann erstellen wir einen Plan, der zu Ihren Zielen passt."
+      },
+      "qualityOverQuantity": {
+        "title": "Qualität vor Quantität",
+        "desc": "Kuratierte Inserate und ernsthafte Käufer — kein Lärm, nur Ergebnisse."
+      },
+      "localExpertise": {
+        "title": "Lokale Expertise",
+        "desc": "Luxemburg-Wissen, auf das Sie sich verlassen können, von Preisen bis Papierkram."
+      }
     },
     "team": {
       "label": "UNSER TEAM",
@@ -403,10 +448,22 @@
       "accuracyRate": "Genauigkeitsrate"
     },
     "benefits": {
-      "trueValue": { "title": "Kennen Sie Ihren wahren Wert", "desc": "Lassen Sie kein Geld liegen — erhalten Sie einen genauen Marktpreis" },
-      "expertResponse": { "title": "24h Expertenantwort", "desc": "Persönlicher Anruf von einem lokalen Makler, der Ihre Gegend kennt" },
-      "confidential": { "title": "100% Vertraulich", "desc": "Ihre Informationen bleiben privat, kein Spam, kein Druck" },
-      "free": { "title": "Komplett kostenlos", "desc": "Keine Gebühren, keine Verpflichtungen, keine Bedingungen" }
+      "trueValue": {
+        "title": "Kennen Sie Ihren wahren Wert",
+        "desc": "Lassen Sie kein Geld liegen — erhalten Sie einen genauen Marktpreis"
+      },
+      "expertResponse": {
+        "title": "24h Expertenantwort",
+        "desc": "Persönlicher Anruf von einem lokalen Makler, der Ihre Gegend kennt"
+      },
+      "confidential": {
+        "title": "100% Vertraulich",
+        "desc": "Ihre Informationen bleiben privat, kein Spam, kein Druck"
+      },
+      "free": {
+        "title": "Komplett kostenlos",
+        "desc": "Keine Gebühren, keine Verpflichtungen, keine Bedingungen"
+      }
     },
     "form": {
       "propertyDetails": "Immobiliendetails",
@@ -538,13 +595,28 @@
     "manageProperties": "Verwalten Sie Ihre Immobilien und Kontoeinstellungen.",
     "signOut": "Abmelden",
     "cards": {
-      "myListings": { "title": "Meine Inserate", "desc": "Ihre Immobilien anzeigen und verwalten" },
-      "addNew": { "title": "Neues Inserat", "desc": "Eine neue Immobilie einreichen" },
-      "saved": { "title": "Gespeicherte Immobilien", "desc": "Ihre Favoriten" },
-      "messages": { "title": "Nachrichten", "desc": "Anfragen und Nachrichten anzeigen" },
-      "profile": { "title": "Profil", "desc": "Kontoeinstellungen aktualisieren" }
+      "myListings": {
+        "title": "Meine Inserate",
+        "desc": "Ihre Immobilien anzeigen und verwalten"
+      },
+      "addNew": {
+        "title": "Neues Inserat",
+        "desc": "Eine neue Immobilie einreichen"
+      },
+      "saved": {
+        "title": "Gespeicherte Immobilien",
+        "desc": "Ihre Favoriten"
+      },
+      "messages": {
+        "title": "Nachrichten",
+        "desc": "Anfragen und Nachrichten anzeigen"
+      },
+      "profile": {
+        "title": "Profil",
+        "desc": "Kontoeinstellungen aktualisieren"
+      }
     },
-"listings": {
+    "listings": {
       "title": "Meine Inserate",
       "subtitle": "Verwalten Sie Ihre Immobilieninserate",
       "addNew": "Neues Inserat hinzufügen",

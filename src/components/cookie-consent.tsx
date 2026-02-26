@@ -39,11 +39,7 @@ export function CookieConsent() {
     setShowBanner(false)
     setShowSettings(false)
 
-    // Here you would typically initialize or disable analytics based on preferences
-    if (prefs.analytics) {
-      // Initialize Google Analytics or other analytics
-      console.log("Analytics enabled")
-    }
+    // TODO: Initialize analytics (e.g. Google Analytics) when prefs.analytics is true
   }
 
   const acceptAll = () => {
