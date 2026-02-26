@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
+import GeocodeButton from "@/components/admin/geocode-button"
 
 async function getStats() {
   const [
@@ -170,6 +171,8 @@ export default async function AdminOverviewPage() {
               <p className="text-xs text-[#6B6B6B]">Open public site</p>
             </div>
           </Link>
+
+          <GeocodeButton />
         </div>
       </div>
 
