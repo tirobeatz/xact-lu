@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import LegalPageHeader from "../legal-page-header"
 
 export const metadata: Metadata = {
   title: "Terms of Service | Xact Real Estate",
@@ -8,17 +9,7 @@ export const metadata: Metadata = {
 export default function TermsOfServicePage() {
   return (
     <div className="min-h-screen bg-[#FAFAF8]">
-      {/* Header */}
-      <div className="bg-[#1A1A1A] pt-28 pb-12">
-        <div className="container mx-auto px-4">
-          <h1 className="text-3xl md:text-4xl font-semibold text-white">
-            Terms of Service
-          </h1>
-          <p className="text-white/60 mt-2">
-            Last updated: January 2026
-          </p>
-        </div>
-      </div>
+      <LegalPageHeader section="terms" fallbackTitle="Terms of Service" />
 
       {/* Content */}
       <div className="container mx-auto px-4 py-12">
