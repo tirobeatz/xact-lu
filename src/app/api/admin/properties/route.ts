@@ -59,8 +59,9 @@ export async function POST(request: NextRequest) {
         floor: data.floor,
         totalFloors: data.totalFloors,
         yearBuilt: data.yearBuilt,
-        energyClass: data.energyClass,
+        energyClass: data.energyClass as any,
         heatingType: data.heatingType,
+
         address: data.address,
         city: data.city,
         postalCode: data.postalCode,
