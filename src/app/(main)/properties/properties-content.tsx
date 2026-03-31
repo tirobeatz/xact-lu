@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense, useCallback, lazy } from "react"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
+import Image from "next/image"
 import { LazyMotion, domAnimation, m } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { FavoriteButton } from "@/components/favorite-button"
@@ -491,9 +492,12 @@ function PropertiesContentInner({ initialProperties, initialTotal, initialTotalP
                   >
                     {/* Image */}
                     <div className="relative aspect-[4/3] overflow-hidden">
-                      <div
-                        className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                        style={{ backgroundImage: `url('${property.image}')` }}
+                      <Image
+                        src={property.image}
+                        alt={getTranslated(locale, property.title, property.titleTranslations)}
+                        fill
+                        className="object-cover object-center transition-transform duration-700 group-hover:scale-110"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
 
@@ -541,7 +545,7 @@ function PropertiesContentInner({ initialProperties, initialTotal, initialTotalP
                           </p>
                         </div>
                         <span className="px-2 py-1 bg-[#F5F3EF] rounded-md text-xs text-[#6B6B6B]">
-                          {property.tag}
+                          {property.tag === "Featured" ? t.properties.featured : property.tag === "Rental" ? t.properties.rental : property.tag === "For Sale" ? t.properties.forSale : property.tag}
                         </span>
                       </div>
 

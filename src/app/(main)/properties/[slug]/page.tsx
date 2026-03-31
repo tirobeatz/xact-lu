@@ -52,12 +52,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description = `${property.type.charAt(0) + property.type.slice(1).toLowerCase()} ${listingLabel.toLowerCase()} in ${property.city}. ${specs ? specs + ". " : ""}${listingLabel} at ${price}.`
   const image = property.images[0]?.url || "/xact-logo.svg"
 
+  const canonicalUrl = `https://www.xact.lu/properties/${slug}`
+
   return {
     title,
     description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
       title,
       description,
+      url: canonicalUrl,
       images: [{ url: image, width: 1200, height: 630, alt: property.title }],
       type: "website",
       siteName: "Xact Real Estate",

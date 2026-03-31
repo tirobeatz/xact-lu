@@ -178,9 +178,13 @@ export default function HomePage() {
       <section className="relative min-h-[100vh] flex items-center justify-center overflow-hidden">
         {/* Background */}
         <div className="absolute inset-0">
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url('https://images.unsplash.com/photo-1592595896616-c37162298647?q=80&w=2070&auto=format&fit=crop')` }}
+          <Image
+            src="https://images.unsplash.com/photo-1592595896616-c37162298647?q=80&w=2070&auto=format&fit=crop"
+            alt="Luxury home in Luxembourg"
+            fill
+            priority
+            className="object-cover object-center"
+            sizes="100vw"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#1A1A1A]/80 via-[#1A1A1A]/60 to-[#1A1A1A]/90" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#1A1A1A]/70 to-transparent" />
@@ -370,13 +374,16 @@ export default function HomePage() {
                     <m.div key={property.id} variants={fadeUp}>
                       <Link href={`/properties/${property.slug}`} className="group block">
                         <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-5">
-                          <div
-                            className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                            style={{ backgroundImage: `url('${property.image}')` }}
+                          <Image
+                            src={property.image}
+                            alt={getTranslated(locale, property.title, property.titleTranslations)}
+                            fill
+                            className="object-cover object-center transition-transform duration-700 group-hover:scale-110"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A]/60 via-transparent to-transparent" />
                           <span className="absolute top-4 left-4 px-3 py-1.5 bg-white/95 backdrop-blur-sm rounded-full text-xs font-medium text-[#1A1A1A]">
-                            {property.tag}
+                            {property.tag === "Featured" ? t.properties.featured : property.tag === "Rental" ? t.properties.rental : property.tag === "For Sale" ? t.properties.forSale : property.tag}
                           </span>
                           <div className="absolute bottom-4 left-4 right-4">
                             <p className="text-white/80 text-sm">{property.location}</p>
@@ -424,9 +431,12 @@ export default function HomePage() {
                     href={`/properties?propertyType=${item.key}`}
                     className="group block relative aspect-[3/4] rounded-2xl overflow-hidden"
                   >
-                    <div
-                      className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                      style={{ backgroundImage: `url('${item.image}')` }}
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      className="object-cover object-center transition-transform duration-700 group-hover:scale-110"
+                      sizes="(max-width: 768px) 50vw, 25vw"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A]/80 via-[#1A1A1A]/20 to-transparent" />
                     <div className="absolute bottom-6 left-6 right-6">
