@@ -91,7 +91,7 @@ export function OrganizationJsonLd({
   logo = "https://xact.lu/xact-logo.svg",
   email = "info@xact.lu",
   phone = "+352 661 39 12 30",
-  address = "Luxembourg City, Luxembourg",
+  address = "6, rue de Bettborn, L-8835 Folschette, Luxembourg",
 }: OrganizationJsonLdProps) {
   const jsonLd = {
     "@context": "https://schema.org",

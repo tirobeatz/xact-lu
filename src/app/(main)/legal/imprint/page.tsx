@@ -22,8 +22,8 @@ export default function ImprintPage() {
                 <p className="font-semibold text-[#1A1A1A] text-lg">Xact Real Estate S.à r.l.</p>
                 <p className="mt-4"><strong>Legal Form:</strong> Société à responsabilité limitée (S.à r.l.)</p>
                 <p className="mt-2"><strong>Registered Office:</strong></p>
-                <p>[Street Address]</p>
-                <p>L-[Postal Code] Luxembourg</p>
+                <p>6, rue de Bettborn</p>
+                <p>L-8835 Folschette</p>
                 <p>Grand Duchy of Luxembourg</p>
               </div>
             </section>

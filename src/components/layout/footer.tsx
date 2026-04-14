@@ -86,7 +86,7 @@ export function Footer() {
             <ul className="space-y-3">
               <li><a href="mailto:info@xact.lu" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">info@xact.lu</a></li>
               <li><a href="tel:+352661391230" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">+352 661 39 12 30</a></li>
-              <li><span className="text-sm text-white/50">Luxembourg City</span></li>
+              <li><span className="text-sm text-white/50">6, rue de Bettborn<br />L-8835 Folschette, Luxembourg</span></li>
             </ul>
           </div>
 

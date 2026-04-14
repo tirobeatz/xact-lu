@@ -74,8 +74,8 @@ export default function ContactPage() {
         </svg>
       ),
       label: t.contact.office,
-      value: "2 Rue de la Liberte",
-      href: "https://maps.google.com/?q=2+Rue+de+la+Liberte+Luxembourg",
+      value: "6, rue de Bettborn",
+      href: "https://maps.google.com/?q=6+rue+de+Bettborn+L-8835+Folschette+Luxembourg",
       subtext: t.contact.officeAddress,
     },
   ]
