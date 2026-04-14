@@ -1,8 +1,26 @@
 import { NextRequest, NextResponse } from "next/server"
+import { revalidatePath } from "next/cache"
 import { getSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { geocodeAddress } from "@/lib/geocode"
 import { propertySchema } from "@/lib/validations/property"
+
+function revalidatePropertyPaths(slug?: string) {
+  revalidatePath("/")
+  revalidatePath("/properties")
+  revalidatePath("/en")
+  revalidatePath("/de")
+  revalidatePath("/fr")
+  revalidatePath("/en/properties")
+  revalidatePath("/de/properties")
+  revalidatePath("/fr/properties")
+  if (slug) {
+    revalidatePath(`/properties/${slug}`)
+    revalidatePath(`/en/properties/${slug}`)
+    revalidatePath(`/de/properties/${slug}`)
+    revalidatePath(`/fr/properties/${slug}`)
+  }
+}
 
 export async function PUT(
   request: NextRequest,
@@ -96,6 +114,8 @@ export async function PUT(
       },
     })
 
+    revalidatePropertyPaths(property.slug)
+
     return NextResponse.json(property)
   } catch (err: any) {
     console.error("Failed to update property:", err)
@@ -119,9 +139,12 @@ export async function DELETE(
   const { id } = await params
 
   try {
-    await prisma.property.delete({
+    const deleted = await prisma.property.delete({
       where: { id },
+      select: { slug: true },
     })
+
+    revalidatePropertyPaths(deleted.slug)
 
     return NextResponse.json({ success: true })
   } catch (err: any) {

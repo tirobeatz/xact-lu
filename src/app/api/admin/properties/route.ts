@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
+import { revalidatePath } from "next/cache"
 import { getSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { geocodeAddress } from "@/lib/geocode"
@@ -83,6 +84,21 @@ export async function POST(request: NextRequest) {
         },
       },
     })
+
+    revalidatePath("/")
+    revalidatePath("/properties")
+    revalidatePath("/en")
+    revalidatePath("/de")
+    revalidatePath("/fr")
+    revalidatePath("/en/properties")
+    revalidatePath("/de/properties")
+    revalidatePath("/fr/properties")
+    if (property.slug) {
+      revalidatePath(`/properties/${property.slug}`)
+      revalidatePath(`/en/properties/${property.slug}`)
+      revalidatePath(`/de/properties/${property.slug}`)
+      revalidatePath(`/fr/properties/${property.slug}`)
+    }
 
     return NextResponse.json(property)
   } catch (err: any) {

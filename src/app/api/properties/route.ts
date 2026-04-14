@@ -139,8 +139,8 @@ export async function GET(request: NextRequest) {
       totalPages: Math.ceil(total / limit),
     })
 
-    // Add cache headers for better performance (60 seconds cache)
-    response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=120')
+    // Short cache — balances performance with freshness after admin edits
+    response.headers.set('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=20')
 
     return response
   } catch (error) {
