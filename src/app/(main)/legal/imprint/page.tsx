@@ -76,7 +76,7 @@ export default function ImprintPage() {
                   </svg>
                   <div>
                     <p className="text-sm text-[#6B6B6B]">Phone</p>
-                    <p className="font-medium text-[#1A1A1A]">+352 621 000 000</p>
+                    <p className="font-medium text-[#1A1A1A]">+352 661 39 12 30</p>
                   </div>
                 </div>
               </div>

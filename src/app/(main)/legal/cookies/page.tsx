@@ -231,7 +231,7 @@ export default function CookiePolicyPage() {
               </p>
               <div className="bg-[#F5F3EF] p-4 rounded-lg mt-4 text-[#6B6B6B]">
                 <p>Email: privacy@xact.lu</p>
-                <p>Phone: +352 621 000 000</p>
+                <p>Phone: +352 661 39 12 30</p>
               </div>
               <p className="text-[#6B6B6B] leading-relaxed mt-4">
                 For more information about how we handle your personal data, please see our{" "}

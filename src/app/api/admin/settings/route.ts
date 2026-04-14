@@ -23,7 +23,7 @@ export async function GET() {
           id: "default",
           siteName: "Xact Real Estate",
           email: "info@xact.lu",
-          phone: "+352 621 000 000",
+          phone: "+352 661 39 12 30",
         },
       })
     }
@@ -63,7 +63,7 @@ export async function PUT(request: Request) {
         siteDescription,
         logo,
         email: email || "info@xact.lu",
-        phone: phone || "+352 621 000 000",
+        phone: phone || "+352 661 39 12 30",
         address,
       },
     })

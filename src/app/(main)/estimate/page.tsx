@@ -792,7 +792,7 @@ export default function EstimatePage() {
                     </p>
 
                     <a
-                    href="tel:+35226262626"
+                    href="tel:+352661391230"
                     className="flex items-center gap-3 p-3 rounded-xl bg-[#F5F3EF] hover:bg-[#E8E6E3] transition-colors"
                     >
                     <div className="w-10 h-10 rounded-full bg-[#B8926A]/10 flex items-center justify-center">
@@ -806,7 +806,7 @@ export default function EstimatePage() {
                         </svg>
                     </div>
                     <div>
-                        <p className="text-[#1A1A1A] font-medium">+352 26 26 26 26</p>
+                        <p className="text-[#1A1A1A] font-medium">+352 661 39 12 30</p>
                         <p className="text-[#6B6B6B] text-xs">Mon-Fri 9:00-18:00</p>
                     </div>
                     </a>

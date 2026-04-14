@@ -196,7 +196,7 @@ export default function TermsOfServicePage() {
               <div className="bg-[#F5F3EF] p-4 rounded-lg mt-4 text-[#6B6B6B]">
                 <p><strong>Xact Real Estate S.à r.l.</strong></p>
                 <p>Email: legal@xact.lu</p>
-                <p>Phone: +352 621 000 000</p>
+                <p>Phone: +352 661 39 12 30</p>
               </div>
             </section>
 

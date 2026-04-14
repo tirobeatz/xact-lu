@@ -85,7 +85,7 @@ export function Footer() {
             <h4 className="text-white font-medium mb-5">{t.footer.contact}</h4>
             <ul className="space-y-3">
               <li><a href="mailto:info@xact.lu" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">info@xact.lu</a></li>
-              <li><a href="tel:+352123456789" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">+352 123 456 789</a></li>
+              <li><a href="tel:+352661391230" className="text-sm text-white/50 hover:text-[#B8926A] transition-colors">+352 661 39 12 30</a></li>
               <li><span className="text-sm text-white/50">Luxembourg City</span></li>
             </ul>
           </div>

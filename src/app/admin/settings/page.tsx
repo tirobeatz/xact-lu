@@ -20,7 +20,7 @@ export default function AdminSettingsPage() {
     siteDescription: "",
     logo: "",
     email: "info@xact.lu",
-    phone: "+352 621 000 000",
+    phone: "+352 661 39 12 30",
     address: "",
   })
   const [loading, setLoading] = useState(true)

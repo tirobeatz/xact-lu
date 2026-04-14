@@ -90,7 +90,7 @@ export function OrganizationJsonLd({
   url = "https://xact.lu",
   logo = "https://xact.lu/xact-logo.svg",
   email = "info@xact.lu",
-  phone = "+352 123 456 789",
+  phone = "+352 661 39 12 30",
   address = "Luxembourg City, Luxembourg",
 }: OrganizationJsonLdProps) {
   const jsonLd = {

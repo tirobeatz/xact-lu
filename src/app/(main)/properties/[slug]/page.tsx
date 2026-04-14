@@ -148,13 +148,13 @@ async function getPropertyData(slug: string) {
       : ["/placeholder-property.svg"],
     agent: property.agent ? {
       name: property.agent.name,
-      phone: property.agent.phone || "+352 621 000 000",
+      phone: property.agent.phone || "+352 661 39 12 30",
       email: property.agent.email,
       image: property.agent.image || "/xact-logo.svg",
       agency: "Xact",
     } : {
       name: "Xact Real Estate",
-      phone: "+352 621 000 000",
+      phone: "+352 661 39 12 30",
       email: "info@xact.lu",
       image: "/xact-logo.svg",
       agency: "Xact",

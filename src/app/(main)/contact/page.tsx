@@ -51,8 +51,8 @@ export default function ContactPage() {
         </svg>
       ),
       label: t.contact.phone,
-      value: "+352 26 26 26 26",
-      href: "tel:+35226262626",
+      value: "+352 661 39 12 30",
+      href: "tel:+352661391230",
       subtext: t.contact.phoneHours,
     },
     {
