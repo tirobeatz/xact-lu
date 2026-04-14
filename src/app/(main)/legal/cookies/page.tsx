@@ -3,8 +3,8 @@ import type { Metadata } from "next"
 import LegalPageHeader from "../legal-page-header"
 
 export const metadata: Metadata = {
-  title: "Cookie Policy | Xact Real Estate",
-  description: "Learn about how Xact Real Estate uses cookies on our website, including essential, functional, and analytics cookies.",
+  title: "Cookie Policy | Xact",
+  description: "Learn about how Xact uses cookies on our website, including essential, functional, and analytics cookies.",
 }
 
 export default function CookiePolicyPage() {
@@ -29,7 +29,7 @@ export default function CookiePolicyPage() {
             <section className="mb-8">
               <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">2. How We Use Cookies</h2>
               <p className="text-[#6B6B6B] leading-relaxed mb-4">
-                Xact Real Estate uses cookies to:
+                Xact uses cookies to:
               </p>
               <ul className="list-disc list-inside text-[#6B6B6B] space-y-2">
                 <li>Keep you signed in to your account</li>

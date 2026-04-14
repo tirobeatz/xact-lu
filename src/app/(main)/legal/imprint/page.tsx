@@ -2,8 +2,8 @@ import type { Metadata } from "next"
 import LegalPageHeader from "../legal-page-header"
 
 export const metadata: Metadata = {
-  title: "Legal Notice (Imprint) | Xact Real Estate",
-  description: "Legal notice and company information for Xact Real Estate S.à r.l., a registered real estate agency in Luxembourg.",
+  title: "Legal Notice (Imprint) | Xact",
+  description: "Legal notice and company information for HNWI Immobilière sàrl, a registered real estate agency in Luxembourg.",
 }
 
 export default function ImprintPage() {
@@ -19,7 +19,8 @@ export default function ImprintPage() {
             <section className="mb-8">
               <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">Company Information</h2>
               <div className="bg-[#F5F3EF] p-6 rounded-lg text-[#6B6B6B]">
-                <p className="font-semibold text-[#1A1A1A] text-lg">Xact Real Estate S.à r.l.</p>
+                <p className="font-semibold text-[#1A1A1A] text-lg">HNWI Immobilière sàrl</p>
+                <p className="text-sm mt-1">Operating under the brand name &quot;Xact&quot;</p>
                 <p className="mt-4"><strong>Legal Form:</strong> Société à responsabilité limitée (S.à r.l.)</p>
                 <p className="mt-2"><strong>Registered Office:</strong></p>
                 <p>6, rue de Bettborn</p>
@@ -33,19 +34,11 @@ export default function ImprintPage() {
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="bg-[#F5F3EF] p-4 rounded-lg">
                   <p className="text-sm text-[#6B6B6B]">RCS Luxembourg</p>
-                  <p className="font-semibold text-[#1A1A1A]">B[Registration Number]</p>
+                  <p className="font-semibold text-[#1A1A1A]">B236411</p>
                 </div>
                 <div className="bg-[#F5F3EF] p-4 rounded-lg">
                   <p className="text-sm text-[#6B6B6B]">VAT Number</p>
-                  <p className="font-semibold text-[#1A1A1A]">LU[VAT Number]</p>
-                </div>
-                <div className="bg-[#F5F3EF] p-4 rounded-lg">
-                  <p className="text-sm text-[#6B6B6B]">Share Capital</p>
-                  <p className="font-semibold text-[#1A1A1A]">&euro;[Amount]</p>
-                </div>
-                <div className="bg-[#F5F3EF] p-4 rounded-lg">
-                  <p className="text-sm text-[#6B6B6B]">Authorization Number</p>
-                  <p className="font-semibold text-[#1A1A1A]">[Ministry Authorization]</p>
+                  <p className="font-semibold text-[#1A1A1A]">LU32133545</p>
                 </div>
               </div>
             </section>
@@ -54,7 +47,7 @@ export default function ImprintPage() {
               <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">Management</h2>
               <div className="bg-[#F5F3EF] p-4 rounded-lg text-[#6B6B6B]">
                 <p><strong>Managing Director (Gérant):</strong></p>
-                <p>[Name of Managing Director]</p>
+                <p>Giovanni Romeo</p>
               </div>
             </section>
 
@@ -85,7 +78,7 @@ export default function ImprintPage() {
             <section className="mb-8">
               <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">Professional Regulation</h2>
               <p className="text-[#6B6B6B] leading-relaxed">
-                Xact Real Estate S.à r.l. is authorized to operate as a real estate agent in Luxembourg
+                HNWI Immobilière sàrl is authorized to operate as a real estate agent in Luxembourg
                 in accordance with the Law of 2 September 2011 regulating access to the professions of
                 craftsman, merchant, and industrialist.
               </p>
@@ -98,20 +91,7 @@ export default function ImprintPage() {
               </div>
             </section>
 
-            <section className="mb-8">
-              <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">Professional Insurance</h2>
-              <p className="text-[#6B6B6B] leading-relaxed">
-                Xact Real Estate holds professional liability insurance in accordance with Luxembourg
-                real estate regulations.
-              </p>
-              <div className="bg-[#F5F3EF] p-4 rounded-lg mt-4 text-[#6B6B6B]">
-                <p><strong>Insurer:</strong> [Insurance Company Name]</p>
-                <p><strong>Policy Number:</strong> [Policy Number]</p>
-                <p><strong>Coverage:</strong> Professional Liability</p>
-              </div>
-            </section>
-
-            <section className="mb-8">
+<section className="mb-8">
               <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">Website Hosting</h2>
               <div className="bg-[#F5F3EF] p-4 rounded-lg text-[#6B6B6B]">
                 <p><strong>Hosting Provider:</strong> Vercel Inc.</p>
@@ -146,11 +126,11 @@ export default function ImprintPage() {
               <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">Intellectual Property</h2>
               <p className="text-[#6B6B6B] leading-relaxed">
                 All content on this website, including texts, images, graphics, logos, and software, is the
-                property of Xact Real Estate S.à r.l. or its licensors and is protected by Luxembourg and
+                property of HNWI Immobilière sàrl or its licensors and is protected by Luxembourg and
                 international intellectual property laws.
               </p>
               <p className="text-[#6B6B6B] leading-relaxed mt-4">
-                &copy; 2026 Xact Real Estate S.à r.l. All rights reserved.
+                &copy; 2026 HNWI Immobilière sàrl. All rights reserved.
               </p>
             </section>
 

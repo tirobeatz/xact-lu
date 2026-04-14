@@ -3,8 +3,8 @@ import type { Metadata } from "next"
 import LegalPageHeader from "../legal-page-header"
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Xact Real Estate",
-  description: "Learn how Xact Real Estate collects, uses, and protects your personal data in compliance with GDPR and Luxembourg data protection laws.",
+  title: "Privacy Policy | Xact",
+  description: "Learn how Xact collects, uses, and protects your personal data in compliance with GDPR and Luxembourg data protection laws.",
 }
 
 export default function PrivacyPolicyPage() {
@@ -20,7 +20,7 @@ export default function PrivacyPolicyPage() {
             <section className="mb-8">
               <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">1. Introduction</h2>
               <p className="text-[#6B6B6B] leading-relaxed">
-                Xact Real Estate S.à r.l. (&quot;Xact&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) is committed to protecting your privacy.
+                HNWI Immobilière sàrl (&quot;Xact&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) is committed to protecting your privacy.
                 This Privacy Policy explains how we collect, use, disclose, and safeguard your information when
                 you visit our website xact.lu and use our services.
               </p>
@@ -36,11 +36,13 @@ export default function PrivacyPolicyPage() {
                 The data controller responsible for your personal data is:
               </p>
               <div className="bg-[#F5F3EF] p-4 rounded-lg mt-4 text-[#6B6B6B]">
-                <p><strong>Xact Real Estate S.à r.l.</strong></p>
-                <p>[Your Address]</p>
-                <p>L-[Postal Code] Luxembourg</p>
+                <p><strong>HNWI Immobilière sàrl</strong></p>
+                <p>6, rue de Bettborn</p>
+                <p>L-8835 Folschette, Luxembourg</p>
                 <p>Email: privacy@xact.lu</p>
-                <p>RCS Luxembourg: B[Number]</p>
+                <p>Phone: +352 661 39 12 30</p>
+                <p>RCS Luxembourg: B236411</p>
+                <p>VAT: LU32133545</p>
               </div>
             </section>
 

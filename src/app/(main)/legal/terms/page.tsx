@@ -2,8 +2,8 @@ import type { Metadata } from "next"
 import LegalPageHeader from "../legal-page-header"
 
 export const metadata: Metadata = {
-  title: "Terms of Service | Xact Real Estate",
-  description: "Read the terms and conditions for using the Xact Real Estate platform for property listings, searches, and brokerage services in Luxembourg.",
+  title: "Terms of Service | Xact",
+  description: "Read the terms and conditions for using the Xact platform for property listings, searches, and brokerage services in Luxembourg.",
 }
 
 export default function TermsOfServicePage() {
@@ -19,12 +19,12 @@ export default function TermsOfServicePage() {
             <section className="mb-8">
               <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">1. Agreement to Terms</h2>
               <p className="text-[#6B6B6B] leading-relaxed">
-                By accessing or using the Xact Real Estate website (xact.lu) and services, you agree to be
+                By accessing or using the Xact website (xact.lu) and services, you agree to be
                 bound by these Terms of Service (&quot;Terms&quot;). If you do not agree to these Terms, please do not
                 use our services.
               </p>
               <p className="text-[#6B6B6B] leading-relaxed mt-4">
-                These Terms constitute a legally binding agreement between you and Xact Real Estate S.à r.l.,
+                These Terms constitute a legally binding agreement between you and HNWI Immobilière sàrl,
                 a company registered in Luxembourg.
               </p>
             </section>
@@ -194,7 +194,7 @@ export default function TermsOfServicePage() {
                 For questions about these Terms, please contact us:
               </p>
               <div className="bg-[#F5F3EF] p-4 rounded-lg mt-4 text-[#6B6B6B]">
-                <p><strong>Xact Real Estate S.à r.l.</strong></p>
+                <p><strong>HNWI Immobilière sàrl</strong></p>
                 <p>Email: legal@xact.lu</p>
                 <p>Phone: +352 661 39 12 30</p>
               </div>
