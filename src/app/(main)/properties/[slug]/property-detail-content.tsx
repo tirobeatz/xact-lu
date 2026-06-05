@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback, useMemo, lazy, Suspense } from "react"
+import { useState, useCallback, useMemo, useRef, lazy, Suspense } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { LazyMotion, domAnimation, m } from "framer-motion"
@@ -78,6 +78,8 @@ export default function PropertyDetailContent({ property, similarProperties }: P
   const [activeImage, setActiveImage] = useState(0)
   const [showGallery, setShowGallery] = useState(false)
   const [galleryIndex, setGalleryIndex] = useState(0)
+  const touchStartX = useRef<number | null>(null)
+  const touchEndX = useRef<number | null>(null)
   const [showContact, setShowContact] = useState(false)
   const [showToast, setShowToast] = useState(false)
   const [toastMessage, setToastMessage] = useState("")
@@ -259,16 +261,76 @@ export default function PropertyDetailContent({ property, similarProperties }: P
         </div>
       )}
 
-      {/* Image Gallery - Mobile Optimized */}
+      {/* Image Gallery - Mobile Swipeable / Desktop Grid */}
       <section className="pt-16 bg-[#1A1A1A]">
         <div className="container mx-auto px-4 py-4 md:py-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 md:gap-4 h-[300px] md:h-[500px]">
+          {/* Mobile: Swipeable Carousel */}
+          <div className="md:hidden relative h-[300px] rounded-xl overflow-hidden"
+            onTouchStart={(e) => {
+              touchStartX.current = e.targetTouches[0].clientX
+              touchEndX.current = null
+            }}
+            onTouchMove={(e) => {
+              touchEndX.current = e.targetTouches[0].clientX
+            }}
+            onTouchEnd={() => {
+              if (touchStartX.current === null || touchEndX.current === null) return
+              const diff = touchStartX.current - touchEndX.current
+              if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                  setActiveImage((prev) => Math.min(prev + 1, property.images.length - 1))
+                } else {
+                  setActiveImage((prev) => Math.max(prev - 1, 0))
+                }
+              }
+              touchStartX.current = null
+              touchEndX.current = null
+            }}
+            onClick={() => openGallery(activeImage)}
+          >
+            <div
+              className="flex h-full transition-transform duration-300 ease-out"
+              style={{ transform: `translateX(-${activeImage * 100}%)` }}
+            >
+              {property.images.map((image, index) => (
+                <div key={index} className="relative w-full h-full flex-shrink-0">
+                  <Image
+                    src={image}
+                    alt={`Property image ${index + 1}`}
+                    fill
+                    className="object-cover"
+                    sizes="100vw"
+                    priority={index === 0}
+                  />
+                </div>
+              ))}
+            </div>
+            {/* Dot indicators */}
+            <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
+              {property.images.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={(e) => { e.stopPropagation(); setActiveImage(index) }}
+                  className={`h-1.5 rounded-full transition-all ${
+                    activeImage === index ? "bg-white w-4" : "bg-white/50 w-1.5"
+                  }`}
+                />
+              ))}
+            </div>
+            {/* Counter */}
+            <div className="absolute top-3 right-3 bg-black/50 text-white text-xs px-2 py-1 rounded-full">
+              {activeImage + 1} / {property.images.length}
+            </div>
+          </div>
+
+          {/* Desktop: Grid layout */}
+          <div className="hidden md:grid grid-cols-2 gap-4 h-[500px]">
             {/* Main Image */}
             <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               onClick={() => openGallery(activeImage)}
-              className="relative rounded-xl md:rounded-2xl overflow-hidden cursor-pointer group"
+              className="relative rounded-2xl overflow-hidden cursor-pointer group"
             >
               <div className="relative w-full h-full">
                 <Image
@@ -276,7 +338,7 @@ export default function PropertyDetailContent({ property, similarProperties }: P
                   alt={getTranslated(locale, property.title, property.titleTranslations)}
                   fill
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  sizes="50vw"
                   priority
                 />
               </div>
@@ -287,13 +349,13 @@ export default function PropertyDetailContent({ property, similarProperties }: P
               </div>
             </m.div>
 
-            {/* Thumbnails - Hidden on small mobile, shown on tablet+ */}
-            <div className="hidden md:grid grid-cols-2 gap-2 md:gap-4">
+            {/* Thumbnails */}
+            <div className="grid grid-cols-2 gap-4">
               {property.images.slice(0, 4).map((image, index) => (
                 <div
                   key={index}
                   onClick={() => index === 3 && property.images.length > 4 ? openGallery(3) : setActiveImage(index)}
-                  className={`relative rounded-lg md:rounded-xl overflow-hidden cursor-pointer transition-all ${
+                  className={`relative rounded-xl overflow-hidden cursor-pointer transition-all ${
                     activeImage === index ? "ring-2 ring-[#B8926A]" : "opacity-80 hover:opacity-100"
                   }`}
                 >
@@ -303,7 +365,7 @@ export default function PropertyDetailContent({ property, similarProperties }: P
                       alt={`Property image ${index + 1}`}
                       fill
                       className="object-cover"
-                      sizes="(max-width: 1024px) 50vw, 25vw"
+                      sizes="25vw"
                     />
                   </div>
                   {index === 3 && property.images.length > 4 && (
@@ -314,20 +376,6 @@ export default function PropertyDetailContent({ property, similarProperties }: P
                 </div>
               ))}
             </div>
-          </div>
-
-          {/* Mobile Image Counter / Gallery Link */}
-          <div className="md:hidden mt-3 flex items-center justify-between">
-            <span className="text-white/70 text-sm">{property.images.length} photos</span>
-            <button
-              onClick={() => openGallery(0)}
-              className="text-[#B8926A] text-sm font-medium flex items-center gap-1"
-            >
-              View all
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
           </div>
         </div>
       </section>
