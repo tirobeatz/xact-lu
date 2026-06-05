@@ -559,7 +559,10 @@ export function PropertyForm({ initialData, propertyId, mode = "create", agents 
 
       if (!response.ok) {
         const errorData = await response.json()
-        throw new Error(errorData.error || "Failed to save property")
+        const msg = errorData.details
+          ? `${errorData.error}: ${errorData.details}`
+          : errorData.error || "Failed to save property"
+        throw new Error(msg)
       }
 
       router.push("/admin/properties")

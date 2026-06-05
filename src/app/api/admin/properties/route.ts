@@ -69,8 +69,8 @@ export async function POST(request: NextRequest) {
         neighborhood: data.neighborhood || "",
         latitude: geo?.latitude ?? null,
         longitude: geo?.longitude ?? null,
-        features: data.features as any,
-        isFeatured: data.isFeatured,
+        features: (data.features || []) as any,
+        isFeatured: data.isFeatured ?? false,
         agentId: data.agentId || null,
         ownerId: session.user.id,
         publishedAt: data.status === "PUBLISHED" ? new Date() : null,
@@ -104,7 +104,7 @@ export async function POST(request: NextRequest) {
   } catch (err: any) {
     console.error("Failed to create property:", err)
     return NextResponse.json(
-      { error: "Failed to create property" },
+      { error: "Failed to create property", details: err.message || String(err) },
       { status: 500 }
     )
   }
