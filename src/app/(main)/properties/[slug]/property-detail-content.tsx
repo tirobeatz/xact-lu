@@ -79,7 +79,9 @@ export default function PropertyDetailContent({ property, similarProperties }: P
   const [showGallery, setShowGallery] = useState(false)
   const [galleryIndex, setGalleryIndex] = useState(0)
   const touchStartX = useRef<number | null>(null)
+  const touchStartY = useRef<number | null>(null)
   const touchEndX = useRef<number | null>(null)
+  const isHorizontalSwipe = useRef<boolean | null>(null)
   const [showContact, setShowContact] = useState(false)
   const [showToast, setShowToast] = useState(false)
   const [toastMessage, setToastMessage] = useState("")
@@ -265,18 +267,32 @@ export default function PropertyDetailContent({ property, similarProperties }: P
       <section className="pt-16 bg-[#1A1A1A]">
         <div className="container mx-auto px-4 py-4 md:py-6">
           {/* Mobile: Swipeable Carousel */}
-          <div className="md:hidden relative h-[300px] rounded-xl overflow-hidden"
+          <div className="md:hidden relative h-[300px] rounded-xl overflow-hidden touch-pan-y"
             onTouchStart={(e) => {
               touchStartX.current = e.targetTouches[0].clientX
+              touchStartY.current = e.targetTouches[0].clientY
               touchEndX.current = null
+              isHorizontalSwipe.current = null
             }}
             onTouchMove={(e) => {
               touchEndX.current = e.targetTouches[0].clientX
+              // Determine swipe direction on first significant movement
+              if (isHorizontalSwipe.current === null && touchStartX.current !== null && touchStartY.current !== null) {
+                const dx = Math.abs(e.targetTouches[0].clientX - touchStartX.current)
+                const dy = Math.abs(e.targetTouches[0].clientY - touchStartY.current)
+                if (dx > 5 || dy > 5) {
+                  isHorizontalSwipe.current = dx > dy
+                }
+              }
+              // Block page scroll only during horizontal swipe
+              if (isHorizontalSwipe.current) {
+                e.preventDefault()
+              }
             }}
             onTouchEnd={() => {
               if (touchStartX.current === null || touchEndX.current === null) return
               const diff = touchStartX.current - touchEndX.current
-              if (Math.abs(diff) > 50) {
+              if (isHorizontalSwipe.current && Math.abs(diff) > 50) {
                 if (diff > 0) {
                   setActiveImage((prev) => Math.min(prev + 1, property.images.length - 1))
                 } else {
@@ -284,7 +300,9 @@ export default function PropertyDetailContent({ property, similarProperties }: P
                 }
               }
               touchStartX.current = null
+              touchStartY.current = null
               touchEndX.current = null
+              isHorizontalSwipe.current = null
             }}
             onClick={() => openGallery(activeImage)}
           >
