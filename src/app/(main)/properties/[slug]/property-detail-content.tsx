@@ -406,14 +406,18 @@ export default function PropertyDetailContent({ property, similarProperties }: P
                       <p className="text-sm text-[#6B6B6B]">{t.propertyDetail.bedrooms}</p>
                     </div>
                   )}
-                  <div className="text-center p-4 bg-[#F5F3EF] rounded-xl">
-                    <p className="text-2xl font-semibold text-[#1A1A1A]">{property.baths}</p>
-                    <p className="text-sm text-[#6B6B6B]">{t.propertyDetail.bathrooms}</p>
-                  </div>
-                  <div className="text-center p-4 bg-[#F5F3EF] rounded-xl">
-                    <p className="text-2xl font-semibold text-[#1A1A1A]">{property.area}</p>
-                    <p className="text-sm text-[#6B6B6B]">{t.propertyDetail.livingArea}</p>
-                  </div>
+                  {property.baths > 0 && (
+                    <div className="text-center p-4 bg-[#F5F3EF] rounded-xl">
+                      <p className="text-2xl font-semibold text-[#1A1A1A]">{property.baths}</p>
+                      <p className="text-sm text-[#6B6B6B]">{t.propertyDetail.bathrooms}</p>
+                    </div>
+                  )}
+                  {property.area > 0 && (
+                    <div className="text-center p-4 bg-[#F5F3EF] rounded-xl">
+                      <p className="text-2xl font-semibold text-[#1A1A1A]">{property.area}</p>
+                      <p className="text-sm text-[#6B6B6B]">{t.propertyDetail.livingArea}</p>
+                    </div>
+                  )}
                   {property.landArea && (
                     <div className="text-center p-4 bg-[#F5F3EF] rounded-xl">
                       <p className="text-2xl font-semibold text-[#1A1A1A]">{property.landArea}</p>
@@ -756,8 +760,8 @@ export default function PropertyDetailContent({ property, similarProperties }: P
                     <p className="text-sm text-[#6B6B6B] mt-1">{p.location}</p>
                     <div className="flex items-center gap-4 mt-3 text-sm text-[#6B6B6B]">
                       {p.beds > 0 && <span>{p.beds} {t.common.beds}</span>}
-                      <span>{p.baths} {t.common.baths}</span>
-                      <span>{p.area} m²</span>
+                      {p.baths > 0 && <span>{p.baths} {t.common.baths}</span>}
+                      {p.area > 0 && <span>{p.area} m²</span>}
                     </div>
                   </div>
                 </Link>

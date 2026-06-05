@@ -394,9 +394,9 @@ export default function HomePage() {
                           {getTranslated(locale, property.title, property.titleTranslations)}
                         </h3>
                         <div className="flex gap-4 mt-3 text-sm text-[#6B6B6B]">
-                          <span>{property.beds} {t.common.beds}</span>
-                          <span>{property.baths} {t.common.baths}</span>
-                          <span>{property.area} {t.common.area}</span>
+                          {property.beds > 0 && <span>{property.beds} {t.common.beds}</span>}
+                          {property.baths > 0 && <span>{property.baths} {t.common.baths}</span>}
+                          {property.area > 0 && <span>{property.area} {t.common.area}</span>}
                         </div>
                       </Link>
                     </m.div>

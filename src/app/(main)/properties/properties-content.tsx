@@ -559,18 +559,22 @@ function PropertiesContentInner({ initialProperties, initialTotal, initialTotalP
                             {property.beds} {property.beds === 1 ? t.common.bed : t.common.beds}
                           </div>
                         )}
-                        <div className="flex items-center gap-1.5 text-sm text-[#6B6B6B]">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
-                          </svg>
-                          {property.baths} {property.baths === 1 ? t.common.bath : t.common.baths}
-                        </div>
-                        <div className="flex items-center gap-1.5 text-sm text-[#6B6B6B]">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
-                          </svg>
-                          {property.area} m²
-                        </div>
+                        {property.baths > 0 && (
+                          <div className="flex items-center gap-1.5 text-sm text-[#6B6B6B]">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
+                            </svg>
+                            {property.baths} {property.baths === 1 ? t.common.bath : t.common.baths}
+                          </div>
+                        )}
+                        {property.area > 0 && (
+                          <div className="flex items-center gap-1.5 text-sm text-[#6B6B6B]">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                            </svg>
+                            {property.area} m²
+                          </div>
+                        )}
                       </div>
                     </div>
                   </Link>
